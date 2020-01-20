@@ -21,4 +21,15 @@ class EventosController extends Controller
 
         }
     }
+    public function listar_eventos()
+    {
+        try {
+            dd('lista de eventos');
+            return Eventos::all();
+
+        } catch (\Exception $e) {
+            return $e;
+        }
+
+    }
 }
