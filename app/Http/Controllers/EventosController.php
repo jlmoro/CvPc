@@ -23,9 +23,9 @@ class EventosController extends Controller
     }
     public function listar_eventos()
     {
+        return Eventos::all();
         try {
-            dd('lista de eventos');
-            return Eventos::all();
+            // dd('lista de eventos');
 
         } catch (\Exception $e) {
             return $e;

@@ -45,6 +45,7 @@ export default {
     data(){
         return{
             ruta:'/api/eventos',
+            lista_eventos2:[],
             lista_eventos:[{
                 date: '2016-05-03',
                 name: 'Tom',
@@ -78,7 +79,7 @@ export default {
                     console.error(data.error);
                     return
                 }
-                this.lista_eventos = data
+                this.lista_eventos2 = data
 
             } catch (e){
                 console.warn(e);
