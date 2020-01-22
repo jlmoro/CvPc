@@ -21,7 +21,7 @@ class AreasController extends Controller
 
             },5);
         } catch (\Exception $e) {
-
+            return $this->captura_error($e,'Error al crear area');
         }
 
     }
