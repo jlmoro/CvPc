@@ -3,7 +3,7 @@ export default [
     {
         path: '/administrar',
         name: 'administrar.listar',
-        component: page('administrar/administrar'),
+        component: page('administrar/listar'),
         // children: [
         //     {
         //         path: '/areas/listar',
