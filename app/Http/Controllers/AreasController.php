@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use Illuminate\Http\Request;
-use Models\Areas;
+use App\Models\Areas;
 
 class AreasController extends Controller
 {
@@ -22,6 +22,17 @@ class AreasController extends Controller
             },5);
         } catch (\Exception $e) {
             return $this->captura_error($e,'Error al crear area');
+        }
+
+    }
+    public function listar_areas()
+    {
+        try {
+
+            return Areas::all();
+
+        } catch (\Exception $e) {
+            return $this->captura_error($e,"Error al listar las áreas");
         }
 
     }

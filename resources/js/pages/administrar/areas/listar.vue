@@ -1,14 +1,19 @@
 <template >
     <section>
         <div class="row mb-4">
-            <div class="col-8">
+            <div class="col-12 text-center">
                 <h3 class="mt-3">Listado de áreas</h3>
             </div>
-            <div class="col-4 text-right">
-                <el-button type="primary" plain>
-                    <i class="mdi mdi-plus"></i>
-                    Crear Área
-                </el-button>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12 text-right">
+                <el-tooltip placement="top">
+                    <div slot="content">Crear Área</div>
+                    <el-button type="primary" plain>
+                        <i class="mdi mdi-plus f-20"></i>
+                    </el-button>
+                </el-tooltip>
             </div>
         </div>
 
@@ -42,7 +47,21 @@
 export default {
     data(){
         return{
-
+            ruta:'/api/administrar/areas',
+            areas:[],
+        }
+    },
+    mounted(){
+        this.listar_areas()
+    },
+    methods:{
+        async listar_areas(){
+            try {
+                const {data} = await axios(`${this.ruta}/listar-areas`)
+                this.areas = data
+            } catch (e) {
+                console.warn(e);
+            }
         }
     }
 }

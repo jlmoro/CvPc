@@ -3,7 +3,7 @@ Route::group(['middleware' =>'auth:api'], function (){
     Route::prefix('administrar')->group( function(){
         $controlador = "AdministrarController";
         Route::get("listar-administrar","$controlador@listar_administrar");
-        
+
         Route::prefix('menu')->group( function(){
             $controlador = "MenuController";
             Route::post("crear-item-menu","$controlador@crear_evento");
@@ -22,7 +22,7 @@ Route::group(['middleware' =>'auth:api'], function (){
         Route::prefix('areas')->group( function(){
             $controlador = "AreasController";
             Route::post("crear-area","$controlador@crear_area");
-            Route::get("listar-eventos","$controlador@listar_eventos");
+            Route::get("listar-areas","$controlador@listar_areas");
             // Route::put("editar-invitado","$controlador@editar_invitado");
             // Route::delete("{id_invitado}/eliminar-invitado","$controlador@eliminar_invitado");
         });
