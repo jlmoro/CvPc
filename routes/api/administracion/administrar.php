@@ -1,6 +1,9 @@
 <?php
 Route::group(['middleware' =>'auth:api'], function (){
     Route::prefix('administrar')->group( function(){
+        $controlador = "AdministrarController";
+        Route::get("listar-administrar","$controlador@listar_administrar");
+        
         Route::prefix('menu')->group( function(){
             $controlador = "MenuController";
             Route::post("crear-item-menu","$controlador@crear_evento");
