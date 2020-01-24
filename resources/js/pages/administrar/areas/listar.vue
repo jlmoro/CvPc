@@ -1,6 +1,16 @@
 <template >
     <section>
-        <h1>listado de las áreas</h1>
+        <div class="row mb-4">
+            <div class="col-8">
+                <h3 class="mt-3">Listado de áreas</h3>
+            </div>
+            <div class="col-4 text-right">
+                <el-button type="primary" plain>
+                    <i class="mdi mdi-plus"></i>
+                    Crear Área
+                </el-button>
+            </div>
+        </div>
 
         <el-collapse accordion>
             <el-collapse-item name="1">
