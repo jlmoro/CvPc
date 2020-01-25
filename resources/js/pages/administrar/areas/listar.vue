@@ -1,44 +1,59 @@
 <template >
-    <section>
+    <section class="listar-areas">
         <div class="row mb-4">
             <div class="col-12 text-center">
-                <h3 class="mt-3">Listado de áreas</h3>
+                <h3 class="mt-3">Listado de áreas y roles</h3>
             </div>
         </div>
 
         <div class="row mb-4">
             <div class="col-12 text-right">
-                <el-tooltip placement="top">
-                    <div slot="content">Crear Área</div>
-                    <el-button type="primary" plain>
-                        <i class="mdi mdi-plus f-20"></i>
+
+                <el-popover
+                placement="left"
+                width="300"
+                trigger="click">
+                <div class="row w-100">
+                    <div class="col-12 text-center">
+                        <h5>Crear Área</h5>
+                    </div>
+                    <div class="col-12 mt-1 mb-4">
+                        <el-input
+                        size="medium"
+                        placeholder="Ingrese el área"
+                        v-model="area"
+                        @change="crear_area"
+                        >
+                        </el-input>
+                    </div>
+                </div>
+                <!-- <el-tooltip content="Crear Área" placement="top"> -->
+                    <el-button type="primary" size="small" round plain slot="reference">
+                        <i class="mdi mdi-plus"></i>
                     </el-button>
-                </el-tooltip>
+                <!-- </el-tooltip> -->
+                </el-popover>
             </div>
         </div>
 
-        <el-collapse accordion>
-            <el-collapse-item name="1">
-                <template slot="title">
-                    Consistency<i class="header-icon el-icon-information"></i>
-                </template>
-                <div>Consistent with real life: in line with the process and logic of real life, and comply with languages and habits that the users are used to;</div>
-                <div>Consistent within interface: all elements should be consistent, such as: design style, icons and texts, position of elements, etc.</div>
-            </el-collapse-item>
-            <el-collapse-item title="Feedback" name="2">
-                <div>Operation feedback: enable the users to clearly perceive their operations by style updates and interactive effects;</div>
-                <div>Visual feedback: reflect current state by updating or rearranging elements of the page.</div>
-            </el-collapse-item>
-            <el-collapse-item title="Efficiency" name="3">
-                <div>Simplify the process: keep operating process simple and intuitive;</div>
-                <div>Definite and clear: enunciate your intentions clearly so that the users can quickly understand and make decisions;</div>
-                <div>Easy to identify: the interface should be straightforward, which helps the users to identify and frees them from memorizing and recalling.</div>
-            </el-collapse-item>
-            <el-collapse-item title="Controllability" name="4">
-                <div>Decision making: giving advices about operations is acceptable, but do not make decisions for the users;</div>
-                <div>Controlled consequences: users should be granted the freedom to operate, including canceling, aborting or terminating current operation.</div>
-            </el-collapse-item>
-        </el-collapse>
+        <div class="row justify-content-center">
+            <div class="col-5">
+                <el-collapse accordion>
+                    <el-collapse-item :name="a" v-for="(data,a) in areas" :key="a">
+                        <template slot="title">
+                            <p>{{data.area}}</p><i class="header-icon el-icon-information"></i>
+                        </template>
+                        <el-collapse accordion>
+                        <el-collapse-item :name="b" v-for="(data,b) in 3" :key="b">
+                            <template slot="title">
+                                <p>rol {{b + 1}}</p><i class="header-icon el-icon-information"></i>
+                            </template>
+                        </el-collapse-item>
+                        </el-collapse>
+                    </el-collapse-item>
+                </el-collapse>
+            </div>
+        </div>
 
     </section>
 </template>
@@ -47,6 +62,7 @@
 export default {
     data(){
         return{
+            area:'',
             ruta:'/api/administrar/areas',
             areas:[],
         }
@@ -55,6 +71,18 @@ export default {
         this.listar_areas()
     },
     methods:{
+        async crear_area(){
+            let model ={
+                area: this.area
+            }
+            try {
+                const {data} = await axios.post(`${this.ruta}/crear-area`,model)
+                this.area = ''
+                this.listar_areas()
+            } catch (e) {
+                console.warn(e);
+            }
+        },
         async listar_areas(){
             try {
                 const {data} = await axios(`${this.ruta}/listar-areas`)
@@ -68,4 +96,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.listar-areas{
+    p{
+        margin-bottom: 0px;
+    }
+}
 </style>

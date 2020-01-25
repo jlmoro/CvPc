@@ -13,7 +13,6 @@
             </el-tab-pane>
 
             <router-view/>
-
         </el-tabs>
     </section>
 </template>
@@ -22,7 +21,7 @@
 export default {
     data(){
         return{
-            activeName: 'first',
+            activeName: 'areas.listar',
             administrar:[],
         }
     },
@@ -36,6 +35,7 @@ export default {
                 name:tab.name
             })
         },
+
         async listar_administrables(){
             const {data} = await axios(`/api/administrar/listar-administrar`)
             this.administrar = data
