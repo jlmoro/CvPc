@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use DB;
 use Illuminate\Http\Request;
-use App\Models\Areas;
+use App\Models\{
+    Areas,
+    Roles
+};
 
 class AreasController extends Controller
 {
@@ -29,7 +32,11 @@ class AreasController extends Controller
     {
         try {
 
-            return Areas::all();
+            $areas = Areas::all();
+            foreach ($areas as $key => $value) {
+                $value->roles = Roles::where('id_area',$value->id)->get();
+            }
+            return $areas;
 
         } catch (\Exception $e) {
             return $this->captura_error($e,"Error al listar las áreas");

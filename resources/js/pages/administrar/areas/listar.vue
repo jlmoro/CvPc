@@ -12,7 +12,8 @@
                 <el-popover
                 placement="left"
                 width="300"
-                trigger="click">
+                trigger="click"
+                >
                 <div class="row w-100">
                     <div class="col-12 text-center">
                         <h5>Crear Área</h5>
@@ -49,51 +50,68 @@
                                     <p>{{data.area}}</p><i class="header-icon el-icon-information"></i>
                                 </div>
                                 <div class="col-4 text-right">
-                                    <el-tooltip :content="'Switch value: ' + value" placement="top">
-                                        <el-switch
-                                            v-model="value"
-                                            active-color="#13ce66"
-                                            inactive-color="#ff4949"
-                                            active-value="100"
-                                            inactive-value="0">
-                                        </el-switch>
-                                    </el-tooltip>
                                     <i class="mdi mdi-pencil-circle ml-1"></i>
-                                    <i class="mdi mdi-delete-circle ml-1"></i>
-                                        <el-popover
-                                            placement="bottom"
-                                            title="Title"
-                                            width="200"
-                                            trigger="manual"
-                                            content="this is content, this is content, this is content"
-                                            v-model="visible">
-                                            <div class="row w-100">
-                                                <div class="col-12 text-center">
-                                                    <h5>Crear Rol</h5>
-                                                </div>
-                                                <div class="col-12 mt-1 mb-4">
-                                                    <el-input
-                                                    size="medium"
-                                                    placeholder="Ingrese el rol"
-                                                    v-model="rol"
-                                                    @change="crear_rol(data)"
-                                                    >
-                                                    </el-input>
-                                                </div>
-                                            </div>
-                                            <i class="mdi mdi-plus-circle ml-3"></i>
-                                        </el-popover>
-                                    <!-- </el-tooltip> -->
+
+                                    <el-popover
+                                    placement="top"
+                                    width="160"
+                                    v-model="visible"
+                                    :reference="a"
+                                    >
+                                    <p>Are you sure to delete this?</p>
+                                    <div style="text-align: right; margin: 0">
+                                        <el-button size="mini" type="text" @click="visible = false">cancel</el-button>
+                                        <el-button type="primary" size="mini" @click="visible = false">confirm</el-button>
+                                    </div>
+
+                                    <i slot="reference" class="mdi mdi-delete-circle ml-1"></i>
+
+                                    </el-popover>
+
+                                    <el-popover
+                                    placement="right"
+                                    width="400"
+                                    trigger="click"
+                                    :reference="a"
+                                    >
+                                    <div class="row w-100">
+                                        <div class="col-12 text-center">
+                                            <h5>Crear rol</h5>
+                                        </div>
+                                        <div class="col-12 mt-1 mb-4">
+                                            <el-input
+                                            size="medium"
+                                            placeholder="Ingrese el rol"
+                                            v-model="rol"
+                                            @change="crear_rol(data)"
+                                            >
+                                            </el-input>
+                                        </div>
+                                    </div>
+                                    <i slot="reference"  class="mdi mdi-plus-circle ml-3"></i>
+                                </el-popover>
+
                                 </div>
                             </div>
                         </template>
-                        <el-collapse accordion>
-                        <el-collapse-item :name="b" v-for="(data,b) in 3" :key="b">
-                            <template slot="title">
-                                <p>rol {{b + 1}}</p><i class="header-icon el-icon-information"></i>
-                            </template>
-                        </el-collapse-item>
-                        </el-collapse>
+
+                        <ul v-for="(data2,r) in data.roles" :key="r" class="list-group ml-5 mr-5">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="row w-100 justify-content-center">
+                                    <div class="col-1">
+                                        <span>{{r + 1}}</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <p>{{data2.nombre_rol}}</p>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <span class="badge badge-primary badge-pill">14</span>
+                                        <i class="mdi mdi-pencil-circle ml-1"></i>
+                                        <i class="mdi mdi-delete-circle ml-1"></i>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </el-collapse-item>
                 </el-collapse>
             </div>
@@ -108,7 +126,7 @@ export default {
         return{
             area:'',
             rol:'',
-            ruta:'/api/administrar/areas',
+            ruta:'/api/administrar',
             areas:[],
             value: 100,
             visible: false,
@@ -124,7 +142,7 @@ export default {
                     id_area: dato.id,
                     nombre_rol: this.rol
                 }
-                const {data} = await axios.post(`${this.ruta}/crear-rol`,model)
+                const {data} = await axios.post(`${this.ruta}/roles/crear-rol`,model)
                 this.rol = ''
                 this.listar_areas_roles()
 
@@ -137,7 +155,7 @@ export default {
                 area: this.area
             }
             try {
-                const {data} = await axios.post(`${this.ruta}/crear-area`,model)
+                const {data} = await axios.post(`${this.ruta}/areas/crear-area`,model)
                 this.area = ''
                 this.listar_areas_roles()
             } catch (e) {
@@ -146,7 +164,7 @@ export default {
         },
         async listar_areas_roles(){
             try {
-                const {data} = await axios(`${this.ruta}/listar-areas`)
+                const {data} = await axios(`${this.ruta}/areas/listar-areas`)
                 this.areas = data
             } catch (e) {
                 console.warn(e);
