@@ -37,11 +37,55 @@
         </div>
 
         <div class="row justify-content-center">
-            <div class="col-5">
+            <div class="col-6">
                 <el-collapse accordion>
                     <el-collapse-item :name="a" v-for="(data,a) in areas" :key="a">
                         <template slot="title">
-                            <p>{{data.area}}</p><i class="header-icon el-icon-information"></i>
+                            <div class="row w-100 mt-5">
+                                <div class="col-1 ml-3">
+                                    <span>{{a + 1}}</span>
+                                </div>
+                                <div class="col-6">
+                                    <p>{{data.area}}</p><i class="header-icon el-icon-information"></i>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <el-tooltip :content="'Switch value: ' + value" placement="top">
+                                        <el-switch
+                                            v-model="value"
+                                            active-color="#13ce66"
+                                            inactive-color="#ff4949"
+                                            active-value="100"
+                                            inactive-value="0">
+                                        </el-switch>
+                                    </el-tooltip>
+                                    <i class="mdi mdi-pencil-circle ml-1"></i>
+                                    <i class="mdi mdi-delete-circle ml-1"></i>
+                                        <el-popover
+                                            placement="bottom"
+                                            title="Title"
+                                            width="200"
+                                            trigger="manual"
+                                            content="this is content, this is content, this is content"
+                                            v-model="visible">
+                                            <div class="row w-100">
+                                                <div class="col-12 text-center">
+                                                    <h5>Crear Rol</h5>
+                                                </div>
+                                                <div class="col-12 mt-1 mb-4">
+                                                    <el-input
+                                                    size="medium"
+                                                    placeholder="Ingrese el rol"
+                                                    v-model="rol"
+                                                    @change="crear_rol(data)"
+                                                    >
+                                                    </el-input>
+                                                </div>
+                                            </div>
+                                            <i class="mdi mdi-plus-circle ml-3"></i>
+                                        </el-popover>
+                                    <!-- </el-tooltip> -->
+                                </div>
+                            </div>
                         </template>
                         <el-collapse accordion>
                         <el-collapse-item :name="b" v-for="(data,b) in 3" :key="b">
@@ -63,14 +107,31 @@ export default {
     data(){
         return{
             area:'',
+            rol:'',
             ruta:'/api/administrar/areas',
             areas:[],
+            value: 100,
+            visible: false,
         }
     },
     mounted(){
-        this.listar_areas()
+        this.listar_areas_roles()
     },
     methods:{
+        async crear_rol(dato){
+            try {
+                let model ={
+                    id_area: dato.id,
+                    nombre_rol: this.rol
+                }
+                const {data} = await axios.post(`${this.ruta}/crear-rol`,model)
+                this.rol = ''
+                this.listar_areas_roles()
+
+            } catch (e){
+                console.warn(e);
+            }
+        },
         async crear_area(){
             let model ={
                 area: this.area
@@ -78,12 +139,12 @@ export default {
             try {
                 const {data} = await axios.post(`${this.ruta}/crear-area`,model)
                 this.area = ''
-                this.listar_areas()
+                this.listar_areas_roles()
             } catch (e) {
                 console.warn(e);
             }
         },
-        async listar_areas(){
+        async listar_areas_roles(){
             try {
                 const {data} = await axios(`${this.ruta}/listar-areas`)
                 this.areas = data

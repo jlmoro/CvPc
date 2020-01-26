@@ -28,8 +28,8 @@ Route::group(['middleware' =>'auth:api'], function (){
         });
         Route::prefix('roles')->group( function(){
             $controlador = "RolesController";
-            Route::post("crear-evento","$controlador@crear_evento");
-            Route::get("listar-eventos","$controlador@listar_eventos");
+            Route::post("crear-rol","$controlador@crear_rol");
+            Route::get("editar-rol","$controlador@editar_rol");
             // Route::put("editar-invitado","$controlador@editar_invitado");
             // Route::delete("{id_invitado}/eliminar-invitado","$controlador@eliminar_invitado");
         });
