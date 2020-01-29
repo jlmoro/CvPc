@@ -34,13 +34,8 @@
 
         <!-- modal de prueba -->
 
-        <modal ref="modalCrearProveedor" v-if="showModal" @close="showModal = false">
-            <!--
-                you can use custom content here to overwrite
-                default content
-            -->
-            <h3 slot="header">custom header</h3>
-        </modal>
+        <modal ref="modalCrearProveedor"/>
+
 
         <!-- fin modal de prueba -->
 
@@ -54,15 +49,17 @@ export default {
     },
     data(){
         return{
-            showModal: false
+            // showModal: false
         }
     },
     methods:{
         abir_modal_crear(){
-            console.log('llegó al metodo');
-            let modal = this.$refs.modalCrearProveedor
-            console.log(modal,'ref modal crear prov');
-            this.showModal = !this.showModal
+            console.log('modal');
+            this.refs.modalCrearProveedor.toggle();
+            // console.log('llegó al metodo');
+            // let modal = this.$refs.modalCrearProveedor
+            // console.log(modal,'ref modal crear prov');
+            // this.showModal = !this.showModal
         }
     }
 }
