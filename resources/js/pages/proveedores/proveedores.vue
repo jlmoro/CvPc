@@ -31,13 +31,7 @@
             </div>
         </div>
 
-
-        <!-- modal de prueba -->
-
-        <modal ref="modalCrearProveedor"/>
-
-
-        <!-- fin modal de prueba -->
+        <modal ref="modalCrearProveedor" :ruta="ruta"/>
 
     </section>
 </template>
@@ -45,21 +39,30 @@
 <script>
 export default {
     components: {
-        modal:()=> import('./componentes/modalCrearProveedor')
+        Modal:()=> import('./componentes/modalCrearProveedor')
     },
     data(){
         return{
-            // showModal: false
+            ruta:'/api/proveedores',
+            proveedores:[],
         }
     },
+    mounted(){
+        this.listar_proveedores()
+    },
     methods:{
+        async listar_proveedores(){
+            try {
+                const {data} = await axios(`${this.ruta}/listar-proveedores`)
+                //notificacion si falla
+                this.proveedores = data;
+
+            } catch (e){
+                console.warn(e);
+            }
+        },
         abir_modal_crear(){
-            console.log('modal');
-            this.refs.modalCrearProveedor.toggle();
-            // console.log('llegó al metodo');
-            // let modal = this.$refs.modalCrearProveedor
-            // console.log(modal,'ref modal crear prov');
-            // this.showModal = !this.showModal
+            this.$refs.modalCrearProveedor.toggle();
         }
     }
 }

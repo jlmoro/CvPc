@@ -4,6 +4,7 @@ import Child from './Child'
 import Button from './Button'
 import Checkbox from './Checkbox'
 import modalForm from './modales/modalFormulario'
+import modalB from './modales/modalB'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 import { HasError, AlertError, AlertSuccess } from 'vform'
@@ -17,7 +18,8 @@ import { HasError, AlertError, AlertSuccess } from 'vform'
     HasError,
     AlertError,
     AlertSuccess,
-    modalForm
+    modalForm,
+    modalB,
 ].forEach(Component => {
     Vue.component(Component.name, Component)
 })
