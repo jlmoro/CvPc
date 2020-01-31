@@ -15,7 +15,7 @@ class ProveedoresController extends Controller
     {
         try {
             return DB::transaction(function() use($request){
-                
+                dd($request->all());
                 Proveedores::create($request->all());
 
                 return[

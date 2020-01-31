@@ -3,6 +3,7 @@ import store from '~/store'
 import router from '~/router'
 import i18n from '~/plugins/i18n'
 import App from '~/components/App'
+import Croppa from 'vue-croppa'
 
 import '~/plugins'
 import '~/components'
@@ -17,5 +18,6 @@ new Vue({
   i18n,
   store,
   router,
+  Croppa,
   ...App
 })
