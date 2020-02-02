@@ -15,7 +15,15 @@ class ProveedoresController extends Controller
     {
         try {
             return DB::transaction(function() use($request){
-                dd($request->all());
+
+                $logo = $this->guardar_imagen($request->logo,'proveedores');
+                if($logo['estado'] == true){
+                    $request['logo'] = $logo['ruta'];
+                }else {
+                    return 'Error al guardar imagen';
+                }
+                // dd($logo);
+
                 Proveedores::create($request->all());
 
                 return[

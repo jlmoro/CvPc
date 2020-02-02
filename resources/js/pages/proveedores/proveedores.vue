@@ -1,5 +1,5 @@
 <template>
-    <section class="listar-proveedores">
+    <section class="listar-proveedores mb-5">
         <h2 class="text-center mb-4">Listado de proveedores</h2>
 
         <div class="row w-10">
@@ -13,13 +13,34 @@
         </div>
 
         <div class="row w-100 proveedores">
-            <div v-for="(data,p) in 6" :key="p"  class="col-4">
+            <div v-for="(data,p) in proveedores" :key="p"  class="col-4 card-padre">
+                <div class="acciones-proveedor">
+                    <span class="mdi mdi-pencil-circle-outline"></span>
+                    <span class="mdi mdi-delete-circle-outline"></span>
+                </div>
                 <div class="card mt-3" style="width: 18rem;">
-                    <img class="card-img-top" src="img/epson.png" alt="Card image cap">
+                    <img class="card-img-top img-proveedor" :src="`/storage/${data.logo}`" alt="Card image cap">
                     <hr>
                     <div class="card-body">
-                        <h5 class="card-title text-center">Empresa {{p + 1}}</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <h5 class="card-title text-center letra-capital">{{data.nombre_proveedor}}</h5>
+                        <div class="card-text">
+                            <div class="row">
+                                <div class="col-2">
+                                    <i class="mdi mdi-cellphone"></i>
+                                </div>
+                                <div class="col">
+                                    <p>{{data.telefono}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2">
+                                    <i class="mdi mdi-map-legend"></i>
+                                </div>
+                                <div class="col">
+                                    <p>{{data.direccion}}</p>
+                                </div>
+                            </div>
+                        </div>
                         <hr/>
                         <div class="row w-100">
                             <div class="col-12 text-center">
@@ -31,7 +52,7 @@
             </div>
         </div>
 
-        <modal ref="modalCrearProveedor" :ruta="ruta"/>
+        <modal ref="modalCrearProveedor" :ruta="ruta" @proveedor:creado="listar_proveedores"/>
 
     </section>
 </template>
@@ -71,8 +92,25 @@ export default {
 <style lang="scss" scoped>
 
 .listar-proveedores{
-    .proveedores{
-
+    .img-proveedor{
+        max-height: 141px;
+    }
+    .card-padre{
+        &:hover{
+            .acciones-proveedor{
+                visibility: visible;
+            }
+        }
+    }
+    .acciones-proveedor{
+        position: relative;
+        text-align: right;
+        right: 65px;
+        top: 38px;
+        z-index: 5;
+        visibility: hidden;
+        font-size: 28px;
+        cursor: pointer;
     }
 }
 

@@ -12,9 +12,12 @@
                 <div class="col-12 text-center">
                     <croppa
                     v-model="form.logo"
+                    placeholder="Seleccione una imagen"
+                    :placeholder-font-size="14"
                     :width="200"
                     :height="191"
                     :show-remove-button="true"
+                    :prevent-white-space="true"
                     ref="CroppaProveedor"
                     >
                     </croppa>
@@ -65,8 +68,8 @@ export default {
         async crear_proveedor(){
             this.form.logo = this.$refs.CroppaProveedor.img.src
             const {data} = await axios.post(`${this.ruta}/crear-proveedor`,this.form)
-            this.$emit('proveedor:creado')
             this.form = {}
+            // this.notificacion('success','Guardado',data.mensaje)
             this.$refs.modalProveedor.toggle()
         },
         toggle(){
