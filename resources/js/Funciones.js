@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Swal from 'sweetalert2'
+// import Swal from 'sweetalert2'
 import axios from 'axios'
 
 
