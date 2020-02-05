@@ -69,7 +69,8 @@ export default {
             this.form.logo = this.$refs.CroppaProveedor.img.src
             const {data} = await axios.post(`${this.ruta}/crear-proveedor`,this.form)
             this.form = {}
-            this.notificacion('success','Guardado',data.mensaje)
+            this.$emit('proveedor:creado')
+            this.$Helper.notificacion('success','Guardado',data.mensaje)
             this.$refs.modalProveedor.toggle()
         },
         toggle(){

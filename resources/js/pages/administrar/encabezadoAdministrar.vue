@@ -30,7 +30,6 @@ export default {
     },
     methods: {
         handleClick(tab, event) {
-            console.log(tab, event);
             this.$router.push({
                 name:tab.name
             })
