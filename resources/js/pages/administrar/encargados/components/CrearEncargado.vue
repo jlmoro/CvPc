@@ -2,7 +2,7 @@
     <section class="crear-encargado">
         <modal  ref="modalEncargado">
             <div class="row" slot="header">
-                <p>Crear encargado</p>
+                <p class="">Crear encargado</p>
             </div>
             <div class="" slot="body">
                 <div class="row w-100 mb-5 mt-2">
@@ -18,6 +18,50 @@
                         ref="CroppaProveedor"
                         >
                     </croppa>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+
+                </div>
+            </div>
+            <div class="row w-100">
+                <div class="col-6">
+                    <label for="tipo_documento">Tipo Documento</label>
+                    <el-select v-model="value" placeholder="Seleccionar Tipo Doc">
+                        <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
+                </div>
+                <div class="col-6">
+                    <label for="documento">Documento</label>
+                    <el-input id="documento" type="text" placeholder="Documento" v-model="form.documento" maxlength="30" show-word-limit >
+                    </el-input>
+                </div>
+            </div>
+            <div class="row w-100 mt-3">
+                <div class="col-6">
+                    <label for="fecha_de_nacimiento">Fecha de Nacimiento</label>
+                    <el-date-picker
+                        v-model="value"
+                        type="datetime"
+                        placeholder="Fecha de nacimiento">
+                    </el-date-picker>
+                </div>
+                <div class="col-6">
+                    <label for="fecha_de_nacimiento">Asignar Rol</label>
+                    <el-select v-model="value" placeholder="Seleccionar Rol">
+                        <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                        </el-option>
+                    </el-select>
                 </div>
             </div>
         </div>
@@ -38,7 +82,18 @@ export default {
         return{
             form:{
                 foto:''
-            }
+            },
+            options: [{
+                value: '1',
+                label: 'C.C.'
+            }, {
+                value: '2',
+                label: 'C.E.'
+            }, {
+                value: 'Option5',
+                label: 'Option5'
+            }],
+            value: ''
         }
     },
     methods:{
@@ -57,5 +112,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.croppa-container{
+    border-radius: 26px;
+}
 </style>
