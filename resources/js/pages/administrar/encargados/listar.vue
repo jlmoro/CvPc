@@ -10,8 +10,6 @@
                     </el-button>
                 </el-tooltip>
             </div>
-
-
         </div>
         <crear-encargado ref="modalCrearEncargado"/>
     </section>

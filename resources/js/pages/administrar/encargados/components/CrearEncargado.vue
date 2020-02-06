@@ -46,6 +46,7 @@
             <div class="row w-100 mt-3">
                 <div class="col-6">
                     <label for="fecha_de_nacimiento">Fecha de Nacimiento</label>
+
                     <el-date-picker
                         v-model="value"
                         type="datetime"
@@ -53,15 +54,19 @@
                     </el-date-picker>
                 </div>
                 <div class="col-6">
-                    <label for="fecha_de_nacimiento">Asignar Rol</label>
-                    <el-select v-model="value" placeholder="Seleccionar Rol">
-                        <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                        </el-option>
-                    </el-select>
+                    <label for="telefono">Teléfono</label>
+                    <el-input id="telefono" type="text" placeholder="Teléfono" v-model="form.telefono" >
+                    </el-input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label for="fecha_de_nacimiento">Área</label>
+                    <!-- <select-areas /> -->
+                </div>
+                <div class="col-6">
+                    <label for="fecha_de_nacimiento">Rol</label>
+                    <!-- <select-roles/> -->
                 </div>
             </div>
         </div>
@@ -76,7 +81,9 @@
 <script>
 export default {
     components:{
-        Modal:()=> import('~/components/modales/modalB')
+        Modal:()=> import('~/components/modales/modalB'),
+        // SelectAreas:()=> import('~/components/modales/selectAreas'),
+        // SelectRoles:()=> import('~/components/modales/selectRoles'),
     },
     data(){
         return{

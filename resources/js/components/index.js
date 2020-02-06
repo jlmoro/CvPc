@@ -5,6 +5,8 @@ import Button from './Button'
 import Checkbox from './Checkbox'
 import modalForm from './modales/modalFormulario'
 import modalB from './modales/modalB'
+// import SelectAreas from './select/selectAreas'
+// import SelectRoles from './select/selectRoles'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 import { HasError, AlertError, AlertSuccess } from 'vform'
@@ -20,6 +22,8 @@ import { HasError, AlertError, AlertSuccess } from 'vform'
     AlertSuccess,
     modalForm,
     modalB,
+    // SelectAreas,
+    // SelectRoles,
 ].forEach(Component => {
     Vue.component(Component.name, Component)
 })
