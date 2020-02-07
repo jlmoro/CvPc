@@ -63,6 +63,14 @@
                 <div class="col-6">
                     <label for="fecha_de_nacimiento">Área</label>
                     <!-- <select-areas /> -->
+                    <el-select v-model="form.area" filterable placeholder="Seleccione área">
+                        <el-option
+                        v-for="(item,a) in areas"
+                        :key="a"
+                        :label="item.area"
+                        :value="item.id">
+                        </el-option>
+                    </el-select>
                 </div>
                 <div class="col-6">
                     <label for="fecha_de_nacimiento">Rol</label>
@@ -93,7 +101,8 @@ export default {
     data(){
         return{
             form:{
-                foto:''
+                foto:'',
+                area:'',
             },
             options: [{
                 value: '1',
@@ -117,6 +126,7 @@ export default {
             }
         },
         toggle(){
+            console.log(this.areas);
             this.$refs.modalEncargado.toggle()
         }
     }
