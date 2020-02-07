@@ -80,6 +80,11 @@
 
 <script>
 export default {
+    props:[
+        'areas',
+        'ruta',
+        'roles'
+    ],
     components:{
         Modal:()=> import('~/components/modales/modalB'),
         // SelectAreas:()=> import('~/components/modales/selectAreas'),
