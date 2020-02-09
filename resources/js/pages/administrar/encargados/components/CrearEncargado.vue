@@ -117,6 +117,9 @@ export default {
             value: ''
         }
     },
+    watch:{
+
+    },
     methods:{
         async crear_encargado(){
             try {
@@ -126,7 +129,6 @@ export default {
             }
         },
         toggle(){
-            console.log(this.areas);
             this.$refs.modalEncargado.toggle()
         }
     }

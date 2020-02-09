@@ -20,6 +20,7 @@
         "axios": "^0.18.1",
         "bootstrap": "^4.3.1",
         "element-ui": "^2.13.0",
+        "flatpickr": "^4.6.3",
         "jquery": "^3.4.1",
         "js-cookie": "^2.2.0",
         "popper.js": "^1.15.0",
