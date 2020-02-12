@@ -11,7 +11,7 @@
                 </el-tooltip>
             </div>
         </div>
-        <crear-encargado ref="modalCrearEncargado" :areas="lista_areas" :ruta="ruta" :roles="lista_roles"/>
+        <crear-encargado ref="modalCrearEncargado" :areas="lista_areas" :ruta="ruta" @encargado:creado="listar_encargados"/>
     </section>
 </template>
 
@@ -23,31 +23,30 @@ export default {
     data(){
         return{
             ruta:'/api/administrar/encargados',
-            form:{},
             area:null,
             lista_areas:[],
-            lista_roles:[],
-            formLabelWidth: '120px',
+            encargados:[],
             dialogFormVisible: false,
         }
     },
     mounted(){
         this.listar_areas()
+        this.listar_encargados()
     },
     methods:{
         crear_encargado(){
             this.$refs.modalCrearEncargado.toggle()
         },
-        async listar_roles(){
+        async listar_encargados(){
             try {
-                const {data} = await axios(`/api/select/${this.area}/listar-roles`)
+                const {data} = await axios(`${this.ruta}/listar-encargados`)
                 if (data.error) {
                     this.$Helper.notificacion('error','Error',data.error)
                     return
                 }
-                this.lista_roles = data
+                this.encargados = data
 
-            } catch (e) {
+            } catch (e){
                 console.warn(e);
             }
         },

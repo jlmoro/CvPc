@@ -23,11 +23,12 @@ class SelectController extends Controller
     {
         try {
 
-            return Roles::where('id_area',$id_area)
+            return Roles::select('id','nombre_rol as rol')
+            ->where('id_area',$id_area)
             ->get();
 
         } catch (\Exception $e) {
-            return $this->captura_error($e,"error al listar roles");
+            return $this->captura_error($e,"Error al listar los roles");
         }
 
     }

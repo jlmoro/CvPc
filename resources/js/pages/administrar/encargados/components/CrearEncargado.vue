@@ -28,9 +28,9 @@
             <div class="row w-100">
                 <div class="col-6">
                     <label for="tipo_documento">Tipo Documento</label>
-                    <el-select v-model="value" placeholder="Seleccionar Tipo Doc">
+                    <el-select v-model="form.tipo_doc" placeholder="Seleccionar Tipo Doc">
                         <el-option
-                        v-for="item in options"
+                        v-for="item in tipo_documento"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -48,8 +48,8 @@
                     <label for="fecha_de_nacimiento">Fecha de Nacimiento</label>
 
                     <el-date-picker
-                        v-model="value"
-                        type="datetime"
+                        v-model="form.fecha_nacimiento"
+                        type="date"
                         placeholder="Fecha de nacimiento">
                     </el-date-picker>
                 </div>
@@ -63,7 +63,7 @@
                 <div class="col-6">
                     <label for="fecha_de_nacimiento">Área</label>
                     <!-- <select-areas /> -->
-                    <el-select v-model="form.area" filterable placeholder="Seleccione área">
+                    <el-select v-model="form.area" filterable placeholder="Seleccione área" @change="listar_roles">
                         <el-option
                         v-for="(item,a) in areas"
                         :key="a"
@@ -75,6 +75,14 @@
                 <div class="col-6">
                     <label for="fecha_de_nacimiento">Rol</label>
                     <!-- <select-roles/> -->
+                    <el-select v-model="form.rol" filterable placeholder="Seleccione rol">
+                        <el-option
+                        v-for="(item,a) in roles"
+                        :key="a"
+                        :label="item.rol"
+                        :value="item.id">
+                        </el-option>
+                    </el-select>
                 </div>
             </div>
         </div>
@@ -103,29 +111,47 @@ export default {
             form:{
                 foto:'',
                 area:'',
+                rol:'',
             },
-            options: [{
+            roles:[],
+            tipo_documento: [{
                 value: '1',
                 label: 'C.C.'
             }, {
                 value: '2',
                 label: 'C.E.'
-            }, {
-                value: 'Option5',
-                label: 'Option5'
             }],
             value: ''
         }
     },
-    watch:{
-
-    },
     methods:{
         async crear_encargado(){
             try {
-                const {data} = await axios.post('')
+                // pendiente corregir error desconocido
+                const {data} = await axios.post(`${this.ruta}/crear-encargado`,this.form)
+                // const {data} = await axios.post(`${this.ruta}/crear-encargado`,this.form)
+                if (data.error) {
+                    this.$Helper.notificacion('warning','Atención',data.error)
+                    return
+                }
+                this.$emit('encargado:creado')
+                this.$Helper.notificacion('success','Encargado Guardado',data.mensaje)
             } catch (e) {
+                console.warn(e)
+            }
+        },
+        async listar_roles(id_area){
+            try {
+                const {data} = await axios(`/api/select/${id_area}/listar-roles`)
+                if (data.error) {
+                    this.$Helper.notificacion('warning','Atención',data.error)
+                    this.$Helper.notificacion('warning','Atención',data.error)
+                    return
+                }
+                this.roles = data;
 
+            } catch (e){
+                console.warn(e);
             }
         },
         toggle(){
