@@ -8,21 +8,21 @@
                 <div class="row w-100 mb-5 mt-2">
                     <div class="col-12 text-center">
                         <croppa
-                        v-model="form.foto"
                         placeholder="Seleccione una imagen"
                         :placeholder-font-size="14"
                         :width="200"
                         :height="191"
                         :show-remove-button="true"
                         :prevent-white-space="true"
-                        ref="CroppaProveedor"
+                        ref="CroppaEncargado"
                         >
                     </croppa>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-
+            <div class="row w-100">
+                <div class="col-12">
+                    <label for="nombre">Nombre Completo</label>
+                    <el-input id="nombre" type="text" placeholder="Nombre Completo" v-model="form.nombre_completo" maxlength="70" show-word-limit />
                 </div>
             </div>
             <div class="row w-100">
@@ -50,12 +50,13 @@
                     <el-date-picker
                         v-model="form.fecha_nacimiento"
                         type="date"
+                        format="yyyy-MM-dd"
                         placeholder="Fecha de nacimiento">
                     </el-date-picker>
                 </div>
                 <div class="col-6">
                     <label for="telefono">Teléfono</label>
-                    <el-input id="telefono" type="text" placeholder="Teléfono" v-model="form.telefono" >
+                    <el-input id="telefono" type="number" placeholder="Teléfono" v-model="form.telefono" >
                     </el-input>
                 </div>
             </div>
@@ -99,7 +100,6 @@ export default {
     props:[
         'areas',
         'ruta',
-        'roles'
     ],
     components:{
         Modal:()=> import('~/components/modales/modalB'),
@@ -127,15 +127,17 @@ export default {
     methods:{
         async crear_encargado(){
             try {
-                // pendiente corregir error desconocido
+                this.form.foto = this.$refs.CroppaEncargado.img.src
+                // const {data} = await axios.post(`${this.ruta}/crear-encargado`)
                 const {data} = await axios.post(`${this.ruta}/crear-encargado`,this.form)
-                // const {data} = await axios.post(`${this.ruta}/crear-encargado`,this.form)
                 if (data.error) {
                     this.$Helper.notificacion('warning','Atención',data.error)
                     return
                 }
                 this.$emit('encargado:creado')
+                this.form = ''
                 this.$Helper.notificacion('success','Encargado Guardado',data.mensaje)
+                this.$refs.modalEncargado.toggle()
             } catch (e) {
                 console.warn(e)
             }

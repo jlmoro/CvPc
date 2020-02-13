@@ -1,6 +1,6 @@
 <template >
-    <section>
-        <h2 class="text-center">Listado de encargados</h2>
+    <section class="listar-encargados">
+        <h5 class="text-center">Listado de encargados</h5>
 
         <div class="row">
             <div class="col-12 text-right">
@@ -9,6 +9,27 @@
                         <i class="mdi mdi-plus-circle" @click="dialogFormVisible = true"></i>
                     </el-button>
                 </el-tooltip>
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-4 mt-4" v-for="(data,e) in encargados" :key="e">
+                <div  class="card" style="width: 18rem;">
+                    <img class="card-img-top" :src="`/storage/${data.foto}`" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title text-center ucfirst">{{data.nombre_completo}}</h5>
+                        <div class="row w-100">
+                            <div class="col-6">
+                                <span class="mdi mdi-phone"></span>
+                                <p>{{data.telefono}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <a href="#" class="btn btn-primary">Ver equipos</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <crear-encargado ref="modalCrearEncargado" :areas="lista_areas" :ruta="ruta" @encargado:creado="listar_encargados"/>

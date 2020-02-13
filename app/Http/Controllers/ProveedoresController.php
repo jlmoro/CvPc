@@ -22,7 +22,6 @@ class ProveedoresController extends Controller
                 }else {
                     return 'Error al guardar imagen';
                 }
-                // dd($logo);
 
                 Proveedores::create($request->all());
 

@@ -12,7 +12,19 @@ class EncargadosController extends Controller
     {
         try {
             return DB::transaction(function() use($request){
-                dd($request->all());
+                $foto = $this->guardar_imagen($request->foto,'encargados');
+                if($foto['estado'] == true){
+                    $request['foto'] = $foto['ruta'];
+                }else {
+                    return ['error'=>'Error al guardar la imagen'];
+                }
+                $request['id_rol'] = $request->rol;
+
+                Encargados::create($request->all());
+
+                return[
+                    'mensaje'=>config('domains.mensajes.creado')
+                ];
 
             },3);
 
