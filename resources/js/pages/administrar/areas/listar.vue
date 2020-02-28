@@ -6,114 +6,42 @@
             </div>
         </div>
 
-        <div class="row mb-4">
-            <div class="col-12 text-right">
-
-                <el-popover
-                placement="left"
-                width="300"
-                trigger="click"
-                >
-                <div class="row w-100">
-                    <div class="col-12 text-center">
-                        <h5>Crear Área</h5>
-                    </div>
-                    <div class="col-12 mt-1 mb-4">
-                        <el-input
-                        size="medium"
-                        placeholder="Ingrese el área"
-                        v-model="area"
-                        @change="crear_area"
-                        >
-                        </el-input>
-                    </div>
-                </div>
-                <!-- <el-tooltip content="Crear Área" placement="top"> -->
-                    <el-button type="primary" size="small" round plain slot="reference">
-                        <i class="mdi mdi-plus"></i>
-                    </el-button>
-                <!-- </el-tooltip> -->
-                </el-popover>
-            </div>
-        </div>
-
         <div class="row justify-content-center">
             <div class="col-6">
-                <el-collapse accordion>
-                    <el-collapse-item :name="a" v-for="(data,a) in areas" :key="a">
+
+                <el-collapse v-for="(data,a) in areas" :key="a" accordion>
+                    <el-collapse-item name="1">
                         <template slot="title">
-                            <div class="row w-100 mt-5">
-                                <div class="col-1 ml-3">
-                                    <span>{{a + 1}}</span>
+                            <div class="row w-100">
+                                <div class="col-1">
+                                    <span>{{ a + 1}}</span>
                                 </div>
-                                <div class="col-6">
-                                    <p>{{data.area}}</p><i class="header-icon el-icon-information"></i>
+                                <div class="col-6 ">
+                                    {{data.area}}
+                                    <!-- <i class="header-icon el-icon-information"></i> -->
                                 </div>
-                                <div class="col-4 text-right">
-                                    <i class="mdi mdi-pencil-circle ml-1"></i>
-
-                                    <el-popover
-                                    placement="top"
-                                    width="160"
-                                    v-model="visible"
-                                    :reference="a"
-                                    >
-                                    <p>Are you sure to delete this?</p>
-                                    <div style="text-align: right; margin: 0">
-                                        <el-button size="mini" type="text" @click="visible = false">cancel</el-button>
-                                        <el-button type="primary" size="mini" @click="visible = false">confirm</el-button>
-                                    </div>
-
-                                    <i slot="reference" class="mdi mdi-delete-circle ml-1"></i>
-
-                                    </el-popover>
-
-                                    <el-popover
-                                    placement="right"
-                                    width="400"
-                                    trigger="click"
-                                    :reference="a"
-                                    >
-                                    <div class="row w-100">
-                                        <div class="col-12 text-center">
-                                            <h5>Crear rol</h5>
-                                        </div>
-                                        <div class="col-12 mt-1 mb-4">
-                                            <el-input
-                                            size="medium"
-                                            placeholder="Ingrese el rol"
-                                            v-model="rol"
-                                            @change="crear_rol(data)"
-                                            >
-                                            </el-input>
-                                        </div>
-                                    </div>
-                                    <i slot="reference"  class="mdi mdi-plus-circle ml-3"></i>
-                                </el-popover>
+                                <div class="col-5 text-right">
+                                    <i class="mdi mdi-plus" @click.stop=""></i>
+                                    <i class="mdi mdi-pencil" @click.stop=""></i>
+                                    <i class="mdi mdi-delete" @click.stop=""></i>
 
                                 </div>
                             </div>
                         </template>
 
-                        <ul v-for="(data2,r) in data.roles" :key="r" class="list-group ml-5 mr-5">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div class="row w-100 justify-content-center">
-                                    <div class="col-1">
-                                        <span>{{r + 1}}</span>
-                                    </div>
-                                    <div class="col-6">
-                                        <p>{{data2.nombre_rol}}</p>
-                                    </div>
-                                    <div class="col-4 text-right">
-                                        <span class="badge badge-primary badge-pill">14</span>
-                                        <i class="mdi mdi-pencil-circle ml-1"></i>
-                                        <i class="mdi mdi-delete-circle ml-1"></i>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+                        <el-collapse v-for="(data2,r) in data.roles" :key="r">
+                            <el-collapse-item name="1">
+                                <template slot="title">
+                                    {{data2.nombre_rol}}<i class="header-icon el-icon-information"></i>
+                                    <i class="mdi mdi-pencil" @click.stop=""></i>
+                                </template>
+
+                            </el-collapse-item>
+                        </el-collapse>
+
                     </el-collapse-item>
                 </el-collapse>
+
             </div>
         </div>
 

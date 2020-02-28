@@ -12,3 +12,7 @@ Vue.mixin(Global)
 
 import Helper  from '~/Funciones';
 Vue.prototype.$Helper = Helper;
+
+import Flatpickr from 'flatpickr';
+import FlatpickrI18n from 'flatpickr/dist/l10n/es';
+Flatpickr.localize(FlatpickrI18n.es);

@@ -32,9 +32,9 @@ class AreasController extends Controller
     {
         try {
 
-            $areas = Areas::all();
+            $areas = Areas::select('id','area')->get();
             foreach ($areas as $key => $value) {
-                $value->roles = Roles::where('id_area',$value->id)->get();
+                $value->roles = Roles::select('id','nombre_rol')->where('id_area',$value->id)->get();
             }
             return $areas;
 
