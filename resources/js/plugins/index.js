@@ -7,6 +7,7 @@ import './element'
 import './croppa'
 import Global from '~/mixin/Global'
 import lodash from 'lodash'
+import flatpickr from 'flatpickr';
 
 Vue.mixin(Global)
 
@@ -16,3 +17,4 @@ Vue.prototype.$Helper = Helper;
 import Flatpickr from 'flatpickr';
 import FlatpickrI18n from 'flatpickr/dist/l10n/es';
 Flatpickr.localize(FlatpickrI18n.es);
+// const flatpickr = require("flatpickr");

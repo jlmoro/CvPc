@@ -25,12 +25,11 @@ Route::group(['middleware' =>'auth:api'], function (){
             Route::post("crear-area","$controlador@crear_area");
             Route::put("editar-area","$controlador@editar_area");
             Route::delete("{id_area}/eliminar-area","$controlador@eliminar_area");
-        });
-        Route::prefix('roles')->group( function(){
-            $controlador = "RolesController";
-            Route::post("crear-rol","$controlador@crear_rol");
-            Route::put("editar-rol","$controlador@editar_rol");
-            Route::delete("{id_rol}/eliminar-rol","$controlador@eliminar_rol");
+
+            $controlador2 = "RolesController";
+            Route::post("{id_area}/crear-rol","$controlador2@crear_rol");
+            Route::put("editar-rol","$controlador2@editar_rol");
+            Route::delete("{id_rol}/eliminar-rol","$controlador2@eliminar_rol");
         });
         Route::prefix('perifericos-tipos')->group( function(){
             $controlador = "PerifericosTiposController";

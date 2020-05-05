@@ -2,9 +2,7 @@
     <section class="crear-encargado">
         <modal  ref="modalEncargado">
             <div class="row" slot="header">
-              <div class="col-md-12">
-                <p class="f-20">Nuevo encargado</p>
-              </div>
+                <p class="">Crear encargado</p>
             </div>
             <div class="" slot="body">
                 <div class="row w-100 mb-5 mt-2">
@@ -12,8 +10,8 @@
                         <croppa
                         placeholder="Seleccione una imagen"
                         :placeholder-font-size="14"
-                        :width="169"
-                        :height="158"
+                        :width="200"
+                        :height="191"
                         :show-remove-button="true"
                         :prevent-white-space="true"
                         ref="CroppaEncargado"
@@ -55,7 +53,6 @@
                         format="yyyy-MM-dd"
                         placeholder="Fecha de nacimiento">
                     </el-date-picker>
-                    <flatpickr/>
                 </div>
                 <div class="col-6">
                     <label for="telefono">Teléfono</label>
@@ -65,13 +62,13 @@
             </div>
             <div class="row">
                 <div class="col-6">
-                    <label for="area">Área</label>
+                    <label for="fecha_de_nacimiento">Área</label>
                     <!-- <select-areas /> -->
                     <el-select v-model="form.area" filterable placeholder="Seleccione área" @change="listar_roles">
                         <el-option
                         v-for="(item,a) in areas"
                         :key="a"
-                        :label="item.nombre"
+                        :label="item.area"
                         :value="item.id">
                         </el-option>
                     </el-select>
@@ -91,8 +88,8 @@
             </div>
         </div>
         <div class="" slot="footer">
-          <button type="button" class="btn-actualizar">Guardar</button>
-          <button type="button" class="btn-cancelar" data-dismiss="modal">Cancelar</button>
+            <el-button type="success" plain @click="crear_encargado">Guardar</el-button>
+            <el-button type="danger" plain  @click="toggle">Cerrar</el-button>
         </div>
     </modal>
 </section>
@@ -146,10 +143,10 @@ export default {
             }
         },
         async listar_roles(id_area){
-            this.form.rol = ''
             try {
                 const {data} = await axios(`/api/select/${id_area}/listar-roles`)
                 if (data.error) {
+                    this.$Helper.notificacion('warning','Atención',data.error)
                     this.$Helper.notificacion('warning','Atención',data.error)
                     return
                 }

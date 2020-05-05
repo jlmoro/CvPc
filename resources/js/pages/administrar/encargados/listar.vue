@@ -1,14 +1,17 @@
 <template >
     <section class="listar-encargados">
-        <h5 class="text-center">Listado de encargados</h5>
+      <div class="row mb-4">
+          <div class="col-12 text-center">
+              <h5 class="mt-3">Listado de encargados</h5>
+          </div>
+      </div>
 
         <div class="row">
             <div class="col-12 text-right">
-                <el-tooltip content="Registrar Encargado" placement="top">
-                    <el-button type="primary" plain circle @click="crear_encargado">
-                        <i class="mdi mdi-plus-circle" @click="dialogFormVisible = true"></i>
-                    </el-button>
-                </el-tooltip>
+              <button type="button" class="btn-crear" @click="crear_encargado">
+                <span class="mdi mdi-plus"></span>
+                Nuevo Encargado
+              </button>
             </div>
         </div>
         <div class="row" >
@@ -32,7 +35,11 @@
                 </div>
             </div>
         </div>
-        <crear-encargado ref="modalCrearEncargado" :areas="lista_areas" :ruta="ruta" @encargado:creado="listar_encargados"/>
+        <crear-encargado ref="modalCrearEncargado"
+          :areas="lista_areas"
+          :ruta="ruta"
+          @encargado:creado="listar_encargados"
+        />
     </section>
 </template>
 
