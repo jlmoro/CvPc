@@ -15,6 +15,11 @@ export default [
                 name: 'encargados.listar',
                 component: page('administrar/encargados/listar')
             },
+            {
+                path: '/soluciones/listar',
+                name: 'soluciones.listar',
+                component: page('administrar/solucionesPosibles/listar')
+            },
         ]
     },
     // {
