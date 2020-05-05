@@ -5,6 +5,7 @@ import Button from './Button'
 import Checkbox from './Checkbox'
 import modalForm from './modales/modalFormulario'
 import modalB from './modales/modalB'
+import modalEliminar from './modales/modalEliminar'
 // import SelectAreas from './select/selectAreas'
 // import SelectRoles from './select/selectRoles'
 import upperFirst from 'lodash/upperFirst'
@@ -22,6 +23,7 @@ import { HasError, AlertError, AlertSuccess } from 'vform'
     AlertSuccess,
     modalForm,
     modalB,
+    modalEliminar,
     // SelectAreas,
     // SelectRoles,
 ].forEach(Component => {

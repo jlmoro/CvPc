@@ -1,14 +1,8 @@
 <template >
     <section>
-        <h3 class="mb-2 text-center">Listado de Administrables</h3>
+        <h3 class="mb-2 text-center">Administrables</h3>
 
-        <!-- <div class="row mx-0 my-3 tabs-router border-bottom">
-           <router-link v-for="(data,a) in administrar" :key="a" :to="{ name:data.ruta}">
-               {{data.nombre}}
-           </router-link>
-       </div> -->
-
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
             <el-tab-pane
             v-for="(data,a) in administrar"
             :key="a"
@@ -18,8 +12,9 @@
                 <span slot="label"><i :class="data.icono"></i> {{data.nombre}}</span>
             </el-tab-pane>
 
-            <router-view/>
+            <router-view />
         </el-tabs>
+
     </section>
 </template>
 

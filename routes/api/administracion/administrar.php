@@ -21,10 +21,10 @@ Route::group(['middleware' =>'auth:api'], function (){
         });
         Route::prefix('areas')->group( function(){
             $controlador = "AreasController";
-            Route::post("crear-area","$controlador@crear_area");
             Route::get("listar-areas","$controlador@listar_areas");
-            // Route::put("editar-invitado","$controlador@editar_invitado");
-            // Route::delete("{id_invitado}/eliminar-invitado","$controlador@eliminar_invitado");
+            Route::post("crear-area","$controlador@crear_area");
+            Route::put("editar-area","$controlador@editar_area");
+            Route::delete("{id_area}/eliminar-area","$controlador@eliminar_area");
         });
         Route::prefix('roles')->group( function(){
             $controlador = "RolesController";
