@@ -29,7 +29,7 @@ class EncargadosController extends Controller
             },3);
 
         } catch (\Exception $e) {
-            return $this->captura_error($e,"Problema al crear encargado");
+            return $this->captura_error($e,"Error al crear encargado");
         }
 
     }

@@ -8,7 +8,7 @@
             <div class="row w-100">
               <div class="col-md-12 text-center">
                 <slot name="header">
-                  <p class="f-20">{{titulo}}</p>
+                  <span class="f-20 letra-capital">{{titulo}}</span>
                 </slot>
               </div>
             </div>

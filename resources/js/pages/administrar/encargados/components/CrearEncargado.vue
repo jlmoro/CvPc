@@ -48,18 +48,15 @@
             <div class="row w-100 mt-3">
                 <div class="col-6">
                     <label for="fecha_de_nacimiento">Fecha de Nacimiento</label>
+                    <flat-pickr v-model="form.fecha_nacimiento"
+                      class="input-general"
+                      :config="fechaNac"
+                    />
 
-                    <el-date-picker
-                        v-model="form.fecha_nacimiento"
-                        type="date"
-                        format="yyyy-MM-dd"
-                        placeholder="Fecha de nacimiento">
-                    </el-date-picker>
-                    <flatpickr/>
                 </div>
                 <div class="col-6">
                     <label for="telefono">Teléfono</label>
-                    <el-input id="telefono" type="number" placeholder="Teléfono" v-model="form.telefono" >
+                    <el-input id="telefono" type="text" placeholder="Teléfono" v-model="form.telefono" >
                     </el-input>
                 </div>
             </div>
@@ -91,7 +88,7 @@
             </div>
         </div>
         <div class="" slot="footer">
-          <button type="button" class="btn-actualizar">Guardar</button>
+          <button type="button" class="btn-actualizar" @click="crear_encargado">Guardar</button>
           <button type="button" class="btn-cancelar" data-dismiss="modal">Cancelar</button>
         </div>
     </modal>
@@ -117,6 +114,11 @@ export default {
                 rol:'',
             },
             roles:[],
+            fechaNac:{
+              altInput: true,
+              altFormat: "F j, Y",
+              dateFormat: "Y-m-d",
+            },
             tipo_documento: [{
                 value: '1',
                 label: 'C.C.'

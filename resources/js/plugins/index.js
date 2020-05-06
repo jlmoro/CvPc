@@ -18,3 +18,8 @@ import Flatpickr from 'flatpickr';
 import FlatpickrI18n from 'flatpickr/dist/l10n/es';
 Flatpickr.localize(FlatpickrI18n.es);
 // const flatpickr = require("flatpickr");
+
+
+import VueFlatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
+Vue.use(VueFlatPickr);

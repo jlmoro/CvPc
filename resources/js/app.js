@@ -8,7 +8,6 @@ import Funciones from './Funciones'
 import TabMenu from 'primevue/tabmenu';
 
 
-
 import '~/plugins'
 import '~/components'
 // import '~/styles'
