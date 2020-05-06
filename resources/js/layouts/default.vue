@@ -1,9 +1,19 @@
 <template>
   <div class="main-layout">
-    <navbar />
-
-    <div class="container mt-4">
-      <child />
+    <div class="row" style="margin-right: auto;">
+      <div class="col seccion-menu">
+        <menu-cvpc />
+      </div>
+      <div class="col">
+        <navbar />
+        <div class="row">
+          <div class="col">
+            <div class="container mt-4">
+              <child />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -15,7 +25,15 @@ export default {
   name: 'MainLayout',
 
   components: {
-    Navbar
+    Navbar,
+    MenuCvpc:()=>import('~/components/MenuCvpc')
   }
 }
 </script>
+<style lang="scss" scoped>
+  .main-layout{
+    .seccion-menu{
+      flex-grow: initial;
+    }
+  }
+</style>
