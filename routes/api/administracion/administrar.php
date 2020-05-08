@@ -40,7 +40,7 @@ Route::group(['middleware' =>'auth:api'], function (){
         });
         Route::prefix('eventos-tipos')->group( function(){
             $controlador = "EventosTiposController";
-            Route::post("crear-evento","$controlador@crear_evento");
+            Route::post("crear-evento-tipo","$controlador@crear_evento_tipo");
             Route::get("listar-eventos","$controlador@listar_eventos");
             // Route::put("editar-invitado","$controlador@editar_invitado");
             // Route::delete("{id_invitado}/eliminar-invitado","$controlador@eliminar_invitado");

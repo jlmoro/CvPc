@@ -1,20 +1,8 @@
 <template >
   <section class="listar-encargados">
-    <div class="row mb-4">
-      <div class="col-12 text-center">
-        <h5 class="mt-3">Listado de encargados</h5>
-      </div>
-    </div>
 
-    <div class="row mb-2">
-      <div class="col-12 text-right">
-        <button type="button" class="btn-crear" @click="crear_encargado">
-          <span class="mdi mdi-plus"></span>
-          Nuevo Encargado
-        </button>
-      </div>
-    </div>
-
+    <encabezadoDatos tituloEncabezado="Encargados" tituloBoton="nuevo encargado" @accionBonton="crear_encargado"/>
+    
     <div class="row">
       <div v-for="(data,e) in encargados" :key="e" class="col-md-3">
         <div class="card-padre">

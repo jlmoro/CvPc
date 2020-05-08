@@ -3,13 +3,13 @@
     <modal ref="modalCrearArea">
       <div class="row" slot="header">
           <div class="col-12">
-            <p class="f-20">Crear Área</p>
+            <p class="f-20">Nuevo Tipo Evento</p>
           </div>
       </div>
       <div class="row justify-content-center" slot="body">
         <div class="col-md-12 text-center">
-          <label for="area">Nombre Área: </label>
-          <input v-model="form.nombre" type="text" id="area" class="input-general">
+          <label for="crearTipo" class="letra-capital">tipo evento: </label>
+          <input v-model="form.nombre_tipo" type="text" id="crearTipo" class="input-general">
         </div>
       </div>
       <div class="row" slot="footer">
@@ -36,14 +36,14 @@ export default {
   methods: {
     async guardarArea(){
       try {
-        const {data} = await axios.post(`${this.ruta}/crear-area`,this.form)
+        const {data} = await axios.post(`${this.ruta}/crear-evento-tipo`,this.form)
         if (data.error) {
             this.$Helper.notificacion('warning','Atención',data.error)
             return
         }
-        this.$emit('area:creada')
+        this.$emit('eventoTipo:creado')
         this.form = ''
-        this.$Helper.notificacion('success','Área Guardada',data.mensaje)
+        this.$Helper.notificacion('success','Tipo Evento Guardado',data.mensaje)
         this.$refs.modalCrearArea.toggle()
       } catch (e) {
         console.warn(e);
