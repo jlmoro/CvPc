@@ -20,6 +20,11 @@ export default [
                 name: 'soluciones.listar',
                 component: page('administrar/solucionesPosibles/listar')
             },
+            {
+                path: '/eventosTipos/listar',
+                name: 'eventosTipos.listar',
+                component: page('administrar/eventosTipos/listar')
+            },
         ]
     },
     // {

@@ -2,7 +2,7 @@
   <section class="menu-principal">
     <span class="mdi mdi-backburger f-40 icono-menu" :style="rotarIcono" @click="openClose"></span>
     <!-- <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse"> -->
-    <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router="true"
+    <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :router="true"
       :collapse="isCollapse">
       <el-submenu v-for="(data,m) in dataMenu" :key="m" :index="`${m + 1}`" >
         <template slot="title">
