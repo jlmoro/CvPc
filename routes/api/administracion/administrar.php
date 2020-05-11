@@ -6,9 +6,9 @@ Route::group(['middleware' =>'auth:api'], function (){
 
         Route::prefix('menu')->group( function(){
             $controlador = "MenuController";
+            Route::get("listar-menu","$controlador@listar_menu");
             Route::post("crear-item-menu","$controlador@crear_evento");
             Route::post("crear-subitem-menu","$controlador@crear_evento");
-            Route::get("listar-eventos","$controlador@listar_eventos");
             // Route::put("editar-invitado","$controlador@editar_invitado");
             // Route::delete("{id_invitado}/eliminar-invitado","$controlador@eliminar_invitado");
         });
@@ -42,8 +42,8 @@ Route::group(['middleware' =>'auth:api'], function (){
             $controlador = "EventosTiposController";
             Route::post("crear-evento-tipo","$controlador@crear_evento_tipo");
             Route::get("listar-eventos","$controlador@listar_eventos");
-            // Route::put("editar-invitado","$controlador@editar_invitado");
-            // Route::delete("{id_invitado}/eliminar-invitado","$controlador@eliminar_invitado");
+            Route::put("editar-evento-tipo","$controlador@editar_evento_tipo");
+            Route::delete("{id_tipo_evento}/eliminar-evento-tipo","$controlador@eliminar_evento_tipo");
         });
         Route::prefix('encargados')->group( function(){
             $controlador = "EncargadosController";

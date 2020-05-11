@@ -1,16 +1,16 @@
 <template>
-  <section class="modal-editar-area">
-    <modal ref="modalEditarArea">
+  <section class="modal-editar-evento">
+    <modal ref="modalEditarTipoEvento">
       <div class="row" slot="header">
           <div class="col-12">
-            <p class="f-20">Editar Área</p>
+            <p class="f-20">Editar Tipo Evento</p>
           </div>
       </div>
 
         <div class="row justify-content-center" slot="body">
           <div class="col-md-12 text-center">
-            <label for="area">Nombre Área: </label>
-            <input v-model="area.area" type="text" id="area" class="input-general">
+            <label for="crearTipo" class="letra-capital">tipo evento: </label>
+            <input v-model="eventoTipo.nombre_tipo" type="text" id="area" class="input-general">
           </div>
         </div>
 
@@ -32,34 +32,32 @@ export default {
   },
   data(){
     return{
-      area:{}
+      eventoTipo:{}
     }
   },
   methods: {
     async editarArea(){
-      let model = { id:this.area.id, nombre:this.area.area };
       try {
-        const {data} = await axios.put(`${this.ruta}/editar-area`,model)
+        const {data} = await axios.put(`${this.ruta}/editar-evento-tipo`,this.eventoTipo)
         if (data.error) {
             this.$Helper.notificacion('warning','Atención',data.error)
             return
         }
-        this.$emit('area:actualizada')
-        this.area = ''
-        this.$Helper.notificacion('success','Área Guardada',data.mensaje)
-        this.$refs.modalEditarArea.toggle()
+        this.$emit('eventoTipo:actualizado')
+        this.eventoTipo = ''
+        this.$Helper.notificacion('success','Tipo Evento Actualizado',data.mensaje)
+        this.$refs.modalEditarTipoEvento.toggle()
       } catch (e) {
         console.warn(e);
       }
     },
     toggle(dato){
-      this.area = _.cloneDeep(dato);
-      this.$refs.modalEditarArea.toggle()
+      this.eventoTipo = _.cloneDeep(dato);
+      this.$refs.modalEditarTipoEvento.toggle()
     }
   }
 }
 </script>
-
 <style lang="scss" scoped>
 
 </style>

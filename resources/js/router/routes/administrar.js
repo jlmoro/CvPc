@@ -25,6 +25,11 @@ export default [
                 name: 'eventosTipos.listar',
                 component: page('administrar/eventosTipos/listar')
             },
+            {
+                path: '/menu/listar',
+                name: 'menu.listar',
+                component: page('administrar/menu/listar')
+            },
         ]
     },
     // {
