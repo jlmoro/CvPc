@@ -21,7 +21,7 @@ export default {
   methods: {
     async listarMenu(){
       try {
-        const {data} = axios(`${this.ruta}/listar-menu`)
+        const {data} = await axios(`${this.ruta}/listar-menu`)
         if (data.error) {
           this.$Helper.notificacion('warning','Error al listar',data.error)
           return

@@ -15,11 +15,11 @@
           <span class="letra-capital f-16">{{data2.nombre}}</span>
         </el-menu-item>
       </el-submenu>
-
-      <el-menu-item index="4">
+      <el-menu-item v-if="dataMenu.items == null" index="4" >
         <i class="el-icon-setting"></i>
         <span slot="title">Navigator Four</span>
       </el-menu-item>
+
     </el-menu>
 
   </section>
