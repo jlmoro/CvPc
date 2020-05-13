@@ -2,7 +2,7 @@
   <modal-b ref="modalProveedor">
     <div slot="header" class="row">
       <div class="col-12">
-        <h5>Crear Proveedor</h5>
+        <h5>Editar Proveedor</h5>
       </div>
     </div>
 
@@ -10,7 +10,10 @@
       <div class="row w-100 mb-5 mt-2">
         <div class="col-12 text-center">
           <croppa
+          v-model="form.logo"
           placeholder="Seleccione una imagen"
+          :initial-image="`storage/${form.logo}`"
+          crossOrigin="anonymous"
           :placeholder-font-size="14"
           :width="200"
           :height="191"
@@ -43,7 +46,7 @@
   </div>
 
   <div slot="footer" class="">
-    <button type="button" class="btn-crear" @click="crear_proveedor">Guardar</button>
+    <button type="button" class="btn-actualizar" @click="actualizar_proveedor">Actualizar</button>
     <button type="button" class="btn-cancelar" @click="toggle">Cancelar</button>
   </div>
 </modal-b>
@@ -62,21 +65,27 @@ export default {
     }
   },
   methods:{
-    async crear_proveedor(){
+    async actualizar_proveedor(){
       try {
         this.form.logo = this.$refs.CroppaProveedor.img.src
         const {data} = await axios.post(`${this.ruta}/crear-proveedor`,this.form)
         this.form = {}
         this.$emit('proveedor:creado')
         this.$Helper.notificacion('success','Guardado',data.mensaje)
-        this.$refs.CroppaProveedor.img.src = ""
         this.$refs.modalProveedor.toggle()
       } catch (e) {
         console.warn(e);
       }
     },
-    toggle(){
+    toggle(dato){
+      this.form = _.cloneDeep(dato);
+      if (this.form.logo !== null) {
+        console.log('setear logo');
+      }else {
+        console.log("algo quedó mal");
+      }
       this.$refs.modalProveedor.toggle()
+      // console.log(`${this.$refs.CroppaProveedor.initialImage}/storage/${this.form.logo}`);
     }
   }
 }
