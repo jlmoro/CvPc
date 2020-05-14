@@ -5,20 +5,23 @@ namespace App\Http\Controllers;
 use DB,Validator;
 use Illuminate\Http\Request;
 use App\Models\{
-    Impresora
+  Impresora,
+  Encargados,
+  Proveedores
 };
 
 class ImpresoraController extends Controller
 {
-    public function listar_impresoras()
-    {
-        try {
+  public function listar_impresoras()
+  {
+    try {
 
-            return Impresora::all();
+      $impresoras = Impresora::all();
+      return $impresoras;
 
-        } catch (\Exception $e) {
-            return $this->captura_error($e,"Error al listar impresoras");
-        }
-
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"Error al listar impresoras");
     }
+
+  }
 }
