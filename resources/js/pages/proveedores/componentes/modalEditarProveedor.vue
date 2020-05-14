@@ -10,9 +10,7 @@
       <div class="row w-100 mb-5 mt-2">
         <div class="col-12 text-center">
           <croppa
-          v-model="form.logo"
           placeholder="Seleccione una imagen"
-          :initial-image="`storage/${form.logo}`"
           crossOrigin="anonymous"
           :placeholder-font-size="14"
           :width="200"
@@ -67,6 +65,7 @@ export default {
   methods:{
     async actualizar_proveedor(){
       try {
+
         this.form.logo = this.$refs.CroppaProveedor.img.src
         const {data} = await axios.post(`${this.ruta}/crear-proveedor`,this.form)
         this.form = {}
@@ -79,11 +78,12 @@ export default {
     },
     toggle(dato){
       this.form = _.cloneDeep(dato);
-      if (this.form.logo !== null) {
-        console.log('setear logo');
-      }else {
-        console.log("algo quedó mal");
-      }
+      let image = this.$refs.CroppaProveedor.initialImage
+      image = `storage/${this.form.logo}`
+      // if (this.form.logo !== null) {
+      // }else {
+      //   image = `img/user_default.jpg`
+      // }
       this.$refs.modalProveedor.toggle()
       // console.log(`${this.$refs.CroppaProveedor.initialImage}/storage/${this.form.logo}`);
     }

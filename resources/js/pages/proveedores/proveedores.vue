@@ -40,6 +40,12 @@
 
     <modal-crear ref="modalCrearProveedor" :ruta="ruta" @proveedor:creado="listar_proveedores"/>
     <modal-editar ref="modalEditarProveedor" :ruta="ruta" @proveedor:actualizado="listar_proveedores"/>
+
+    <modal-eliminar ref="ModalEliminar"
+    titulo="eliminar proveedor"
+    :cuerpo="`¿Desea eliminar el proveedor ${eliminarProv.nombre_proveedor}?`"
+    @eliminar="eliminandoProveedor"
+    />
   </section>
 </template>
 
@@ -63,8 +69,23 @@ export default {
     editarProveedores(dato){
       this.$refs.modalEditarProveedor.toggle(dato);
     },
+    async eliminandoProveedor(){
+      try {
+        const {data} = await axios.delete(`${this.ruta}/${this.eliminarProv.id}/eliminar-proveedor`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','Error al eliminar',data.error)
+          return
+        }
+        this.$Helper.notificacion('success','Eliminado',data.mensaje)
+        this.listar_proveedores()
+        this.$refs.ModalEliminar.toggle()
+      } catch (e) {
+        console.warn(e);
+      }
+    },
     modalEliminar(dato){
-      console.log('eliminar prov');
+      this.eliminarProv = dato
+      this.$refs.ModalEliminar.toggle()
     },
     async listar_proveedores(){
       try {

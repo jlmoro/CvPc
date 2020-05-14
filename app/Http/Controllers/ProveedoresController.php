@@ -11,6 +11,24 @@ use App\Models\{
 
 class ProveedoresController extends Controller
 {
+  public function eliminar_proveedor(int $id_proveedor)
+  {
+    try {
+      return DB::transaction(function() use($id_proveedor){
+        $prov = Proveedores::find($id_proveedor);
+        $prov->delete();
+
+        return [
+          'mensaje'=>config('domains.mensajes.eliminado')
+        ];
+
+      },3);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al eliminar proveedor");
+    }
+
+  }
   public function crear_proveedor(Request $request)
   {
     try {

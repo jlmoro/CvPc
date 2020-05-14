@@ -5,6 +5,6 @@ Route::group(['middleware' =>'auth:api'], function (){
         Route::post("crear-proveedor","$controlador@crear_proveedor");
         Route::get("listar-proveedores","$controlador@listar_proveedores");
         // Route::put("editar-invitado","$controlador@editar_invitado");
-        // Route::delete("{id_invitado}/eliminar-invitado","$controlador@eliminar_invitado");
+        Route::delete("{id_proveedor}/eliminar-proveedor","$controlador@eliminar_proveedor");
     });
 });
