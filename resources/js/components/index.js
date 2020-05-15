@@ -9,6 +9,8 @@ import modalEliminar from './modales/modalEliminar'
 import menuCvpc from './MenuCvpc'
 // import SelectAreas from './select/selectAreas'
 // import SelectRoles from './select/selectRoles'
+import selectEncargados from './select/selectEncargados'
+import selectProveedores from './select/selectProveedores'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 import { HasError, AlertError, AlertSuccess } from 'vform'
@@ -25,6 +27,8 @@ import { HasError, AlertError, AlertSuccess } from 'vform'
     modalForm,
     modalB,
     modalEliminar,
+    selectEncargados,
+    selectProveedores,
     // SelectAreas,
     // SelectRoles,
 ].forEach(Component => {

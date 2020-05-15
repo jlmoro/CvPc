@@ -2,7 +2,9 @@
   <section class="listar-impresoras">
     <encabezado-datos tituloEncabezado="Impresoras" tituloBoton="registrar impresora" @accionBonton="crear_impresora"/>
 
+
     <modal-crear ref="modalCrearImpresora"/>
+
   </section>
 </template>
 
@@ -14,13 +16,14 @@ export default {
   data(){
     return{
       ruta:'/api/impresora',
-      impresoras:[]
+      impresoras:[],
     }
   },
   mounted(){
     this.listar_impresoras()
   },
   methods:{
+
     crear_impresora(){
       this.$refs.modalCrearImpresora.toggle()
     },
@@ -32,7 +35,6 @@ export default {
           return
         }
         this.impresoras = data
-
       } catch (e){
         console.warn(e);
       }

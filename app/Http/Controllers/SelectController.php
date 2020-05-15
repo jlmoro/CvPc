@@ -4,32 +4,54 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\{
-    Areas,
-    Roles
+  Areas,
+  Roles,
+  Encargados,
+  Proveedores,
 };
 
 class SelectController extends Controller
 {
-    public function listar_areas()
-    {
-        try {
-            return Areas::all();
-        } catch (\Exception $e) {
-            return $this->captura_error($e,"error al listar areas");
-        }
+  public function listar_proveedores()
+  {
+    try {
+      $proveedor = Proveedores::select('id','nombre_proveedor as nombre')->get();
+      return $proveedor;
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al listar los proveedores");
+    }
+  }
+  public function listar_encargados()
+  {
+    try {
+      $encargados = Encargados::select('id','nombre_completo as nombre')->get();
+      return $encargados;
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e);
+    }
+  }
+  public function listar_areas()
+  {
+    try {
+      return Areas::all();
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al listar areas");
+    }
+  }
+
+  public function listar_roles($id_area)
+  {
+    try {
+
+      return Roles::select('id','nombre_rol as rol')
+      ->where('id_area',$id_area)
+      ->get();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"Error al listar los roles");
     }
 
-    public function listar_roles($id_area)
-    {
-        try {
-
-            return Roles::select('id','nombre_rol as rol')
-            ->where('id_area',$id_area)
-            ->get();
-
-        } catch (\Exception $e) {
-            return $this->captura_error($e,"Error al listar los roles");
-        }
-
-    }
+  }
 }
