@@ -14,8 +14,8 @@
               <input type="text" class="input-general">
             </div>
           </div>
-          <select-encargados @encargados="listaEncargados(data)"/>
-          <select-proveedores @proveedor="listaProveedores(data)"/>
+          <select-encargados @encargados="agregaEncargado"/>
+          <select-proveedores @proveedor="agregaProveedor"/>
         </div>
       </div>
       <div slot="footer" class="row">
@@ -35,12 +35,18 @@ export default {
   },
   data(){
     return{
-
+      form:{
+        encargado:null,
+        proveedor:null,
+      }
     }
   },
   methods:{
-    listaEncargados(data){
-      console.log(data,'datos encargado')
+    agregaEncargado(data){
+      this.form.encargado = data
+    },
+    agregaProveedor(data){
+      this.form.proveedor = data
     },
     toggle(){
       this.$refs.ModalCrearImpresora.toggle()

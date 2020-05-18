@@ -1,6 +1,6 @@
 <template>
   <section class="lista-encargados">
-    <el-select v-model="value" filterable placeholder="Seleccione Encargado" clearable>
+    <el-select v-model="value" filterable placeholder="Seleccione Encargado" clearable @change="$emit('encargados',$event)">
       <el-option
         v-for="(item,e) in encargados"
         :key="e"
@@ -31,7 +31,6 @@ export default {
           return
         }
         this.encargados = data
-        this.$emit('encargado',data)
       } catch (e) {
         console.warn(e);
       }
