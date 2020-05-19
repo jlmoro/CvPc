@@ -26,6 +26,16 @@
   font-size: 40px
 }
 
+.txt-area{
+  border-radius: 5px;
+  resize: none;
+  position: relative;
+  width: 430px;
+  color: #636161;
+  padding-left: 7px;
+  padding-top: 4px;
+}
+
 .cr-pointer{
   cursor: pointer;
 }

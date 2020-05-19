@@ -12,6 +12,18 @@ use App\Models\{
 
 class ImpresoraController extends Controller
 {
+  public function crear_impresora(Request $request)
+  {
+    try {
+      return DB::transaction(function () use($request){
+
+        dd($request->all());
+
+      },3);
+    } catch (\Exception $e) {
+      return $this->captura_error($e);
+    }
+  }
   public function listar_impresoras()
   {
     try {

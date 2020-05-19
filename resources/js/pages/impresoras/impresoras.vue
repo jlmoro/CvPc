@@ -3,7 +3,7 @@
     <encabezado-datos tituloEncabezado="Impresoras" tituloBoton="registrar impresora" @accionBonton="crear_impresora"/>
 
 
-    <modal-crear ref="modalCrearImpresora"/>
+    <modal-crear ref="modalCrearImpresora" :ruta="ruta"/>
 
   </section>
 </template>
