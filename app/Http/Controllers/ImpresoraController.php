@@ -17,7 +17,12 @@ class ImpresoraController extends Controller
     try {
       return DB::transaction(function () use($request){
 
-        dd($request->all());
+        $request['id_encargado'] = $request->encargado;
+        $request['id_proveedor'] = $request->proveedor;
+        Impresora::create($request->all());
+        return[
+          'mensaje'=>config('domains.mensajes.creado')
+        ];
 
       },3);
     } catch (\Exception $e) {

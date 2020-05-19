@@ -10,18 +10,28 @@
         <div class="col-12">
           <div class="row w-100">
             <div class="col-md-6">
-              <label for="" class="letra-capital">marca</label>
-              <input v-model="form.marca" type="text" class="input-general">
+              <label for="marca" class="letra-capital">marca</label>
+              <input v-model="form.marca" id="marca" type="text" class="input-general">
             </div>
             <div class="col-md-6">
-              <label for="" class="letra-capital">placa</label>
-              <input v-model="form.placa" type="text" class="input-general">
+              <label for="placa" class="letra-capital">placa</label>
+              <input v-model="form.placa" id="placa" type="text" class="input-general">
             </div>
           </div>
           <div class="row w-100 mt-3">
-            <div class="col-12">
-              <label for="" class="letra-capital">serial</label>
-              <input v-model="form.serial" type="text" class="input-general" style="width: inherit !important;">
+            <div class="col-md-7">
+              <label for="serial" class="letra-capital">serial</label>
+              <input v-model="form.serial" id="serial" type="text" class="input-general" style="width: inherit !important;">
+            </div>
+            <div class="col-md-5 mt-4 pt-2">
+              <el-switch
+              style="display: block"
+              v-model="form.estado"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-text="Act."
+              inactive-text="Inact.">
+              </el-switch>
             </div>
           </div>
           <div class="row w-100 mt-3">
@@ -36,8 +46,8 @@
           </div>
           <div class="row w-100 mt-3">
             <div class="col-md-12">
-              <label for="" class="letra-capital">observaciones</label>
-              <textarea v-model="form.observaciones" name="name" rows="5" cols="80" class="txt-area"></textarea>
+              <label for="observaciones" class="letra-capital">observaciones</label>
+              <textarea v-model="form.observaciones" id="observaciones" name="name" rows="5" cols="80" class="txt-area"></textarea>
             </div>
           </div>
         </div>
@@ -65,17 +75,22 @@ export default {
       form:{
         encargado:null,
         proveedor:null,
+        estado:true,
       }
     }
   },
   methods:{
     async guardarImpresora(){
       try {
+        this.form.estado = (this.form.estado === true)?1:0
         const {data} = await axios.post(`${this.ruta}/crear-impresora`,this.form)
         if (data.error) {
-          this.$Helper.notificacion(warning,'Error creando impresora',data.error)
+          this.$Helper.notificacion('warning','Error creando impresora',data.error)
           return
         }
+        this.$Helper.notificacion('success','Impresora Registrada',data.mensaje)
+        this.$emit('impresora:creada')
+        this.$refs.ModalCrearImpresora.toggle()
 
       } catch (e) {
         console.warn(e);
