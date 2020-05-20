@@ -37,11 +37,11 @@
           <div class="row w-100 mt-3">
             <div class="col-md-6">
               <label for="" class="letra-capital">encargado</label>
-              <select-encargados @encargados="agregaEncargado"/>
+              <select-encargados @encargados="agregaEncargado" :encargados="encargados"/>
             </div>
             <div class="col-md-6">
               <label for="" class="letra-capital">proveedor</label>
-              <select-proveedores @proveedor="agregaProveedor"/>
+              <select-proveedores @proveedor="agregaProveedor" :proveedores="proveedores"/>
             </div>
           </div>
           <div class="row w-100 mt-3">
@@ -55,7 +55,7 @@
       <div slot="footer" class="row">
         <div class="col-12">
           <button type="button" class="btn-crear" @click="guardarImpresora">Guardar</button>
-          <button type="button" class="btn-cancelar" @click="toggle">Cancelar</button>
+          <button type="button" class="btn-cancelar" data-dismiss="modal">Cancelar</button>
         </div>
       </div>
     </modal>
@@ -65,7 +65,9 @@
 <script>
 export default {
   props: [
-    'ruta'
+    'ruta',
+    'encargados',
+    'proveedores'
   ],
   components:{
     Modal:()=> import('~/components/modales/modalB')

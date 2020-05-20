@@ -1,15 +1,8 @@
 <template>
     <section>
-        <h1>Lista de eventos </h1>
-        <div class="row">
-            <button @click="modal_crear_evento" type="button" name="button" class="btn btn-outline-primary">
-                Crear Evento
-            </button>
-        </div>
+        <encabezado-datos tituloEncabezado="Listado de Eventos" tituloBoton="Registrar Evento" @accionBonton="modalEventos"/>
 
-        <div class="row">
-            <el-button type="primary" plain>Primary</el-button>
-        </div>
+
 
         <div class="row mt-4">
 
@@ -32,7 +25,7 @@
             </el-table>
         </div>
 
-        <modal-crear-editar-evento ref="modalCrearEvento"/>
+        <modal-crear ref="modalCrearEvento"/>
     </section>
 </template>
 
@@ -40,7 +33,7 @@
 export default {
     components:{
         // modalFormulario()
-        modalCrearEditarEvento: () => import('./componentes/modalCrearEditarEvento')
+        modalCrear: () => import('./componentes/modalCrearEvento')
     },
     data(){
         return{
@@ -85,8 +78,8 @@ export default {
                 console.warn(e);
             }
         },
-        modal_crear_evento(){
-            this.$refs.modalCrearEvento.toggle()
+        modalEventos(){
+          this.$refs.modalCrearEvento.toggle()
         }
     }
 }

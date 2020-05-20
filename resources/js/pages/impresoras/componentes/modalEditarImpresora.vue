@@ -10,18 +10,18 @@
         <div class="col-12">
           <div class="row w-100">
             <div class="col-md-6">
-              <label for="marca" class="letra-capital">marca</label>
-              <input v-model="impresora.marca" id="marca" type="text" class="input-general">
+              <label for="marca2" class="letra-capital">marca</label>
+              <input v-model="impresora.marca" id="marca2" type="text" class="input-general">
             </div>
             <div class="col-md-6">
-              <label for="placa" class="letra-capital">placa</label>
-              <input v-model="impresora.placa" id="placa" type="text" class="input-general">
+              <label for="placa2" class="letra-capital">placa</label>
+              <input v-model="impresora.placa" id="placa2" type="text" class="input-general">
             </div>
           </div>
           <div class="row w-100 mt-3">
             <div class="col-md-7">
-              <label for="serial" class="letra-capital">serial</label>
-              <input v-model="impresora.serial" id="serial" type="text" class="input-general" style="width: inherit !important;">
+              <label for="serial2" class="letra-capital">serial</label>
+              <input v-model="impresora.serial" id="serial2" type="text" class="input-general" style="width: inherit !important;">
             </div>
             <div class="col-md-5 mt-4 pt-2">
               <el-switch
@@ -37,11 +37,11 @@
           <div class="row w-100 mt-3">
             <div class="col-md-6">
               <label for="" class="letra-capital">encargado</label>
-              <select-encargados @encargados="agregaEncargado"/>
+              <select-encargados @encargados="agregaEncargado" :encargados="encargados"/>
             </div>
             <div class="col-md-6">
               <label for="" class="letra-capital">proveedor</label>
-              <select-proveedores @proveedor="agregaProveedor"/>
+              <select-proveedores @proveedor="agregaProveedor" :proveedores="proveedores"/>
             </div>
           </div>
           <div class="row w-100 mt-3">
@@ -65,7 +65,9 @@
 <script>
 export default {
   props: [
-    'ruta'
+    'ruta',
+    'encargados',
+    'proveedores',
   ],
   components:{
     Modal:()=> import('~/components/modales/modalB')
@@ -97,15 +99,16 @@ export default {
       }
     },
     agregaEncargado(data){
-      this.form.encargado = data
+      console.log(data);
+      this.impresora.encargado = data
     },
     agregaProveedor(data){
-      this.form.proveedor = data
+      this.impresora.proveedor = data
     },
     toggle(dato){
       this.impresora = _.cloneDeep(dato);
       this.impresora.estado = (this.impresora.estado === 1)?true:false
-      console.log(this.impresora);
+      this.impresora.encargado = _.find(this.encargados, function(o) { return o.id_encargado });
       this.$refs.ModalEditarImpresora.toggle()
     }
   }

@@ -12,15 +12,16 @@ use App\Models\{
 
 class ImpresoraController extends Controller
 {
-  public function eliminar_impresoras(Request $request)
+  public function eliminar_impresora(int $id_impresora)
   {
     try {
-      return DB::transaction(function () use($request){
-        dd($request->all());
-        $print = Impresora::find($request->id);
+      return DB::transaction(function () use($id_impresora){
+
+        $print = Impresora::find($id_impresora);
+        $print->delete();
 
         return[
-          'mensaje'=>config('domains.mensajes.actualizado')
+          'mensaje'=>config('domains.mensajes.eliminado')
         ];
 
       },3);
@@ -50,7 +51,7 @@ class ImpresoraController extends Controller
   {
     try {
 
-      $impresoras = Impresora::all();
+      $impresoras = Impresora::select('*')->orderBy('created_at','DESC')->get();
       return $impresoras;
 
     } catch (\Exception $e) {
