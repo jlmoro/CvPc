@@ -1,8 +1,6 @@
 <template>
     <section>
-        <encabezado-datos tituloEncabezado="Listado de Eventos" tituloBoton="Registrar Evento" @accionBonton="modalEventos"/>
-
-
+        <encabezado-datos tituloEncabezado="Listado de Eventos" tituloBoton="Registrar Evento" @accionBonton="modalCrarEventos"/>
 
         <div class="row mt-4">
 
@@ -78,7 +76,7 @@ export default {
                 console.warn(e);
             }
         },
-        modalEventos(){
+        modalCrarEventos(){
           this.$refs.modalCrearEvento.toggle()
         }
     }
