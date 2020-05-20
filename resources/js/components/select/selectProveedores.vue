@@ -1,6 +1,6 @@
 <template>
   <section class="lista-encargados">
-    <el-select v-model="value" filterable placeholder="Seleccione Proveedor" clearable @change="$emit('proveedor',$event)">
+    <el-select v-model="value" filterable placeholder="Seleccione Encargado" clearable>
       <el-option
         v-for="(item,p) in proveedores"
         :key="p"
@@ -13,29 +13,29 @@
 <script>
 export default {
   name: "selectProveedores",
-  props: ['proveedores'],
   data(){
     return{
-      // proveedores:[],
+      proveedores:[],
       value: '',
     }
   },
-  // created() {
-    // this.listarProveedores()
-  // },
+  created() {
+    this.listarProveedores()
+  },
   methods: {
-    // async listarProveedores() {
-    //   try {
-    //     const {data} = await axios(`/api/select/listar-proveedores`)
-    //     if (data.error) {
-    //       this.$Helper.notificacion('warning','Error listar proveedores',data.error)
-    //       return
-    //     }
-    //     this.proveedores = data
-    //   } catch (e) {
-    //     console.warn(e);
-    //   }
-    // }
+    async listarProveedores() {
+      try {
+        const {data} = await axios(`/api/select/listar-proveedores`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','Error listar proveedores',data.error)
+          return
+        }
+        this.proveedores = data
+        this.$emit('proveedor',data)
+      } catch (e) {
+        console.warn(e);
+      }
+    }
   }
 }
 </script>
