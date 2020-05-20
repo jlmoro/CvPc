@@ -18,8 +18,8 @@
               <th>Serial</th>
               <th>Encargado</th>
               <th>Proveedor</th>
-              <th>Fecha Creado</th>
-              <th>Acciones</th>
+              <th>Fecha Registro</th>
+              <th colspan="3">Acciones</th>
             </tr>
           </thead>
           <tr v-for="(data,i) in listadoImpresoras" :key="i">
@@ -31,8 +31,15 @@
             <td>{{data.id_proveedor}}</td>
             <td>{{data.created_at}}</td>
             <td>
-              <i class="mdi mdi-alert-circle-outline"></i>
-              <i class="mdi mdi-pencil"></i>
+              <el-popover placement="bottom" title="Observaciones" width="250" trigger="hover"
+              :content="data.observaciones">
+              <span slot="reference" class="mdi mdi-alert-circle-outline"></span>
+              </el-popover>
+            </td>
+            <td>
+              <i class="mdi mdi-pencil" @click="modalEditar(data)"></i>
+            </td>
+            <td>
               <i class="mdi mdi-delete"></i>
             </td>
           </tr>
@@ -41,6 +48,7 @@
     </div>
 
     <modal-crear ref="modalCrearImpresora" :ruta="ruta" @impresora:creada="listar_impresoras"/>
+    <modal-editar ref="modalEditarImpresora" :ruta="ruta" @impresora:editada="listar_impresoras"/>
 
   </section>
 </template>
@@ -48,7 +56,8 @@
 <script>
 export default {
   components:{
-    ModalCrear:()=> import('./componentes/modalRegistrarImpresora')
+    ModalCrear:()=> import('./componentes/modalRegistrarImpresora'),
+    ModalEditar:()=> import('./componentes/modalEditarImpresora')
   },
   data(){
     return{
@@ -80,6 +89,9 @@ export default {
       } catch (e){
         console.warn(e);
       }
+    },
+    modalEditar(dato){
+      this.$refs.modalEditarImpresora.toggle(dato)
     }
   }
 }

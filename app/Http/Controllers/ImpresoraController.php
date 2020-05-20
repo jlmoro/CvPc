@@ -12,6 +12,23 @@ use App\Models\{
 
 class ImpresoraController extends Controller
 {
+  public function eliminar_impresoras(Request $request)
+  {
+    try {
+      return DB::transaction(function () use($request){
+        dd($request->all());
+        $print = Impresora::find($request->id);
+
+        return[
+          'mensaje'=>config('domains.mensajes.actualizado')
+        ];
+
+      },3);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e);
+    }
+  }
   public function crear_impresora(Request $request)
   {
     try {
