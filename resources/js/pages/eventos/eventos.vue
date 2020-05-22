@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section class="lista-eventos">
         <encabezado-datos tituloEncabezado="Listado de Eventos" tituloBoton="Registrar Evento" @accionBonton="modalCrarEventos"/>
 
         <div class="row mt-4">
