@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class Impresora extends Model
 {
     protected $table = 'impresora';
-    protected $guarded = [];
+    protected $guarded = ['encargado','proveedor'];
 }

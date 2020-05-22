@@ -1,6 +1,6 @@
 <template>
   <section class="lista-encargados">
-    <el-select v-model="value" filterable placeholder="Seleccione Encargado" clearable @change="$emit('proveedores',$event)">
+    <el-select v-model="value" filterable placeholder="Seleccione Encargado" clearable @change="$emit('proveedor',$event)">
       <el-option
         v-for="(item,p) in proveedores"
         :key="p"
