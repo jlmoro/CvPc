@@ -27,7 +27,11 @@
             <span v-show="data.tipo_dispositivo === 3">Impresora</span>
           </td>
           <td>{{data.id_tipo_evento}}</td>
-          <td>{{data.id_impresora}}</td>
+          <td>
+            <span v-show="data.id_impresora !== null">{{data.id_impresora}}</span>
+            <span v-show="data.id_pantalla !== null">{{data.id_pantalla}}</span>
+            <span v-show="data.id_pc !== null">{{data.id_pc}}</span>
+          </td>
           <td>{{data.updated_by}}</td>
           <td>{{data.updated_at}}</td>
           <td>
