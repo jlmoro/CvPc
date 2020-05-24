@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class Pantalla extends Model
 {
     protected $table = 'pantalla';
-    protected $guarded = [];
+    protected $guarded = ['proveedor','encargado'];
 }

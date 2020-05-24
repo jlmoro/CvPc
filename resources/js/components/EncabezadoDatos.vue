@@ -8,8 +8,8 @@
 
     <div class="row mb-2">
       <div class="col-12 text-right">
-        <button type="button" class="btn-crear" @click="$emit('accionBonton')">
-          <span class="mdi mdi-plus"></span>
+        <button type="button" class="btn-crear nuevo" @click="$emit('accionBonton')">
+          <span class="mdi mdi-shape-square-plus"></span>
           <span class="letra-capital">{{tituloBoton}}</span>
         </button>
       </div>
@@ -31,4 +31,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.encabezado-datos{
+  .nuevo{
+    &:hover{
+      box-shadow: 0 0px 4px 2px #081bffc7;
+    }
+  }
+}
 </style>
