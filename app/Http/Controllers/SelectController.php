@@ -9,10 +9,40 @@ use App\Models\{
   Encargados,
   Proveedores,
   EventosTipos,
+  Pc,
+  Pantalla,
+  Impresora,
 };
 
 class SelectController extends Controller
 {
+  public function listar_pc()
+  {
+    try {
+      return Pc::select('id','placa')->orderBy('created_at','DESC')->get();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al listar pc");
+    }
+  }
+  public function listar_pantallas()
+  {
+    try {
+      return Pantalla::select('id','placa')->orderBy('created_at','DESC')->get();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al listar pantallas");
+    }
+  }
+  public function listar_impresoras()
+  {
+    try {
+      return Impresora::select('id','placa')->orderBy('created_at','DESC')->get();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al listar impresoras");
+    }
+  }
   public function listar_tipos_eventos()
   {
     try {

@@ -23,7 +23,7 @@ class ImpresoraController extends Controller
         $print->update();
 
         return[
-          'mensaje'=>config('domains.mensajes.actualizado');
+          'mensaje'=>config('domains.mensajes.actualizado')
         ];
 
       },3);

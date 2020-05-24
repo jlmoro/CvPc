@@ -2,34 +2,57 @@
 
 namespace App\Http\Controllers;
 
+use DB,Validator;
 use Illuminate\Http\Request;
 use App\Models\{
-    Eventos
+  Eventos
 };
 
 class EventosController extends Controller
 {
-    public function crear_evento(Request $request)
-    {
-        try {
-            return DB::transaction(function() use($request){
+  public function registrar_evento(Request $request)
+  {
+    try {
+      return DB::transaction(function() use($request){
 
-                dd($request->all());
-
-            },5);
-        } catch (\Exception $e) {
-
+        $request['id_tipo_evento'] = $request->tipo_evento;
+        switch ($request->tipo_dispositivo) {
+          case '1':
+            $request['id_pc'] = $request->dipositivo;
+            break;
+          case '2':
+            $request['id_pantalla'] = $request->dipositivo;
+            break;
+          case '3':
+            $request['id_impresora'] = $request->dipositivo;
+            break;
+          default:
+            dd('error, revisar');
+            break;
         }
-    }
-    public function listar_eventos()
-    {
-        return Eventos::all();
-        try {
-            // dd('lista de eventos');
+        $request['created_by'] = auth()->user()->id;
+        $request['updated_by'] = auth()->user()->id;
 
-        } catch (\Exception $e) {
-            return $e;
-        }
+        Eventos::create($request->all());
 
+        return[
+          'mensaje'=>config('domains.mensajes.creado')
+        ];
+
+      },5);
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al registrar evento");
     }
+  }
+  public function listar_eventos()
+  {
+    try {
+
+      return Eventos::select('*')->orderBy('created_at','DESC')->get();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,'error al listar los eventos');
+    }
+
+  }
 }

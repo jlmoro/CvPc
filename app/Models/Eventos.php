@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Eventos extends Model
 {
-    protected $table = 'eventos';
-    protected $guarded = [];
+  protected $table = 'eventos';
+  protected $guarded = ['tipo_evento','dipositivo'];
 }

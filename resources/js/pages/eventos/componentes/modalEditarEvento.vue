@@ -1,9 +1,9 @@
 <template>
-  <section class="modal-crear-evento">
-    <modal-b ref="modalCrearEvento">
+  <section class="modal-editar-evento">
+    <modal-b ref="modalEditarEvento">
       <div slot="header" class="row">
         <div class="col-12">
-          <h5>Registrar Evento</h5>
+          <h5>Editar Evento</h5>
         </div>
       </div>
       <div slot="body" class="">
@@ -49,7 +49,7 @@
     </div>
   </div>
   <div slot="footer" class="">
-    <button type="button" class="btn-crear" @click="registrarEvento">Registrar</button>
+    <button type="button" class="btn-crear" @click="registrarEvento">Actualizar</button>
     <button type="button" class="btn-cancelar" data-dismiss="modal">Cancelar</button>
   </div>
 </modal-b>
@@ -77,14 +77,14 @@ export default {
   methods:{
     async registrarEvento(){
       try {
-        const {data} = await axios.post(`${this.ruta}/registrar-evento`,this.form)
+        const {data} = await axios.put(`${this.ruta}/editar-evento`,this.form)
         if (data.error) {
-          this.$Helper.notificacion('warning','Error al registrar',data.error)
+          this.$Helper.notificacion('warning','Error al actualizar',data.error)
           return
         }
         this.$emit('evento:registrado')
-        this.$Helper.notificacion('success','Evento Registrado',data.mensaje)
-        this.$refs.modalCrearEvento.toggle()
+        this.$Helper.notificacion('success','Evento Actualizado',data.mensaje)
+        this.$refs.modalEditarEvento.toggle()
 
       } catch (e) {
         console.warn(e);
@@ -155,8 +155,9 @@ export default {
         console.warn(e);
       }
     },
-    toggle(){
-      this.$refs.modalCrearEvento.toggle()
+    toggle(dato){
+    this.form = _.cloneDeep(dato);
+      this.$refs.modalEditarEvento.toggle()
     }
   }
 }
