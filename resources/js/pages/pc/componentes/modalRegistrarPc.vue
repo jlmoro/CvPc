@@ -1,6 +1,6 @@
 <template>
-  <section class="crear-impresora">
-    <modal ref="ModalCrearImpresora">
+  <section class="crear-pc">
+    <modal ref="ModalRegistrarPc">
       <div slot="header" class="row">
         <div class="col-12">
           <h5>Registrar PC</h5>
@@ -54,7 +54,7 @@
       </div>
       <div slot="footer" class="row">
         <div class="col-12">
-          <button type="button" class="btn-crear" @click="guardarImpresora">Guardar</button>
+          <button type="button" class="btn-crear" @click="guardarPc">Guardar</button>
           <button type="button" class="btn-cancelar" data-dismiss="modal">Cancelar</button>
         </div>
       </div>
@@ -82,17 +82,17 @@ export default {
     }
   },
   methods:{
-    async guardarImpresora(){
+    async guardarPc(){
       try {
         this.form.estado = (this.form.estado === true)?1:0
-        const {data} = await axios.post(`${this.ruta}/crear-impresora`,this.form)
+        const {data} = await axios.post(`${this.ruta}/registrar-pc`,this.form)
         if (data.error) {
-          this.$Helper.notificacion('warning','Error creando impresora',data.error)
+          this.$Helper.notificacion('warning','Error registrando pc',data.error)
           return
         }
-        this.$Helper.notificacion('success','Impresora Registrada',data.mensaje)
-        this.$emit('impresora:creada')
-        this.$refs.ModalCrearImpresora.toggle()
+        this.$Helper.notificacion('success','PC Registrado',data.mensaje)
+        this.$emit('pc:creado')
+        this.$refs.ModalRegistrarPc.toggle()
 
       } catch (e) {
         console.warn(e);
@@ -105,7 +105,7 @@ export default {
       this.form.proveedor = data
     },
     toggle(){
-      this.$refs.ModalCrearImpresora.toggle()
+      this.$refs.ModalRegistrarPc.toggle()
     }
   }
 }

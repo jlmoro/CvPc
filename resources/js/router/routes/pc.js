@@ -1,9 +1,9 @@
 import page from '../page'
 export default [
   {
-    path: '/pc',
-    name: 'pc.listar',
-    component: page('pc/pc'),
+    path: '/pc-principal',
+    name: 'principal.listar',
+    component: page('pc/principal'),
     // children: [
     //     {
     //         path: 'ver/:id_evento',

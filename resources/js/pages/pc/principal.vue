@@ -1,49 +1,15 @@
 <template>
   <section class="listar-pcs">
-    <encabezado-datos tituloEncabezado="Lista de PC´s" tituloBoton="registrar pc" @accionBonton="crear_pc"/>
-    <div class="row w-100 mt-4">
-      <div class="col-md-12">
-        <div class="row mb-3">
-          <div class="col-md-4">
-            <el-input v-model="search" placeholder="Buscar..." clearable></el-input>
-          </div>
-        </div>
-        <table class="table table-hover">
-          <thead class="thead-light text-center">
-            <tr>
-              <th>#</th>
-              <th>Marca</th>
-              <th>Placa</th>
-              <th>Serial</th>
-              <th>Encargado</th>
-              <th>Proveedor</th>
-              <th>Fecha Registro</th>
-              <th colspan="3">Acciones</th>
-            </tr>
-          </thead>
-          <tr v-for="(data,i) in listadoImpresoras" :key="i">
-            <td>{{i + 1}}</td>
-            <td><span class="letra-capital">{{data.marca}}</span></td>
-            <td>{{data.placa}}</td>
-            <td>{{data.serial}}</td>
-            <td><span class="letra-capital">{{data.id_encargado}}</span></td>
-            <td><span class="letra-capital">{{data.id_proveedor}}</span></td>
-            <td>{{data.created_at}}</td>
-            <td>
-              <el-popover placement="bottom" title="Observaciones" width="250" trigger="hover"
-              :content="data.observaciones">
-              <span slot="reference" class="mdi mdi-alert-circle-outline f-20 btnDescrip "></span>
-              </el-popover>
-            </td>
-            <td>
-              <i class="mdi mdi-pencil f-18 acciones btnEditar" @click="modalEditar(data)"></i>
-            </td>
-            <td>
-              <i class="mdi mdi-delete f-18 acciones btnEliminar" @click="modalEliminar(data)"></i>
-            </td>
-          </tr>
-        </table>
-      </div>
+
+    <h2>Principal pc</h2>
+
+    <div>
+      <b-tabs content-class="mt-3" justified>
+        <b-tab title="First" active><p>I'm the first tab</p></b-tab>
+        <b-tab title="Second"><p>I'm the second tab</p></b-tab>
+        <b-tab title="Very, very long title"><p>I'm the tab with the very, very long title</p></b-tab>
+        <b-tab title="Disabled" disabled><p>I'm a disabled tab!</p></b-tab>
+      </b-tabs>
     </div>
 
     <modal-eliminar ref="modalEliminar"
