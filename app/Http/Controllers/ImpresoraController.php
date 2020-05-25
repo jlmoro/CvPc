@@ -72,7 +72,18 @@ class ImpresoraController extends Controller
   {
     try {
 
-      return Impresora::select('*')->orderBy('created_at','DESC')->get();
+      // return Impresora::select('impresora.*','encargados.nombre_completo')
+      // ->leftjoin('impresora','impresora.id_encargado','=','encargados.id')
+      // ->orderBy('impresora.created_at','DESC')
+      // ->get();
+
+      return DB::select("SELECT i.*,
+        e.nombre_completo AS nombre_encargado,
+        p.nombre_proveedor AS proveedor
+        FROM impresora i
+        LEFT JOIN encargados e ON i.id_encargado = e.id
+        LEFT JOIN proveedores p ON i.id_proveedor = p.id
+        ORDER BY i.created_at DESC");
 
     } catch (\Exception $e) {
       return $this->captura_error($e,"Error al listar impresoras");

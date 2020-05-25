@@ -26,8 +26,8 @@
             <td><span class="letra-capital">{{data.marca}}</span></td>
             <td>{{data.placa}}</td>
             <td>{{data.serial}}</td>
-            <td><span class="letra-capital">{{data.id_encargado}}</span></td>
-            <td><span class="letra-capital">{{data.id_proveedor}}</span></td>
+            <td><span class="letra-capital">{{data.nombre_encargado}}</span></td>
+            <td><span class="letra-capital">{{data.proveedor}}</span></td>
             <td>{{data.created_at}}</td>
             <td>
               <el-popover placement="bottom" title="Observaciones" width="250" trigger="hover"
