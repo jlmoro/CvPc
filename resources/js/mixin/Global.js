@@ -2,11 +2,11 @@ import {mapGetters} from 'vuex'
 // import notificacion from './Funciones'
 
 export default {
-    methods:{
+  methods:{
 
-        notificacion(title, message, type = 'info', isHtml = true) {
-            console.log('ingreso notificacion');
-            Helper.notificacion(title, message, type, isHtml)
-        },
-    }
+    notificacion(title, message, type = 'info', isHtml = true) {
+      console.log('ingreso notificacion');
+      Helper.notificacion(title, message, type, isHtml)
+    },
+  }
 }

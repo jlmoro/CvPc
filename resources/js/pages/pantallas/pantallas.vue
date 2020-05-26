@@ -108,7 +108,6 @@ export default {
         }
         this.$Helper.notificacion('success','Estado Actualizado',data.mensaje)
         this.listar_pantallas()
-
       } catch (e) {
         console.warn(e);
       }

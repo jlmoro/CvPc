@@ -12,6 +12,25 @@ use App\Models\{
 
 class ImpresoraController extends Controller
 {
+  public function cambiar_estado($id_impresora)
+  {
+    try {
+      return DB::transaction(function() use($id_impresora){
+        $printer = Impresora::find($id_impresora);
+
+        ($printer->estado == 1) ? $printer->estado = 0 : $printer->estado = 1;
+        $printer->update();
+
+        return[
+          'mensaje'=>config('domains.mensajes.actualizado')
+        ];
+        
+      },5);
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al cambiar estado de la impresora");
+    }
+
+  }
   public function editar_impresora(Request $request)
   {
     try {
@@ -77,13 +96,18 @@ class ImpresoraController extends Controller
       // ->orderBy('impresora.created_at','DESC')
       // ->get();
 
-      return DB::select("SELECT i.*,
-        e.nombre_completo AS nombre_encargado,
-        p.nombre_proveedor AS proveedor
-        FROM impresora i
-        LEFT JOIN encargados e ON i.id_encargado = e.id
-        LEFT JOIN proveedores p ON i.id_proveedor = p.id
-        ORDER BY i.created_at DESC");
+      return DB::select($this->ejecutar_sql("listado_impresoras"));
+
+      // return DB::select("SELECT i.*,
+      //   e.nombre_completo AS nombre_encargado,
+      //   p.nombre_proveedor AS proveedor,
+      //   a.nombre AS area
+      //   FROM impresora i
+      //   LEFT JOIN encargados e ON i.id_encargado = e.id
+      //   LEFT JOIN roles r ON e.id_rol = r.id
+      //   LEFT JOIN areas a ON r.id_area = a.id
+      //   LEFT JOIN proveedores p ON i.id_proveedor = p.id
+      //   ORDER BY i.created_at DESC");
 
     } catch (\Exception $e) {
       return $this->captura_error($e,"Error al listar impresoras");

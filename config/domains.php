@@ -1,7 +1,7 @@
 <?php
 return [
     'error' => [
-        'general' => 'Ha sucedido un error'
+        'general' => 'Ha ocurrido un error grave'
     ],
     'mensajes'=>[
         'creado' => 'Se creó correctamente',

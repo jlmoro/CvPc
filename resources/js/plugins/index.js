@@ -23,3 +23,6 @@ Flatpickr.localize(FlatpickrI18n.es);
 import VueFlatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 Vue.use(VueFlatPickr);
+
+// var moment = require('moment'); // require
+// moment().format();

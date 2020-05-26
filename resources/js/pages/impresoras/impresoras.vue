@@ -18,6 +18,7 @@
               <th>Encargado</th>
               <th>Proveedor</th>
               <th>Fecha Registro</th>
+              <th>Estado</th>
               <th colspan="3">Acciones</th>
             </tr>
           </thead>
@@ -25,10 +26,12 @@
             <td>{{i + 1}}</td>
             <td><span class="letra-capital">{{data.marca}}</span></td>
             <td>{{data.placa}}</td>
-            <td>{{data.serial}}</td>
+            <td>{{data.serial }}</td>
             <td><span class="letra-capital">{{data.nombre_encargado}}</span></td>
             <td><span class="letra-capital">{{data.proveedor}}</span></td>
-            <td>{{data.created_at}}</td>
+            <td>{{data.created_at | formato_fecha('D-MMM-YYYY')}}</td>
+            <td v-if="data.estado === 1"><button type="button" class="estado act" @click="cambiarEstado(data)">Activa</button></td>
+            <td v-else><button type="button" class="estado inact" @click="cambiarEstado(data)">Inactiva</button></td>
             <td>
               <el-popover placement="bottom" title="Observaciones" width="250" trigger="hover"
               :content="data.observaciones">
@@ -90,6 +93,19 @@ export default {
     }
   },
   methods:{
+    async cambiarEstado(dato){
+      try {
+        const {data} = await axios.put(`${this.ruta}/${dato.id}/cambiar-estado`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','Error al cambiar estado',data.error)
+          return
+        }
+        this.$Helper.notificacion('success','Estado Actualizado',data.mensaje)
+        this.listar_impresoras()
+      } catch (e) {
+        console.warn(e);
+      }
+    },
     async eliminandoImpresora(){
       try {
         const {data} = await axios.delete(`${this.ruta}/${this.eliminarImp.id}/eliminar-impresora`)
@@ -158,6 +174,20 @@ export default {
 
 <style lang="scss" scoped>
 .listar-impresoras{
+  .estado{
+    border-radius: 5px;
+    padding: 2px;
+    font-size: 13px;
+    text-align: center;
+    color: white;
+    border: none;
+  }
+  .act{
+    background-color: #076107cf;
+  }
+  .inact{
+    background-color: #790707e8;
+  }
   .acciones{
     border-radius: 3px;
     padding: 1px 2px 1px 2px;

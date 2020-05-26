@@ -8,11 +8,11 @@ let vue = new Vue;
 
 export default class Helper {
 
-    static notificacion(tipo='Info',titulo='',mensaje=''){
-        vue.$notify({
-            title: titulo,
-            message: mensaje,
-            type: tipo
-        });
-    }
+  static notificacion(tipo='Info',titulo='',mensaje=''){
+    vue.$notify({
+      title: titulo,
+      message: mensaje,
+      type: tipo
+    });
+  }
 }
