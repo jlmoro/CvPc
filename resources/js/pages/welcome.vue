@@ -1,55 +1,70 @@
 <template>
-  <div class="row">
-    <div class="col-lg-8 m-auto">
-      <card :title="$t('login')">
-        <form @submit.prevent="login" @keydown="form.onKeydown($event)">
-          <!-- Email -->
-          <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label>
-            <div class="col-md-7">
-              <input v-model="form.email" :class="{ 'is-invalid': form.errors.has('email') }" class="form-control" type="email" name="email">
-              <has-error :form="form" field="email" />
+  <section class="login">
+    <div class="row">
+      <div class="col-lg-8 m-auto">
+        <!-- <card :title="$t('login')" class="card-login"> -->
+        <card class="card-login">
+          <form @submit.prevent="login" @keydown="form.onKeydown($event)">
+            <div class="form-group row justify-content-center mt-4">
+              <div class="col-md-12">
+                <img src="/img/logo_dark2.png" alt="" width="123" height="100">
+              </div>
             </div>
-          </div>
-
-          <!-- Password -->
-          <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('password') }}</label>
-            <div class="col-md-7">
-              <input v-model="form.password" :class="{ 'is-invalid': form.errors.has('password') }" class="form-control" type="password" name="password">
-              <has-error :form="form" field="password" />
+            <!-- Email -->
+            <div class="form-group row justify-content-center">
+              <!-- <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label> -->
+              <span class="mdi mdi-account iconos"></span>
+              <div class="col-md-7">
+                <input v-model="form.email" :class="{ 'is-invalid': form.errors.has('email') }" class="form-control texto" type="email" name="email">
+                <has-error :form="form" field="email" />
+              </div>
             </div>
-          </div>
 
-          <!-- Remember Me -->
-          <div class="form-group row">
-            <div class="col-md-3" />
-            <div class="col-md-7 d-flex">
-              <checkbox v-model="remember" name="remember">
-                {{ $t('remember_me') }}
-              </checkbox>
-
-              <router-link :to="{ name: 'password.request' }" class="small ml-auto my-auto">
-                {{ $t('forgot_password') }}
-              </router-link>
+            <!-- Password -->
+            <div class="form-group row justify-content-center">
+              <!-- <label class="col-md-3 col-form-label text-md-right">{{ $t('password') }}</label> -->
+              <span class="mdi mdi-shield-key-outline iconos"></span>
+              <div class="col-md-7">
+                <input v-model="form.password" :class="{ 'is-invalid': form.errors.has('password') }" class="form-control texto" type="password" name="password">
+                <has-error :form="form" field="password" />
+              </div>
             </div>
-          </div>
 
-          <div class="form-group row">
-            <div class="col-md-7 offset-md-3 d-flex">
-              <!-- Submit Button -->
-              <v-button :loading="form.busy">
-                {{ $t('login') }}
-              </v-button>
+            <!-- Remember Me -->
+            <div class="form-group row">
+              <div class="col-md-3" />
+              <div class="col-md-7 d-flex">
+                <!-- <checkbox v-model="remember" name="remember">
+                  {{ $t('remember_me') }}
+                </checkbox> -->
 
-              <!-- GitHub Login Button -->
-              <login-with-github />
+
+              </div>
             </div>
-          </div>
-        </form>
-      </card>
+
+            <div class="form-group row">
+              <div class="col-md-7 offset-md-3 d-flex">
+                <!-- Submit Button -->
+                <v-button :loading="form.busy">
+                  {{ $t('login') }}
+                </v-button>
+
+                <!-- GitHub Login Button -->
+                <!-- <login-with-github /> -->
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <router-link :to="{ name: 'password.request' }" class="small ml-auto my-auto">
+                  {{ $t('forgot_password') }}
+                </router-link>
+              </div>
+            </div>
+          </form>
+        </card>
+      </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -95,3 +110,24 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.login{
+  // background:url('/img/fondo_login.png') no-repeat center fixed;
+  .iconos{
+    color: white;
+  }
+  .texto{
+    font-size: 13px;
+  }
+  .card-login{
+    background-color: #05052bab;
+    border: none;
+    width: 309px;
+    text-align: center;
+    border-radius: 7px;
+    height: 379px;
+    margin: auto;
+    margin-top: 97px;
+  }
+}
+</style>
