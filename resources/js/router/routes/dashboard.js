@@ -2,8 +2,8 @@ import page from '../page'
 export default [
     {
         path: '/dashboard',
-        // name: 'proveedores.listar',
-        // component: page('dashboard/proveedores'),
+        name: 'dashboard.principal',
+        component: page('dashboard/principal'),
         // children: [
         //     {
         //         path: 'ver/:id_evento',

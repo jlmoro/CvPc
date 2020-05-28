@@ -15,7 +15,8 @@
               <!-- <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label> -->
               <span class="mdi mdi-account iconos"></span>
               <div class="col-md-7">
-                <input v-model="form.email" :class="{ 'is-invalid': form.errors.has('email') }" class="form-control texto" type="email" name="email">
+                <input v-model="form.email" :class="{ 'is-invalid': form.errors.has('email') }"
+                 class="form-control texto" type="email" name="email" autocomplete="off">
                 <has-error :form="form" field="email" />
               </div>
             </div>
@@ -25,7 +26,8 @@
               <!-- <label class="col-md-3 col-form-label text-md-right">{{ $t('password') }}</label> -->
               <span class="mdi mdi-shield-key-outline iconos"></span>
               <div class="col-md-7">
-                <input v-model="form.password" :class="{ 'is-invalid': form.errors.has('password') }" class="form-control texto" type="password" name="password">
+                <input v-model="form.password" :class="{ 'is-invalid': form.errors.has('password') }"
+                class="form-control texto" type="password" name="password" autocomplete="off">
                 <has-error :form="form" field="password" />
               </div>
             </div>
@@ -37,8 +39,6 @@
                 <!-- <checkbox v-model="remember" name="remember">
                   {{ $t('remember_me') }}
                 </checkbox> -->
-
-
               </div>
             </div>
 
@@ -105,22 +105,29 @@ export default {
       await this.$store.dispatch('auth/fetchUser')
 
       // Redirect home.
-      this.$router.push({ name: 'home' })
+      this.$router.push({ name: 'dashboard.principal' })
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 .login{
+  body{
+    background-color: midnightblue;
+    // background:url('/img/fondo_login.png') no-repeat center fixed;
+  }
   // background:url('/img/fondo_login.png') no-repeat center fixed;
   .iconos{
     color: white;
   }
   .texto{
     font-size: 13px;
+    background: content-box;
+    color: whitesmoke;
   }
   .card-login{
-    background-color: #05052bab;
+    // background-color: #05052bab;
+    background-color: midnightblue;
     border: none;
     width: 309px;
     text-align: center;
