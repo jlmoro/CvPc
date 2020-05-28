@@ -59,7 +59,8 @@
 <script>
 export default {
   props: [
-    'ruta'
+    'ruta',
+    'tiposEventos'
   ],
   data(){
     return{
@@ -68,11 +69,7 @@ export default {
         tipo_evento:null,
       },
       dispositivos:[],
-      tiposEventos:[],
     }
-  },
-  mounted() {
-    this.eventosTipos()
   },
   methods:{
     async registrarEvento(){
@@ -138,19 +135,6 @@ export default {
           return
         }
         this.dispositivos = data
-      } catch (e) {
-        console.warn(e);
-      }
-    },
-    async eventosTipos(){
-      try {
-        const {data} = await axios(`/api/select/listar-tipos-eventos`)
-        if (data.error) {
-          this.$Helper.notificacion('warning','Error al listar',data.error)
-          return
-        }
-        this.tiposEventos = data
-
       } catch (e) {
         console.warn(e);
       }

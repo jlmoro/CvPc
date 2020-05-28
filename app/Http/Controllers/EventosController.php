@@ -48,7 +48,8 @@ class EventosController extends Controller
   {
     try {
 
-      return Eventos::select('*')->orderBy('created_at','DESC')->get();
+      // return Eventos::select('*')->orderBy('created_at','DESC')->get();
+      return DB::select($this->ejecutar_sql("listar_eventos"));
 
     } catch (\Exception $e) {
       return $this->captura_error($e,'error al listar los eventos');

@@ -16,98 +16,71 @@ export default {
     }
   },
   mounted() {
-    this.grafica1()
+    this.listarEventosChart()
   },
   methods: {
-    grafica1() {
-      // Themes begin
-      am4core.useTheme(am4themes_spiritedaway);
-      am4core.useTheme(am4themes_animated);
-      // Themes end
+    async listarEventosChart() {
+      try {
+        const {data} = await axios(`/api/dashboard/principal/listar-eventos`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','error el listar eventos',data.error)
+          return
+        }
+        // Themes begin
+        am4core.useTheme(am4themes_spiritedaway);
+        am4core.useTheme(am4themes_animated);
+        // Themes end
 
-      // Create chart instance
-      let chart = am4core.create("chartdiv", am4charts.XYChart);
-      chart.scrollbarX = new am4core.Scrollbar();
+        // Create chart instance
+        let chart = am4core.create("chartdiv", am4charts.XYChart);
+        chart.scrollbarX = new am4core.Scrollbar();
 
-      // Add data
-      chart.data = [{
-        "country": "Enero",
-        "visits": 3025
-      }, {
-        "country": "Febrero",
-        "visits": 1882
-      }, {
-        "country": "Marzo",
-        "visits": 1809
-      }, {
-        "country": "Abril",
-        "visits": 1322
-      }, {
-        "country": "Mayo",
-        "visits": 1122
-      }, {
-        "country": "Junio",
-        "visits": 1114
-      }, {
-        "country": "Julio",
-        "visits": 984
-      }, {
-        "country": "Agosto",
-        "visits": 711
-      }, {
-        "country": "Septiembre",
-        "visits": 665
-      }, {
-        "country": "Octubre",
-        "visits": 580
-      }, {
-        "country": "Noviembre",
-        "visits": 443
-      }, {
-        "country": "Diciembre",
-        "visits": 441
-      }];
+        // Add data
+        chart.data = data
 
-      // Create axes
-      let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-      categoryAxis.dataFields.category = "country";
-      categoryAxis.renderer.grid.template.location = 0;
-      categoryAxis.renderer.minGridDistance = 30;
-      categoryAxis.renderer.labels.template.horizontalCenter = "right";
-      categoryAxis.renderer.labels.template.verticalCenter = "middle";
-      categoryAxis.renderer.labels.template.rotation = 270;
-      categoryAxis.tooltip.disabled = true;
-      categoryAxis.renderer.minHeight = 110;
+        // Create axes
+        let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+        categoryAxis.dataFields.category = "nombre_tipo";
+        categoryAxis.renderer.grid.template.location = 0;
+        categoryAxis.renderer.minGridDistance = 30;
+        categoryAxis.renderer.labels.template.horizontalCenter = "right";
+        categoryAxis.renderer.labels.template.verticalCenter = "middle";
+        categoryAxis.renderer.labels.template.rotation = 300;
+        categoryAxis.tooltip.disabled = true;
+        categoryAxis.renderer.minHeight = 110;
 
-      let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-      valueAxis.renderer.minWidth = 50;
+        let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+        valueAxis.renderer.minWidth = 50;
 
-      // Create series
-      let series = chart.series.push(new am4charts.ColumnSeries());
-      series.sequencedInterpolation = true;
-      series.dataFields.valueY = "visits";
-      series.dataFields.categoryX = "country";
-      series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
-      series.columns.template.strokeWidth = 0;
+        // Create series
+        let series = chart.series.push(new am4charts.ColumnSeries());
+        series.sequencedInterpolation = true;
+        series.dataFields.valueY = "cantidad_eventos";
+        series.dataFields.categoryX = "nombre_tipo";
+        series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
+        series.columns.template.strokeWidth = 0;
 
-      series.tooltip.pointerOrientation = "vertical";
+        series.tooltip.pointerOrientation = "vertical";
 
-      series.columns.template.column.cornerRadiusTopLeft = 10;
-      series.columns.template.column.cornerRadiusTopRight = 10;
-      series.columns.template.column.fillOpacity = 0.8;
+        series.columns.template.column.cornerRadiusTopLeft = 10;
+        series.columns.template.column.cornerRadiusTopRight = 10;
+        series.columns.template.column.fillOpacity = 0.8;
 
-      // on hover, make corner radiuses bigger
-      let hoverState = series.columns.template.column.states.create("hover");
-      hoverState.properties.cornerRadiusTopLeft = 0;
-      hoverState.properties.cornerRadiusTopRight = 0;
-      hoverState.properties.fillOpacity = 1;
+        // on hover, make corner radiuses bigger
+        let hoverState = series.columns.template.column.states.create("hover");
+        hoverState.properties.cornerRadiusTopLeft = 0;
+        hoverState.properties.cornerRadiusTopRight = 0;
+        hoverState.properties.fillOpacity = 1;
 
-      series.columns.template.adapter.add("fill", function(fill, target) {
-        return chart.colors.getIndex(target.dataItem.index);
-      });
+        series.columns.template.adapter.add("fill", function(fill, target) {
+          return chart.colors.getIndex(target.dataItem.index);
+        });
 
-      // Cursor
-      chart.cursor = new am4charts.XYCursor();
+        // Cursor
+        chart.cursor = new am4charts.XYCursor();
+      } catch (e) {
+        console.warn(e);
+      }
     }
   }
 }

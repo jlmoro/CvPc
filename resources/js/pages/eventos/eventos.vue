@@ -26,14 +26,14 @@
             <span v-show="data.tipo_dispositivo === 2">Pantalla</span>
             <span v-show="data.tipo_dispositivo === 3">Impresora</span>
           </td>
-          <td>{{data.id_tipo_evento}}</td>
+          <td><span class="letra-capital">{{data.nombre_evento}}</span></td>
           <td>
-            <span v-show="data.id_impresora !== null">{{data.id_impresora}}</span>
-            <span v-show="data.id_pantalla !== null">{{data.id_pantalla}}</span>
-            <span v-show="data.id_pc !== null">{{data.id_pc}}</span>
+            <span v-show="data.id_impresora !== null" class="letra-capital">{{data.marca_impresora}} - {{data.placa_impresora}}</span>
+            <span v-show="data.id_pantalla !== null" class="letra-capital">{{data.marca_pantalla}} - {{data.placa_pantalla}}</span>
+            <span v-show="data.id_pc !== null" class="letra-capital">{{data.marca_pc}} - {{data.placa_pc}}</span>
           </td>
-          <td>{{data.updated_by}}</td>
-          <td>{{data.updated_at}}</td>
+          <td><span class="letra-capital">{{data.usuario_actualiza}}</span></td>
+          <td><span>{{data.updated_at | formato_fecha('DD-MMM-Y')}}</span></td>
           <td>
             <el-popover
               placement="bottom"
@@ -51,9 +51,9 @@
       </tbody>
     </table>
 
-    <modal-crear ref="modalCrearEvento" :ruta="ruta" @evento:registrado="listar_eventos"/>
+    <modal-crear ref="modalCrearEvento" :ruta="ruta" @evento:registrado="listar_eventos" :tiposEventos="tiposEventos"/>
 
-    <modal-editar ref="modalEditarEvento" :ruta="ruta" @evento:actualizado="listar_eventos"/>
+    <modal-editar ref="modalEditarEvento" :ruta="ruta" @evento:actualizado="listar_eventos" :tiposEventos="tiposEventos"/>
   </section>
 </template>
 
@@ -68,6 +68,7 @@ export default {
       ruta:'/api/eventos',
       lista_eventos:[],
       search: '',
+      tiposEventos:[],
     }
   },
   computed:{
@@ -77,6 +78,7 @@ export default {
   },
   mounted(){
     this.listar_eventos()
+    this.eventosTipos()
   },
   methods:{
     handleClick() {
@@ -91,6 +93,19 @@ export default {
         }
         this.lista_eventos = data
       } catch (e){
+        console.warn(e);
+      }
+    },
+    async eventosTipos(){
+      try {
+        const {data} = await axios(`/api/select/listar-tipos-eventos`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','Error al listar',data.error)
+          return
+        }
+        this.tiposEventos = data
+
+      } catch (e) {
         console.warn(e);
       }
     },
