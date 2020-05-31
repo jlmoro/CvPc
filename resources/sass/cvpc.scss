@@ -1,6 +1,32 @@
 // body{
   // background: url('/img/fondo_login.png') no-repeat center fixed;
 // }
+.el-collapse-item__header{
+  background-color: #9faab5ba !important;
+  border-radius: 5px !important;
+  &:hover{
+    background-color: midnightblue !important;
+    color: white;
+    .item-secuencia{
+      color: white !important;
+      border: solid 1px white !important;
+    }
+    .acciones{
+      visibility: visible !important;
+    }
+  }
+}
+.el-collapse-item__header.is-active {
+  background-color: midnightblue !important;
+  color: white !important;
+  .item-secuencia{
+    color: white !important;
+    border: solid 1px white !important;
+  }
+  .acciones{
+    visibility: visible !important;
+  }
+}
 .color-principal{
   color: midnightblue;
 }

@@ -22,16 +22,16 @@
                         <template slot="title">
                             <div class="row w-100">
                                 <div class="col-1">
-                                    <span class="item-areas">{{ a + 1}}</span>
+                                    <span class="item-secuencia">{{ a + 1}}</span>
                                 </div>
                                 <div class="col-6 ">
                                     <span class="letra-capital">{{data.area}}</span>
                                     <!-- <i class="header-icon el-icon-information"></i> -->
                                 </div>
                                 <div class="col-5 text-right">
-                                    <i class="mdi mdi-pencil btn-editar-area mr-1" @click.stop="abrirEditarArea(data)"></i>
-                                    <i class="mdi mdi-delete btn-eliminar-area mr-2" @click.stop="abrirEliminarArea(data)"></i>
-                                    <i class="mdi mdi-plus btn-crear-rol ml-1" @click.stop="abrirCrearRol(data)"></i>
+                                    <i class="mdi mdi-pencil acciones btn-editar-area mr-1" @click.stop="abrirEditarArea(data)"></i>
+                                    <i class="mdi mdi-delete acciones btn-eliminar-area mr-2" @click.stop="abrirEliminarArea(data)"></i>
+                                    <i class="mdi mdi-plus acciones btn-crear-rol ml-1" @click.stop="abrirCrearRol(data)"></i>
 
                                 </div>
                             </div>
@@ -66,7 +66,6 @@
                       <h5>Sin registros !</h5>
                     </div>
                 </el-collapse>
-
             </div>
         </div>
         <modal-eliminar ref="modalEliminar"
@@ -192,34 +191,38 @@ export default {
   p{
     margin-bottom: 0px;
   }
-  .item-areas{
+  .item-secuencia{
     border: solid 1px midnightblue;
     border-radius: 3px;
     padding: 2px 5px 2px 5px;
+    margin-left: 6px;
   }
   .item-rol{
     border: solid 1px midnightblue;
     border-radius: 3px;
     padding: 2px 5px 2px 5px;
   }
+  .acciones{
+    visibility: hidden;
+  }
   .btn-crear-rol{
-    border: solid 1px midnightblue;
+    border: solid 1px white;
     border-radius: 3px;
     padding: 1px;
-    color: midnightblue;
+    color: white;
   }
   .btn-editar-area{
-    border: solid 1px midnightblue;
+    border: solid 1px white;
     border-radius: 3px;
     padding: 1px;
-    color: midnightblue;
+    color: white;
     cursor: pointer;
   }
   .btn-eliminar-area{
-    border: solid 1px midnightblue;
+    border: solid 1px white;
     border-radius: 3px;
     padding: 1px;
-    color: midnightblue;
+    color: white;
     cursor: pointer;
   }
   .btn-editar-rol{
@@ -235,13 +238,6 @@ export default {
     padding: 1px;
     color: midnightblue;
     cursor: pointer;
-  }
-  .el-collapse{
-    .el-collapse-item{
-      .el-collapse-item__header{
-        background-color: blue !important;
-      }
-    }
   }
 }
 </style>

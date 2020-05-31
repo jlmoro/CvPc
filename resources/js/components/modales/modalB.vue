@@ -4,9 +4,9 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <!-- <button type="button" >
-          </button> -->
-          <span aria-hidden="true" class="close" data-dismiss="modal" aria-label="Close">&times;</span>
-
+        </button> -->
+        <span aria-hidden="true" class="close" data-dismiss="modal" aria-label="Close">&times;</span>
+        <form class="">
           <div class="modal-header">
             <div class="row w-100">
               <div class="col-md-12 text-center">
@@ -29,10 +29,11 @@
               </button>
             </slot>
           </div>
-        </div>
+        </form>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 </template>
 
 <script>

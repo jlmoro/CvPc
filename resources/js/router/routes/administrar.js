@@ -26,6 +26,11 @@ export default [
         component: page('administrar/eventosTipos/listar')
       },
       {
+        path: '/perifericos/listar',
+        name: 'perifericos.listar',
+        component: page('administrar/perifericos/listar')
+      },
+      {
         path: '/menu/listar',
         name: 'menu.listar',
         component: page('administrar/menu/listar')

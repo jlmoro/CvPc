@@ -1,12 +1,18 @@
 <template>
   <section class="grafica-principal">
-    <div id="chartdiv" style="height: 36em;"/>
+    <!-- <div id="chartdiv" class="lista-cantidad-eventos" style="height: 36em;"/> -->
+    <div class="row">
+      <div class="col-md-6 text-center">
+        <h5>Cantidad de Eventos</h5>
+        <div id="chartdiv" class="lista-cantidad-eventos" />
+      </div>
+    </div>
   </section>
 </template>
 <script>
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
-import am4themes_spiritedaway from "@amcharts/amcharts4/themes/spiritedaway";
+import am4themes_kelly from "@amcharts/amcharts4/themes/kelly";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 export default {
   name: "",
@@ -27,7 +33,7 @@ export default {
           return
         }
         // Themes begin
-        am4core.useTheme(am4themes_spiritedaway);
+        am4core.useTheme(am4themes_kelly);
         am4core.useTheme(am4themes_animated);
         // Themes end
 
@@ -86,4 +92,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.grafica-principal{
+  .lista-cantidad-eventos{
+    height: 511px;
+    width: 482px;
+  }
+}
 </style>

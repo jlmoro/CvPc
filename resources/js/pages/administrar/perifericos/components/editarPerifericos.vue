@@ -1,23 +1,22 @@
 <template>
-  <section class="modal-editar-evento">
-    <modal ref="modalEditarTipoEvento">
-      <div class="row" slot="header">
+  <section class="modal-editar-periferico">
+    <modal ref="modalEditarPeriferico">
+        <div class="row" slot="header">
           <div class="col-12">
             <p class="f-20">Editar Periferico</p>
           </div>
-      </div>
-
+        </div>
         <div class="row justify-content-center" slot="body">
           <div class="col-md-12 text-center">
-            <label for="crearTipo" class="letra-capital">tipo evento: </label>
-            <input v-model="eventoTipo.nombre_tipo" type="text" id="area" class="input-general">
+            <label for="crearPerif">Periferico: </label>
+            <input v-model="form.nombre" type="text" id="crearPerif" >
+            <!-- <input v-model="form.nombre" type="text" id="crearPerif" class="input-general"> -->
           </div>
         </div>
-
-      <div class="row" slot="footer">
-          <button type="button" class="btn-actualizar mr-2" @click="editarArea">Actualizar</button>
+        <div class="row" slot="footer">
+          <button type="button" class="btn-actualizar mr-2" @click="guardarperiferico">Actualizar</button>
           <button type="button" class="btn-cancelar" data-dismiss="modal">Cancelar</button>
-      </div>
+        </div>
     </modal>
   </section>
 </template>
@@ -32,32 +31,37 @@ export default {
   },
   data(){
     return{
-      eventoTipo:{}
+      form:{
+        nombre:''
+      }
     }
   },
   methods: {
-    async editarArea(){
+    async guardarperiferico(){
       try {
-        const {data} = await axios.put(`${this.ruta}/editar-evento-tipo`,this.eventoTipo)
+        const {data} = await axios.put(`${this.ruta}/editar-periferico`,this.form)
         if (data.error) {
-            this.$Helper.notificacion('warning','Atención',data.error)
-            return
+          this.$Helper.notificacion('warning','Atención',data.error)
+          return
         }
-        this.$emit('eventoTipo:actualizado')
-        this.eventoTipo = ''
-        this.$Helper.notificacion('success','Tipo Evento Actualizado',data.mensaje)
-        this.$refs.modalEditarTipoEvento.toggle()
+        this.$emit('periferico:actualizado')
+        this.form = ''
+        this.$Helper.notificacion('success','Periferico Actualizado',data.mensaje)
+        this.$refs.modalEditarPeriferico.toggle()
       } catch (e) {
         console.warn(e);
       }
     },
-    toggle(dato){
-      this.eventoTipo = _.cloneDeep(dato);
-      this.$refs.modalEditarTipoEvento.toggle()
+    toggle(datos){
+      this.form = _.cloneDeep(datos);
+      this.$refs.modalEditarPeriferico.toggle()
     }
   }
 }
 </script>
-<style lang="scss" scoped>
 
+<style lang="scss" scoped>
+.modal-editar-periferico{
+
+}
 </style>

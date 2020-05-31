@@ -2,9 +2,15 @@
   <section class="menu-principal">
     <div v-show="user" class="">
 
-
     <!-- <span class="mdi mdi-backburger f-40 icono-menu" :style="rotarIcono" @click="openClose"></span> -->
-    <span class="mdi mdi-backburger f-40 icono-menu" @click="openClose"></span>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <img v-show="isCollapse !== true" src="/img/logo_dark2.png" class="logo-menu" />
+        <span v-if="isCollapse == true" class="mdi mdi-arrow-right f-18 icono-menu" @click="openClose"></span>
+
+        <span v-else class="mdi mdi-arrow-left f-18 icono-menu" @click="openClose"></span>
+      </div>
+    </div>
     <!-- <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse"> -->
     <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :router="true"
     :collapse="isCollapse">
@@ -89,6 +95,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 .menu-principal{
+  .logo-menu{
+    width: 62px;
+    margin-top: 10px;
+  }
   .icono-menu{
     .rotar-icono{
 

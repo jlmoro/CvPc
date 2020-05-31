@@ -1,22 +1,22 @@
 <template>
   <section class="eventos-tipos">
 
-    <encabezadoDatos tituloEncabezado="Tipos Eventos" tituloBoton="nuevo tipo" @accionBonton="modalCrearTipoEvento"/>
+    <encabezadoDatos tituloEncabezado="Perifericos" tituloBoton="nuevo periferico" @accionBonton="modalCrearPeriferico"/>
 
     <div class="row justify-content-center">
       <div class="col-md-7">
         <ul class="list-group">
-          <li v-for="(data,e) in dataEventosTipos" :key="e" class="list-group-item lista-eventos-tipos">
+          <li v-for="(data,e) in dataPerifericos" :key="e" class="list-group-item lista-eventos-tipos">
             <div class="row w-100">
               <div class="col-sm-2">
                 <span class="cantidad f-14">{{e + 1}}</span>
               </div>
               <div class="col-sm-7">
-                <span class="letra-capital">{{data.nombre_tipo}}</span>
+                <span class="letra-capital">{{data.nombre}}</span>
               </div>
               <div class="col-sm-3 text-right">
-                <i class="mdi mdi-pencil f-16 editar" @click="modalEditarTipoEvento(data)"></i>
-                <i class="mdi mdi-delete f-16 eliminar" @click="abrirModalEliminarTipo(data)"></i>
+                <i class="mdi mdi-pencil f-16 editar" @click="modalEditarPerifericos(data)"></i>
+                <i class="mdi mdi-delete f-16 eliminar" @click="abrirModalEliminarPeriferico(data)"></i>
               </div>
             </div>
           </li>
@@ -24,14 +24,14 @@
       </div>
     </div>
 
-    <modal-eliminar ref="modalEliminarTipoE"
-    titulo="eliminar tipo evento"
-    :cuerpo="` ¿Desea eliminar el tipo de evento '${this.eliminarTipo.nombre_tipo}' ?`"
-    @eliminar="eliminarTipoEvento"
+    <modal-eliminar ref="modalEliminarPeriferico"
+    titulo="eliminar periferico"
+    :cuerpo="` ¿Desea eliminar el tipo de evento '${this.eliminarPeri.nombre}' ?`"
+    @eliminar="eliminarPeriferico"
     />
 
-    <crear-tipo ref="crearTipoEvento" @eventoTipo:creado="listarEventosTipos" :ruta="ruta"/>
-    <editar-tipo ref="editarTipoEvento" @eventoTipo:actualizado="listarEventosTipos" :ruta="ruta"/>
+    <crear-tipo ref="crearPeriferico" @periferico:creado="listarPerifericos" :ruta="ruta"/>
+    <editar-tipo ref="editarPeriferico" @periferico:actualizado="listarPerifericos" :ruta="ruta"/>
 
   </section>
 </template>
@@ -42,51 +42,51 @@ export default {
     EditarTipo:()=>import('./components/editarPerifericos'),
   },
   mounted() {
-    this.listarEventosTipos()
+    this.listarPerifericos()
   },
   data(){
     return{
-      ruta:'/api/administrar/eventos-tipos',
-      dataEventosTipos:[],
-      eliminarTipo:''
+      ruta:'/api/administrar/perifericos',
+      dataPerifericos:[],
+      eliminarPeri:''
     }
   },
   methods: {
-    async listarEventosTipos(){
+    async listarPerifericos(){
       try {
-        const {data} = await axios(`${this.ruta}/listar-eventos`)
+        const {data} = await axios(`${this.ruta}/listar-perifericos`)
         if (data.error) {
           this.$Helper.notificacion('warning','Error al listar',data.error)
           return
         }
-        this.dataEventosTipos = data
+        this.dataPerifericos = data
       } catch (e) {
           console.warn(e);
       }
     },
-    async eliminarTipoEvento(){
+    async eliminarPeriferico(){
       try {
-        const {data} = await axios.delete(`${this.ruta}/${this.eliminarTipo.id}/eliminar-evento-tipo`)
+        const {data} = await axios.delete(`${this.ruta}/${this.eliminarPeri.id}/eliminar-periferico`)
         if (data.error) {
           this.$Helper.notificacion('warning','Error al eliminar',data.error)
           return
         }
-        this.$refs.modalEliminarTipoE.toggle()
+        this.$refs.modalEliminarPeriferico.toggle()
         this.$Helper.notificacion('success','Eliminado',data.mensaje)
-        this.listarEventosTipos()
+        this.listarPerifericos()
       } catch (e) {
         console.warn(e);
       }
     },
-    abrirModalEliminarTipo(dato) {
-      this.eliminarTipo = dato
-      this.$refs.modalEliminarTipoE.toggle()
+    abrirModalEliminarPeriferico(dato) {
+      this.eliminarPeri = dato
+      this.$refs.modalEliminarPeriferico.toggle()
     },
-    modalCrearTipoEvento() {
-      this.$refs.crearTipoEvento.toggle()
+    modalCrearPeriferico() {
+      this.$refs.crearPeriferico.toggle()
     },
-    modalEditarTipoEvento(dato) {
-      this.$refs.editarTipoEvento.toggle(dato)
+    modalEditarPerifericos(dato) {
+      this.$refs.editarPeriferico.toggle(dato)
     }
   }
 }

@@ -24,5 +24,10 @@ import VueFlatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 Vue.use(VueFlatPickr);
 
+import Accordion from 'primevue/accordion';
+import AccordionTab from 'primevue/accordiontab';
+Vue.component('Accordion', Accordion);
+Vue.component('AccordionTab', AccordionTab);
+
 // var moment = require('moment'); // require
 // moment().format();

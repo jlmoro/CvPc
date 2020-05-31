@@ -52,5 +52,19 @@ Route::group(['middleware' =>'auth:api'], function (){
             // Route::put("editar-invitado","$controlador@editar_invitado");
             // Route::delete("{id_invitado}/eliminar-invitado","$controlador@eliminar_invitado");
         });
+        Route::prefix('solucion-posible')->group( function(){
+            $controlador = "SolucionesPosiblesController";
+            Route::post("registrar-solucion-posible","$controlador@registrar_solucion_posible");
+            Route::get("listar-soluciones-posibles","$controlador@listar_soluciones_posibles");
+            Route::put("actualizar-solucion-posible","$controlador@actualizar_solucion_posible");
+            Route::delete("{id_solucion}/eliminar-solucion-posible","$controlador@eliminar_solucion_posible");
+        });
+        Route::prefix('perifericos')->group( function(){
+            $controlador = "PerifericosTiposController";
+            Route::post("registrar-periferico","$controlador@registrar_periferico");
+            Route::get("listar-perifericos","$controlador@listar_perifericos");
+            Route::put("editar-periferico","$controlador@editar_periferico");
+            Route::delete("{id_periferico}/eliminar-periferico","$controlador@eliminar_periferico");
+        });
     });
 });
