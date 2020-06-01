@@ -12,23 +12,19 @@
       </div>
     </div>
     <!-- <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse"> -->
-    <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :router="true"
-    :collapse="isCollapse">
-    <el-submenu v-for="(data,m) in dataMenu" :key="m" :index="`${m + 1}`" >
+    <el-menu class="el-menu-vertical-demo" :router="true"
+    :collapse="isCollapse" >
+    <el-submenu v-for="(data,m) in dataMenu" :key="m" :index="`${m + 1}`" @change="loDelMenu(data)">
       <template slot="title">
         <i :class="`${data.icono} f-16`"></i>
         <span slot="title" class="letra-capital f-16">{{data.nombre}}</span>
       </template>
       <!-- <el-menu-item v-for="(data2,i) in data.items" :key="i" :index="`${i + 1}`" :click="verDato(data2)"> -->
-      <el-menu-item v-for="(data2,i) in data.items" :key="i" :index="data.ruta" :route="data2.ruta">
+      <el-menu-item v-for="(data2,i) in data.items" :key="i" :index="data.ruta" :route="data2.ruta" >
         <span :class="`${data2.icono} f-16`"></span>
         <span class="letra-capital f-16">{{data2.nombre}}</span>
       </el-menu-item>
     </el-submenu>
-    <el-menu-item v-if="dataMenu.items == null" index="4" >
-      <i class="el-icon-setting"></i>
-      <span slot="title">Navigator Four</span>
-    </el-menu-item>
 
   </el-menu>
   </div>
@@ -45,41 +41,37 @@ export default {
       isCollapse: true,
     }
   },
-  created() {
+  mounted() {
     this.listar_menu();
   },
   computed: mapGetters({ user: 'auth/user' }),
-    // rotarIcono(){
-    //   if (this.isCollapse === true) {
-    //     return {
-    //       color: '#a94442',
-    //     }
-    //   }
-    // }
-
+  watch:{
+    listandoMenu(a,b){
+      console.log(a,b,"valores a y b");
+      if(this.user){
+        this.listar_menu();
+      }
+    }
+  },
   methods: {
+    loDelMenu(dato){
+      // console.log(dato,"el change ese del menú");
+    },
     verDato(dato){
-      console.log(dato,"datoooooooooooo");
+      // console.log(dato,"datoooooooooooo");
     },
     openClose(){
-      console.log("en openClose");
       if (this.isCollapse == true) {
-        console.log("es true");
         this.isCollapse = false
       }else {
-        console.log("es false");
         this.isCollapse = true
       }
-      // ?false:true
     },
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
-    },
+
     async listar_menu() {
       try {
+        // console.log(this.user,"en el metodo de listar menu");
+
         const {data} = await axios(`/api/menu-principal/listar-menu`)
         if (data.error) {
           this.$Helper.notificacion('warning','Error Menu',data.error)

@@ -7,7 +7,6 @@ import Croppa from 'vue-croppa'
 import moment from 'moment'
 import Funciones from './Funciones'
 // import filters from './filters'
-import TabMenu from 'primevue/tabmenu';
 
 
 import '~/plugins'

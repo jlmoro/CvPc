@@ -33,7 +33,7 @@
             <span v-show="data.id_pc !== null" class="letra-capital">{{data.marca_pc}} - {{data.placa_pc}}</span>
           </td>
           <td><span class="letra-capital">{{data.usuario_actualiza}}</span></td>
-          <td><span>{{data.updated_at | formato_fecha('DD-MMM-Y')}}</span></td>
+          <td><span>{{data.created_at | formato_fecha('DD-MMM-Y')}}</span></td>
           <td>
             <el-popover
               placement="bottom"
@@ -47,6 +47,11 @@
           <td class="text-center">
             <i class="mdi mdi-pencil accion-editar" @click="modalEditarEvento(data)"></i>
           </td>
+          <td>
+            <el-tooltip content="Detalles estado evento" placement="bottom">
+              <i class="mdi mdi-magnify" @click="abrirModalVerDetalle(data)"></i>
+            </el-tooltip>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -54,6 +59,8 @@
     <modal-crear ref="modalCrearEvento" :ruta="ruta" @evento:registrado="listar_eventos" :tiposEventos="tiposEventos"/>
 
     <modal-editar ref="modalEditarEvento" :ruta="ruta" @evento:actualizado="listar_eventos" :tiposEventos="tiposEventos"/>
+
+    <modal-ver-detalle ref="modalVerDetalles"/>
   </section>
 </template>
 
@@ -61,7 +68,8 @@
 export default {
   components:{
     modalCrear: () => import('./componentes/modalCrearEvento'),
-    modalEditar: () => import('./componentes/modalEditarEvento')
+    modalEditar: () => import('./componentes/modalEditarEvento'),
+    modalVerDetalle: () => import('./verDetalle')
   },
   data(){
     return{
@@ -108,6 +116,9 @@ export default {
       } catch (e) {
         console.warn(e);
       }
+    },
+    abrirModalVerDetalle(dato){
+      this.$refs.modalVerDetalles.toggle(dato)
     },
     modalEditarEvento(dato){
       this.$refs.modalEditarEvento.toggle(dato)
