@@ -10,5 +10,6 @@ Route::group(['middleware' =>'auth:api'], function (){
         Route::get("listar-pc","$controlador@listar_pc");
         Route::get("listar-pantallas","$controlador@listar_pantallas");
         Route::get("listar-impresoras","$controlador@listar_impresoras");
+        Route::get("listar-usuarios","$controlador@listar_usuarios");
     });
 });

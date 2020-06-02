@@ -2,9 +2,9 @@
   <section class="listar-encargados">
 
     <encabezadoDatos tituloEncabezado="Encargados" tituloBoton="nuevo encargado" @accionBonton="crear_encargado"/>
-    
+
     <div class="row">
-      <div v-for="(data,e) in encargados" :key="e" class="col-md-3">
+      <div v-for="(data,e) in encargados" :key="e" class="col-md-4">
         <div class="card-padre">
           <div class="row">
             <div class="col-md-12 card-encabezado">
@@ -19,7 +19,7 @@
           <div class="row">
             <div class="col-md-12">
               <img v-if="data.foto != null"  class="img-user" :src="`/storage/${data.foto}`"/>
-              <img v-else class="img-user" src="/storage/encargados/3919470415eb1e6ce8a0b15.069863140.565430001588717262.png"/>
+              <img v-else class="img-user" src="/img/user_default.jpg"/>
             </div>
           </div>
           <div class="row">
@@ -126,11 +126,13 @@ export default {
 <style lang="scss" scoped>
 .listar-encargados{
   .card-padre{
-    width: 246px;
+    min-width: 246px;
+    max-width: 246px;
     border: solid 1px #00000040;
     border-radius: 3px;
     text-align: center;
     transition-duration: .85s;
+    margin-top: 16px;
     .img-user{
       width: 150px;
       height: 150px;

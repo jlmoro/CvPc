@@ -12,10 +12,24 @@ use App\Models\{
   Pc,
   Pantalla,
   Impresora,
+  Users,
 };
 
 class SelectController extends Controller
 {
+  public function listar_usuarios()
+  {
+    try {
+
+      return Users::select('id','name','lastname')
+      ->where('estado',1)
+      ->get();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al listar usuarios");
+    }
+
+  }
   public function listar_pc()
   {
     try {

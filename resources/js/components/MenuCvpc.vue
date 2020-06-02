@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col-md-12 text-center">
         <img v-show="isCollapse !== true" src="/img/logo_dark2.png" class="logo-menu" />
-        <span v-if="isCollapse == true" class="mdi mdi-arrow-right f-18 icono-menu" @click="openClose"></span>
+        <span v-if="isCollapse == true" class="mdi mdi-menu f-18 icono-menu1" @click="openClose"></span>
 
         <span v-else class="mdi mdi-arrow-left f-18 icono-menu" @click="openClose"></span>
       </div>
@@ -77,14 +77,24 @@ export default {
 </script>
 <style lang="scss" scoped>
 .menu-principal{
+  .icono-menu1{
+    border: solid 1px midnightblue;
+    border-radius: 50%;
+    color: midnightblue;
+    padding: 0px 3px 0px 3px;
+  }
+  .icono-menu{
+    border: solid 1px midnightblue;
+    border-radius: 4px;
+    padding: 0px 1px 0px 1px;
+
+    position: relative;
+    left: 52px;
+  }
   .logo-menu{
     width: 62px;
     margin-top: 10px;
-  }
-  .icono-menu{
-    .rotar-icono{
 
-    }
   }
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;

@@ -158,7 +158,6 @@ export default {
     },
     toggle(datos){
       this.encargado = _.cloneDeep(datos);
-      console.log(this.encargado,"datooooooooooos");
       this.$refs.modalEncargado.toggle()
     }
   }

@@ -6,6 +6,7 @@ import Checkbox from './Checkbox'
 import modalForm from './modales/modalFormulario'
 import modalB from './modales/modalB'
 import modalEliminar from './modales/modalEliminar'
+import modalEstadoEvento from './modales/modalEstadoEvento'
 import menuCvpc from './MenuCvpc'
 // import SelectAreas from './select/selectAreas'
 // import SelectRoles from './select/selectRoles'
@@ -27,6 +28,7 @@ import { HasError, AlertError, AlertSuccess } from 'vform'
     modalForm,
     modalB,
     modalEliminar,
+    modalEstadoEvento,
     selectEncargados,
     selectProveedores,
     // SelectAreas,

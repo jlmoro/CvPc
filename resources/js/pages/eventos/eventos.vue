@@ -60,6 +60,14 @@
 
     <modal-editar ref="modalEditarEvento" :ruta="ruta" @evento:actualizado="listar_eventos" :tiposEventos="tiposEventos"/>
 
+    <modal-asignar-fecha ref="modalAsignarFecha" :ruta="ruta" @evento:asignado="listar_eventos" :usuarios="listaUsuarios"/>
+
+    <modal-estado-evento ref="modalEstadoEventos"
+    titulo="Estado Evento"
+    cuerpo="No se ha asignado fecha de solución ¿Desea asignar?"
+    @confirmarE="modalAsignarFecha"
+    />
+
     <modal-ver-detalle ref="modalVerDetalles"/>
   </section>
 </template>
@@ -69,6 +77,7 @@ export default {
   components:{
     modalCrear: () => import('./componentes/modalCrearEvento'),
     modalEditar: () => import('./componentes/modalEditarEvento'),
+    modalAsignarFecha: () => import('./componentes/modalAsignarFecha'),
     modalVerDetalle: () => import('./verDetalle')
   },
   data(){
@@ -77,6 +86,8 @@ export default {
       lista_eventos:[],
       search: '',
       tiposEventos:[],
+      listaUsuarios:[],
+      pruebaEvent:''
     }
   },
   computed:{
@@ -87,9 +98,13 @@ export default {
   mounted(){
     this.listar_eventos()
     this.eventosTipos()
+    this.listarUsuarios()
   },
   methods:{
-    handleClick() {
+    modalAsignarFecha() {
+      let dato = this.pruebaEvent
+      this.$refs.modalEstadoEventos.toggle()
+      this.$refs.modalAsignarFecha.toggle(dato)
       console.log('click');
     },
     async listar_eventos(){
@@ -112,13 +127,29 @@ export default {
           return
         }
         this.tiposEventos = data
-
+      } catch (e) {
+        console.warn(e);
+      }
+    },
+    async listarUsuarios(){
+      try {
+        const {data} = await axios(`/api/select/listar-usuarios`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','Error al mostrar usuarios',data.error)
+          return
+        }
+        this.listaUsuarios = data
       } catch (e) {
         console.warn(e);
       }
     },
     abrirModalVerDetalle(dato){
-      this.$refs.modalVerDetalles.toggle(dato)
+      this.pruebaEvent = dato
+      if (dato.estado_evento !== null) {
+        this.$refs.modalVerDetalles.toggle(dato)
+      }else {
+        this.$refs.modalEstadoEventos.toggle()
+      }
     },
     modalEditarEvento(dato){
       this.$refs.modalEditarEvento.toggle(dato)
