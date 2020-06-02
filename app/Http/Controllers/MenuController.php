@@ -12,9 +12,10 @@ class MenuController extends Controller
       try {
         $menuPadre = Menu::select('*')
         ->whereNull('id_padre')
+        ->orderBy('posicion','ASC')
         ->get();
         foreach ($menuPadre as $key => $value) {
-          $value->items = Menu::select('*')->where('id_padre',$value->id)->get();
+          $value->items = Menu::select('*')->where('id_padre',$value->id)->orderBy('posicion','ASC')->get();
           // dd($value->items);
         }
         return $menuPadre;

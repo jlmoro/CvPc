@@ -2,7 +2,6 @@
   <section class="menu-principal">
     <div v-show="user" class="">
 
-    <!-- <span class="mdi mdi-backburger f-40 icono-menu" :style="rotarIcono" @click="openClose"></span> -->
     <div class="row">
       <div class="col-md-12 text-center">
         <img v-show="isCollapse !== true" src="/img/logo_dark2.png" class="logo-menu" />
@@ -11,16 +10,16 @@
         <span v-else class="mdi mdi-arrow-left f-18 icono-menu" @click="openClose"></span>
       </div>
     </div>
-    <!-- <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse"> -->
-    <el-menu class="el-menu-vertical-demo" :router="true"
-    :collapse="isCollapse" >
-    <el-submenu v-for="(data,m) in dataMenu" :key="m" :index="`${m + 1}`" @change="loDelMenu(data)">
+
+    <el-menu class="el-menu-vertical-demo"
+    :collapse="isCollapse">
+    <el-submenu v-for="(data,m) in dataMenu" :key="m" :index="`${m + 1}`" @click="loDelMenu(data)">
       <template slot="title">
-        <i :class="`${data.icono} f-16`"></i>
+        <i :class="`${data.icono}`" class="f-16"></i>
         <span slot="title" class="letra-capital f-16">{{data.nombre}}</span>
       </template>
-      <!-- <el-menu-item v-for="(data2,i) in data.items" :key="i" :index="`${i + 1}`" :click="verDato(data2)"> -->
-      <el-menu-item v-for="(data2,i) in data.items" :key="i" :index="data.ruta" :route="data2.ruta" >
+
+      <el-menu-item v-for="(data2,i) in data.items" :key="i" @click="loDelMenu(data2)">
         <span :class="`${data2.icono} f-16`"></span>
         <span class="letra-capital f-16">{{data2.nombre}}</span>
       </el-menu-item>
@@ -39,26 +38,19 @@ export default {
     return{
       dataMenu:[],
       isCollapse: true,
+      listandoMenu:''
     }
   },
   mounted() {
     this.listar_menu();
   },
   computed: mapGetters({ user: 'auth/user' }),
-  watch:{
-    listandoMenu(a,b){
-      console.log(a,b,"valores a y b");
-      if(this.user){
-        this.listar_menu();
-      }
-    }
-  },
+
   methods: {
     loDelMenu(dato){
-      // console.log(dato,"el change ese del menú");
-    },
-    verDato(dato){
-      // console.log(dato,"datoooooooooooo");
+      this.$router.push({
+        name:`${dato.ruta}`
+      })
     },
     openClose(){
       if (this.isCollapse == true) {
@@ -70,8 +62,6 @@ export default {
 
     async listar_menu() {
       try {
-        // console.log(this.user,"en el metodo de listar menu");
-
         const {data} = await axios(`/api/menu-principal/listar-menu`)
         if (data.error) {
           this.$Helper.notificacion('warning','Error Menu',data.error)
