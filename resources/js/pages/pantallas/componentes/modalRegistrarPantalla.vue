@@ -10,18 +10,18 @@
         <div class="col-12">
           <div class="row w-100">
             <div class="col-md-6">
-              <label for="marca" class="letra-capital">marca</label>
-              <input v-model="form.marca" id="marca" type="text" class="input-general">
+              <label for="marcaP" class="letra-capital">marca</label>
+              <input v-model="form.marca" id="marcaP" type="text" class="input-general">
             </div>
             <div class="col-md-6">
-              <label for="placa" class="letra-capital">placa</label>
-              <input v-model="form.placa" id="placa" type="text" class="input-general">
+              <label for="modeloP" class="letra-capital">modelo</label>
+              <input id="modeloP" v-model="form.modelo" type="text" class="input-general" style="width: inherit !important;">
             </div>
           </div>
           <div class="row w-100 mt-3">
             <div class="col-md-6">
-              <label for="modelo" class="letra-capital">modelo</label>
-              <input id="modelo" type="text" class="input-general" style="width: inherit !important;">
+              <label for="placaP" class="letra-capital">placa</label>
+              <input v-model="form.placa" id="placaP" type="text" class="input-general">
               <!-- <input v-model="form.modelo" id="modelo" type="text" class="input-general" style="width: inherit !important;"> -->
 
             </div>
@@ -38,8 +38,8 @@
           </div>
           <div class="row mt-3">
             <div class="col-md-12">
-              <label for="serial" class="letra-capital">serial</label>
-              <input v-model="form.serial" id="serial" type="text" class="input-general" style="width: inherit !important;">
+              <label for="serialP" class="letra-capital">serial</label>
+              <input v-model="form.serial" id="serialP" type="text" class="input-general" style="width: inherit !important;">
             </div>
           </div>
           <div class="row w-100 mt-3">
@@ -54,8 +54,8 @@
           </div>
           <div class="row w-100 mt-3">
             <div class="col-md-12">
-              <label for="observaciones" class="letra-capital">observaciones</label>
-              <textarea v-model="form.observaciones" id="observaciones" name="name" rows="5" cols="80" class="txt-area"></textarea>
+              <label for="observacionesP" class="letra-capital">observaciones</label>
+              <textarea v-model="form.observaciones" id="observacionesP" name="name" rows="5" cols="80" class="txt-area"></textarea>
             </div>
           </div>
         </div>
