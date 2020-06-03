@@ -4,12 +4,10 @@ export default [
     path: '/pantallas',
     name: 'pantallas.listar',
     component: page('pantallas/pantallas'),
-    // children: [
-    //     {
-    //         path: 'ver/:id_evento',
-    //         name: 'eventos.ver',
-    //         component: page('eventos/verDetalle')
-    //     },
-    // ]
-  }
+  },
+  {
+    path: '/pantallas/eventos',
+    name: 'eventos.pantallas',
+    component: page('pantallas/listarEventos')
+  },
 ]

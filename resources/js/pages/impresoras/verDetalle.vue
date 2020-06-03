@@ -46,7 +46,6 @@ export default {
   },
   methods: {
     toggle(dato){
-      console.log(dato);
       this.verDetalle = _.cloneDeep(dato)
       this.$refs.modalVerDetalles.toggle()
     }

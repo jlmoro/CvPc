@@ -10,20 +10,21 @@
         <div class="col-12">
           <div class="row w-100">
             <div class="col-md-6">
-              <label for="marca" class="letra-capital">marca</label>
-              <input v-model="form.marca" id="marca" type="text" class="input-general">
+              <label for="marcaI" class="letra-capital">marca</label>
+              <input v-model="form.marca" id="marcaI" type="text" class="input-general">
             </div>
             <div class="col-md-6">
-              <label for="placa" class="letra-capital">placa</label>
-              <input v-model="form.placa" id="placa" type="text" class="input-general">
+              <label for="modeloI" class="letra-capital">modelo</label>
+              <input v-model="form.modelo" id="modeloI" type="text" class="input-general">
             </div>
           </div>
           <div class="row w-100 mt-3">
-            <div class="col-md-7">
-              <label for="serial" class="letra-capital">serial</label>
-              <input v-model="form.serial" id="serial" type="text" class="input-general" style="width: inherit !important;">
+            <div class="col-md-6">
+              <label for="placaI" class="letra-capital">placa</label>
+              <input v-model="form.placa" id="placaI" type="text" class="input-general">
+
             </div>
-            <div class="col-md-5 mt-4 pt-2">
+            <div class="col-md-6 mt-4 pt-2">
               <el-switch
               style="display: block"
               v-model="form.estado"
@@ -32,6 +33,12 @@
               active-text="Act."
               inactive-text="Inact.">
               </el-switch>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="serial" class="letra-capital">serial</label>
+              <input v-model="form.serial" id="serial" type="text" class="input-general" style="width: inherit !important;">
             </div>
           </div>
           <div class="row w-100 mt-3">

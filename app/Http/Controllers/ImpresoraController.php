@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\{
   Impresora,
   Encargados,
-  Proveedores
+  Proveedores,
+  EventosImpresoras,
 };
 
 class ImpresoraController extends Controller
@@ -24,7 +25,7 @@ class ImpresoraController extends Controller
         return[
           'mensaje'=>config('domains.mensajes.actualizado')
         ];
-        
+
       },5);
     } catch (\Exception $e) {
       return $this->captura_error($e,"error al cambiar estado de la impresora");
@@ -37,6 +38,7 @@ class ImpresoraController extends Controller
       return DB::transaction(function() use($request){
 
         dd($request->all());
+        $request['updated_by'] = auth()->user()->id;
         $print = Impresoras::find($request->id);
         $print->fill($request->all());
         $print->update();
@@ -91,23 +93,7 @@ class ImpresoraController extends Controller
   {
     try {
 
-      // return Impresora::select('impresora.*','encargados.nombre_completo')
-      // ->leftjoin('impresora','impresora.id_encargado','=','encargados.id')
-      // ->orderBy('impresora.created_at','DESC')
-      // ->get();
-
       return DB::select($this->ejecutar_sql("listado_impresoras"));
-
-      // return DB::select("SELECT i.*,
-      //   e.nombre_completo AS nombre_encargado,
-      //   p.nombre_proveedor AS proveedor,
-      //   a.nombre AS area
-      //   FROM impresora i
-      //   LEFT JOIN encargados e ON i.id_encargado = e.id
-      //   LEFT JOIN roles r ON e.id_rol = r.id
-      //   LEFT JOIN areas a ON r.id_area = a.id
-      //   LEFT JOIN proveedores p ON i.id_proveedor = p.id
-      //   ORDER BY i.created_at DESC");
 
     } catch (\Exception $e) {
       return $this->captura_error($e,"Error al listar impresoras");

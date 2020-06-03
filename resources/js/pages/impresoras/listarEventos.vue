@@ -1,6 +1,11 @@
 <template>
   <section class="lista-eventos">
-    <encabezado-datos tituloEncabezado="Listado de Eventos" tituloBoton="Registrar Evento" @accionBonton="modalCrarEventos"/>
+    <!-- <encabezado-datos tituloEncabezado="Eventos Impresora" tituloBoton="Registrar Evento" @accionBonton="modalCrearEventos"/> -->
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h5>Eventos Impresora</h5>
+      </div>
+    </div>
 
     <div class="row mb-3">
       <div class="col-md-4">
@@ -11,39 +16,26 @@
     <table class="table">
       <thead>
         <th>#</th>
-        <th>Tipo Dispositivo</th>
         <th>Tipo Evento</th>
-        <th>Placa Dispositivo</th>
-        <th>Actualizado por</th>
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>Placa</th>
+        <th>Creado por</th>
         <th>Fecha</th>
+        <th>Descripción</th>
         <th colspan="2">Acciones</th>
       </thead>
       <tbody>
         <tr v-for="(data,e) in lista_eventos" :key="e">
           <td>{{ e + 1}}</td>
-          <td>
-            <span v-show="data.tipo_dispositivo === 1">PC</span>
-            <span v-show="data.tipo_dispositivo === 2">Pantalla</span>
-            <span v-show="data.tipo_dispositivo === 3">Impresora</span>
-          </td>
-          <td><span class="letra-capital">{{data.nombre_evento}}</span></td>
-          <td>
-            <span v-show="data.id_impresora !== null" class="letra-capital">{{data.marca_impresora}} - {{data.placa_impresora}}</span>
-            <span v-show="data.id_pantalla !== null" class="letra-capital">{{data.marca_pantalla}} - {{data.placa_pantalla}}</span>
-            <span v-show="data.id_pc !== null" class="letra-capital">{{data.marca_pc}} - {{data.placa_pc}}</span>
-          </td>
-          <td><span class="letra-capital">{{data.usuario_actualiza}}</span></td>
+          <td><span class="letra-capital">{{data.tipo_evento}}</span></td>
+          <td><span class="letra-capital">{{data.impresora_marca}}</span></td>
+          <td><span class="letra-capital">{{data.impresora_modelo}}</span></td>
+          <td><span class="letra-capital">{{data.impresora_placa}}</span></td>
+          <td><span class="letra-capital">{{data.usuario_nombre_actualiza}} {{data.usuario_apellido_actualiza}}</span></td>
           <td><span>{{data.created_at | formato_fecha('DD-MMM-Y')}}</span></td>
-          <td>
-            <el-popover
-              placement="bottom"
-              title="Descripción"
-              width="200"
-              trigger="hover"
-              :content="data.descripcion">
-              <span slot="reference" class="mdi mdi-information f-18 icon-descripcion"></span>
-            </el-popover>
-          </td>
+          <td><span>{{data.descripcion}}</span></td>
+
           <td class="text-center">
             <i class="mdi mdi-pencil accion-editar" @click="modalEditarEvento(data)"></i>
           </td>
@@ -56,11 +48,11 @@
       </tbody>
     </table>
 
-    <modal-crear ref="modalCrearEvento" :ruta="ruta" @evento:registrado="listar_eventos" :tiposEventos="tiposEventos"/>
+    <modal-crear ref="modalCrearEvento" :ruta="ruta" @evento:registrado="listar_eventos_impresora" :tiposEventos="tiposEventos"/>
 
-    <modal-editar ref="modalEditarEvento" :ruta="ruta" @evento:actualizado="listar_eventos" :tiposEventos="tiposEventos"/>
+    <modal-editar ref="modalEditarEvento" :ruta="ruta" @evento:actualizado="listar_eventos_impresora" :tiposEventos="tiposEventos"/>
 
-    <modal-asignar-fecha ref="modalAsignarFecha" :ruta="ruta" @evento:asignado="listar_eventos" :usuarios="listaUsuarios"/>
+    <modal-asignar-fecha ref="modalAsignarFecha" :ruta="ruta" @evento:asignado="listar_eventos_impresora" :usuarios="listaUsuarios"/>
 
     <modal-estado-evento ref="modalEstadoEventos"
     titulo="Estado Evento"
@@ -82,21 +74,21 @@ export default {
   },
   data(){
     return{
-      ruta:'/api/eventos',
+      ruta:'/api/impresora/eventos',
       lista_eventos:[],
       search: '',
       tiposEventos:[],
       listaUsuarios:[],
-      pruebaEvent:''
+      pruebaEvent:{},
     }
   },
   computed:{
     listadoEventos(){
-      return this.lista_eventos.filter(data => !this.search || data.tipo_dispositivo.toLowerCase().includes(this.search.toLowerCase()))
+      return this.lista_eventos.filter(data => !this.search || data.placa.toLowerCase().includes(this.search.toLowerCase()))
     }
   },
   mounted(){
-    this.listar_eventos()
+    this.listar_eventos_impresora()
     this.eventosTipos()
     this.listarUsuarios()
   },
@@ -106,9 +98,9 @@ export default {
       this.$refs.modalEstadoEventos.toggle()
       this.$refs.modalAsignarFecha.toggle(dato)
     },
-    async listar_eventos(){
+    async listar_eventos_impresora(){
       try {
-        const {data} = await axios(`${this.ruta}/listar-eventos`)
+        const {data} = await axios(`${this.ruta}/listar-eventos-impresoras`)
         if (data.error) {
           this.$Helper.notificacion('warning','Error al listar eventos',data.error)
           return
@@ -143,6 +135,7 @@ export default {
       }
     },
     abrirModalVerDetalle(dato){
+      console.log(dato,"datooooooos");
       this.pruebaEvent = dato
       if (dato.estado_evento !== null) {
         this.$refs.modalVerDetalles.toggle(dato)
@@ -153,7 +146,7 @@ export default {
     modalEditarEvento(dato){
       this.$refs.modalEditarEvento.toggle(dato)
     },
-    modalCrarEventos(){
+    modalCrearEventos(){
       this.$refs.modalCrearEvento.toggle()
     }
   }

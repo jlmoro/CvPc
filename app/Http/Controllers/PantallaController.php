@@ -74,7 +74,8 @@ class PantallaController extends Controller
   {
     try {
 
-      return Pantalla::all();
+      // return Pantalla::all();
+      return DB::select($this->ejecutar_sql("listado_pantallas"));
 
     } catch (\Exception $e) {
       return $this->captura_error($e,"error al listar pantallas");

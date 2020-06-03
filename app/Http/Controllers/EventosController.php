@@ -7,18 +7,56 @@ use Illuminate\Http\Request;
 use App\Models\{
   Eventos,
   SolucionesPosibles,
-  ResolverEvento
+  ResolverEvento,
+  EventosImpresoras,
+  EventosPantallas,
+  EventosPc,
+  ResolverEventoPantalla,
 };
 
 class EventosController extends Controller
 {
+  public function evento_pantalla_resuelto($id_evento)
+  {
+    try {
+      return DB::transaction(function() use($id_evento){
+        $evento = ResolverEventoPantalla::where('id_evento',$id_evento)->first();
+        ($evento->estado_evento == 2) ? $evento->estado_evento = 3 : $evento->estado_evento = 2;
+        $evento->update();
+
+        return [
+          'mensaje'=>config('domains.mensajes.actualizado')
+        ];
+
+      },5);
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al intentar resolver");
+    }
+  }
+  public function fecha_solucion_evento_pantalla($id_evento, Request $request)
+  {
+    try {
+      $str = ResolverEventoPantalla::where('id_evento',$id_evento)->first();
+      $request['estado_evento'] = 2;
+      $str->fill($request->all());
+      $str->update();
+
+      return [
+        'mensaje'=>config('domains.mensajes.creado')
+      ];
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al registrar fecha solución");
+    }
+
+  }
   public function fecha_solucion_evento(int $id_evento, Request $request)
   {
     try {
       return DB::transaction(function() use($id_evento,$request){
 
         $request['id_evento'] = $id_evento;
-        $request['estado'] = 1;
+        $request['estado_evento'] = 1;
         ResolverEvento::create($request->all());
 
         return [
@@ -31,6 +69,122 @@ class EventosController extends Controller
       return $this->captura_error($e,"error al registrar fecha solución");
     }
   }
+
+  public function editar_evento_pc(Request $request)
+  {
+    try {
+
+      return DB::transaction(function() use($request){
+
+
+
+        return[
+          'mensaje'=>config('domains.mensajes.actualizado')
+        ];
+      },5);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al registrar evento");
+    }
+  }
+
+  public function editar_evento_impresora(Request $request)
+  {
+    try {
+
+      return DB::transaction(function() use($request){
+
+
+
+        return[
+          'mensaje'=>config('domains.mensajes.actualizado')
+        ];
+      },5);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al registrar evento");
+    }
+  }
+
+  public function editar_evento_pantalla(Request $request)
+  {
+    try {
+
+      return DB::transaction(function() use($request){
+
+
+
+        return[
+          'mensaje'=>config('domains.mensajes.actualizado')
+        ];
+      },5);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al registrar evento");
+    }
+  }
+
+  public function registrar_evento_pc(Request $request)
+  {
+    try {
+
+      return DB::transaction(function() use($request){
+
+
+
+        return[
+          'mensaje'=>config('domains.mensajes.creado')
+        ];
+      },5);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al registrar evento");
+    }
+  }
+
+  public function registrar_evento_pantalla(int $id_pantalla, Request $request)
+  {
+    try {
+
+      return DB::transaction(function() use($id_pantalla, $request){
+
+        $request['created_by'] = auth()->user()->id;
+        $request['updated_by'] = auth()->user()->id;
+        $request['id_pantalla'] = $id_pantalla;
+
+        EventosPantallas::create($request->all());
+
+        return[
+          'mensaje'=>config('domains.mensajes.creado')
+        ];
+      },5);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al registrar evento");
+    }
+  }
+
+  public function registrar_evento_impresora(int $id_impresora, Request $request)
+  {
+    try {
+      return DB::transaction(function() use($id_impresora,$request){
+
+        $request['created_by'] = auth()->user()->id;
+        $request['updated_by'] = auth()->user()->id;
+        $request['id_impresora'] = $id_impresora;
+
+        EventosImpresoras::create($request->all());
+
+        return[
+          'mensaje'=>config('domains.mensajes.creado')
+        ];
+      },5);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al registrar evento");
+    }
+  }
+
   public function registrar_evento(Request $request)
   {
     try {
@@ -39,17 +193,17 @@ class EventosController extends Controller
         $request['id_tipo_evento'] = $request->tipo_evento;
         switch ($request->tipo_dispositivo) {
           case '1':
-            $request['id_pc'] = $request->dipositivo;
-            break;
+          $request['id_pc'] = $request->dipositivo;
+          break;
           case '2':
-            $request['id_pantalla'] = $request->dipositivo;
-            break;
+          $request['id_pantalla'] = $request->dipositivo;
+          break;
           case '3':
-            $request['id_impresora'] = $request->dipositivo;
-            break;
+          $request['id_impresora'] = $request->dipositivo;
+          break;
           default:
-            dd('error, revisar');
-            break;
+          dd('error, revisar');
+          break;
         }
         $request['created_by'] = auth()->user()->id;
         $request['updated_by'] = auth()->user()->id;
@@ -65,6 +219,7 @@ class EventosController extends Controller
       return $this->captura_error($e,"error al registrar evento");
     }
   }
+
   public function datos_solucion_evento(int $id_evento)
   {
     try {
@@ -78,18 +233,49 @@ class EventosController extends Controller
     } catch (\Exception $e) {
       return $this->captura_error($e,"error al listar solucion evento");
     }
-
   }
+
+  public function listar_eventos_pc()
+  {
+    try {
+
+      return DB::select($this->ejecutar_sql("eventos/listar_eventos_pc"));
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al listar los eventos pc");
+    }
+  }
+
+  public function listar_eventos_pantallas()
+  {
+    try {
+
+      return DB::select($this->ejecutar_sql("eventos/listar_eventos_pantallas"));
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al listar los eventos pantallas");
+    }
+  }
+
+  public function listar_eventos_impresoras()
+  {
+    try {
+
+      return DB::select($this->ejecutar_sql("eventos/listar_eventos_impresoras"));
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al listar los eventos impresoras");
+    }
+  }
+
   public function listar_eventos()
   {
     try {
 
-      // return Eventos::select('*')->orderBy('created_at','DESC')->get();
       return DB::select($this->ejecutar_sql("eventos/listar_eventos"));
 
     } catch (\Exception $e) {
       return $this->captura_error($e,'error al listar los eventos');
     }
-
   }
 }
