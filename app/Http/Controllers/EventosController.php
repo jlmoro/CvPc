@@ -33,7 +33,7 @@ class EventosController extends Controller
       return $this->captura_error($e,"error al intentar resolver");
     }
   }
-  public function fecha_solucion_evento_pantalla($id_evento, Request $request)
+  public function fecha_solucion_evento_pantalla(int $id_evento, Request $request)
   {
     try {
       $str = ResolverEventoPantalla::where('id_evento',$id_evento)->first();
@@ -145,14 +145,18 @@ class EventosController extends Controller
   public function registrar_evento_pantalla(int $id_pantalla, Request $request)
   {
     try {
-
       return DB::transaction(function() use($id_pantalla, $request){
 
         $request['created_by'] = auth()->user()->id;
         $request['updated_by'] = auth()->user()->id;
         $request['id_pantalla'] = $id_pantalla;
 
-        EventosPantallas::create($request->all());
+        $evento = EventosPantallas::create($request->all());
+
+        ResolverEventoPantalla::create([
+          'id_evento'=>$evento->id,
+          'estado_evento'=> 1 ,
+        ]);
 
         return[
           'mensaje'=>config('domains.mensajes.creado')
