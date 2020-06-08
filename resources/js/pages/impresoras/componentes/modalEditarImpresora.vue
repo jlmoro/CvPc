@@ -10,28 +10,35 @@
         <div class="col-12">
           <div class="row w-100">
             <div class="col-md-6">
-              <label for="marca" class="letra-capital">marca</label>
-              <input v-model="form.marca" id="marca" type="text" class="input-general">
+              <label for="marcaEI" class="letra-capital">marca</label>
+              <input v-model="form.marca" id="marcaEI" type="text" class="input-general">
             </div>
             <div class="col-md-6">
-              <label for="placa" class="letra-capital">placa</label>
-              <input v-model="form.placa" id="placa" type="text" class="input-general">
+              <label for="modeloEI" class="letra-capital">modelo</label>
+              <input v-model="form.modelo" id="modeloEI" type="text" class="input-general">
             </div>
+
           </div>
           <div class="row w-100 mt-3">
-            <div class="col-md-7">
-              <label for="serial" class="letra-capital">serial</label>
-              <input v-model="form.serial" id="serial" type="text" class="input-general" style="width: inherit !important;">
+            <div class="col-md-6">
+              <label for="placaEI" class="letra-capital">placa</label>
+              <input v-model="form.placa" id="placaEI" type="text" class="input-general">
             </div>
-            <div class="col-md-5 mt-4 pt-2">
+            <div class="col-md-6 mt-4 pt-2">
               <el-switch
               style="display: block"
               v-model="form.estado"
               active-color="#13ce66"
               inactive-color="#ff4949"
-              active-text="Act."
-              inactive-text="Inact.">
+              active-text="Activo"
+              inactive-text="Inactivo">
               </el-switch>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="serialEI" class="letra-capital">serial</label>
+              <input v-model="form.serial" id="serialEI" type="text" class="input-general" style="width: inherit !important;">
             </div>
           </div>
           <div class="row w-100 mt-3">
@@ -46,15 +53,15 @@
           </div>
           <div class="row w-100 mt-3">
             <div class="col-md-12">
-              <label for="observaciones" class="letra-capital">observaciones</label>
-              <textarea v-model="form.observaciones" id="observaciones" name="name" rows="5" cols="80" class="txt-area"></textarea>
+              <label for="observacionesEI" class="letra-capital">observaciones</label>
+              <textarea v-model="form.observaciones" id="observacionesEI" name="name" rows="5" cols="80" class="txt-area"></textarea>
             </div>
           </div>
         </div>
       </div>
       <div slot="footer" class="row">
         <div class="col-12">
-          <button type="button" class="btn-crear" @click="guardarImpresora">Guardar</button>
+          <button type="button" class="btn-crear" @click="actualizarImpresora">Actualizar</button>
           <button type="button" class="btn-cancelar" data-dismiss="modal">Cancelar</button>
         </div>
       </div>
@@ -82,18 +89,17 @@ export default {
     }
   },
   methods:{
-    async guardarImpresora(){
+    async actualizarImpresora(){
       try {
         this.form.estado = (this.form.estado === true)?1:0
-        const {data} = await axios.post(`${this.ruta}/crear-impresora`,this.form)
+        const {data} = await axios.put(`${this.ruta}/editar-impresora`,this.form)
         if (data.error) {
           this.$Helper.notificacion('warning','Error creando impresora',data.error)
           return
         }
-        this.$Helper.notificacion('success','Impresora Registrada',data.mensaje)
-        this.$emit('impresora:creada')
+        this.$Helper.notificacion('success','Impresora Actualizada',data.mensaje)
+        this.$emit('impresora:actualizada')
         this.$refs.ModalCrearImpresora.toggle()
-
       } catch (e) {
         console.warn(e);
       }
@@ -106,6 +112,7 @@ export default {
     },
     toggle(datos){
       this.form = _.cloneDeep(datos);
+      this.form.estado = (datos.estado === 1)?true:false
       this.$refs.ModalCrearImpresora.toggle()
     }
   }

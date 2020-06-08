@@ -12,6 +12,7 @@ use App\Models\{
   EventosPantallas,
   EventosPc,
   ResolverEventoPantalla,
+  ResolverEventoImpresora,
 };
 
 class EventosController extends Controller
@@ -177,7 +178,12 @@ class EventosController extends Controller
         $request['updated_by'] = auth()->user()->id;
         $request['id_impresora'] = $id_impresora;
 
-        EventosImpresoras::create($request->all());
+        $event = EventosImpresoras::create($request->all());
+
+        ResolverEventoImpresora::create([
+          'id_evento'=>$event->id,
+          'estado_evento'=>1
+        ]);
 
         return[
           'mensaje'=>config('domains.mensajes.creado')

@@ -8,5 +8,10 @@ class Impresora extends Model
 {
     protected $table = 'impresora';
     protected $primaryKey = 'id';
-    protected $guarded = ['encargado','proveedor'];
+    protected $guarded = [
+      'encargado',
+      'proveedor',
+      'nombre_encargado',
+      'area'
+    ];
 }

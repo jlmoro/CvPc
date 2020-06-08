@@ -31,7 +31,8 @@
             <td>{{data.serial }}</td>
             <td><span class="letra-capital">{{data.nombre_encargado}}</span></td>
             <td><span class="letra-capital">{{data.proveedor}}</span></td>
-            <td>{{data.created_at | formato_fecha('D-MMM-YYYY')}}</td>
+            <!-- <td>{{data.created_at | formato_fecha('D-MMM-YYYY')}}</td> -->
+            <td>{{data.created_at }}</td>
             <td v-if="data.estado === 1"><button type="button" class="estado act" @click="cambiarEstado(data)">Activa</button></td>
             <td v-else><button type="button" class="estado inact" @click="cambiarEstado(data)">Inactiva</button></td>
             <td>
@@ -65,7 +66,7 @@
     :encargados="encargados" :proveedores="proveedores"/>
 
     <modal-editar ref="modalEditarImpresora" :ruta="ruta"
-    @impresora:editada="listar_impresoras"
+    @impresora:actualizada="listar_impresoras"
     :encargados="encargados" :proveedores="proveedores"/>
 
     <modal-crear-evento ref="modalRegistrarEvento" :ruta="ruta" :tiposEventos="tiposEventos"/>

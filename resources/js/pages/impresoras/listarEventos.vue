@@ -22,6 +22,7 @@
         <th>Placa</th>
         <th>Creado por</th>
         <th>Fecha</th>
+        <th>Estado</th>
         <th>Descripción</th>
         <th colspan="2">Acciones</th>
       </thead>
@@ -33,7 +34,13 @@
           <td><span class="letra-capital">{{data.impresora_modelo}}</span></td>
           <td><span class="letra-capital">{{data.impresora_placa}}</span></td>
           <td><span class="letra-capital">{{data.usuario_nombre_actualiza}} {{data.usuario_apellido_actualiza}}</span></td>
-          <td><span>{{data.created_at | formato_fecha('DD-MMM-Y')}}</span></td>
+          <!-- <td><span>{{data.created_at | formato_fecha('DD-MMM-Y')}}</span></td> -->
+          <td><span>{{data.created_at}}</span></td>
+          <td>
+            <span v-show="data.evento_estado == 1" class="f-14 texto-info estado-1">Esperando</span>
+            <span v-show="data.evento_estado == 2" class="f-14 texto-info estado-2" @click="eventoResuelto(data)">Asignado</span>
+            <span v-show="data.evento_estado == 3" class="f-14 texto-info estado-3">Resuelto</span>
+          </td>
           <td><span>{{data.descripcion}}</span></td>
 
           <td class="text-center">
@@ -60,6 +67,12 @@
     @confirmarE="modalAsignarFecha"
     />
 
+    <modal-estado-evento ref="modalEventoResuelto"
+    titulo="Evento Resuelto"
+    cuerpo="¿ Se ha resuelto la eventualidad ?"
+    @confirmarE="eventualidadResuelta"
+    />
+
     <modal-ver-detalle ref="modalVerDetalles"/>
   </section>
 </template>
@@ -80,6 +93,7 @@ export default {
       tiposEventos:[],
       listaUsuarios:[],
       pruebaEvent:{},
+      idEvento:null,
     }
   },
   computed:{
@@ -98,6 +112,20 @@ export default {
       this.$refs.modalEstadoEventos.toggle()
       this.$refs.modalAsignarFecha.toggle(dato)
     },
+    async eventualidadResuelta(){
+      try {
+        const {data} = await axios.put(`${this.ruta}/${this.idEvento}/evento-impresora-resuelto`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','Error al confirmar',data.error)
+          return
+        }
+        this.$refs.modalEventoResuelto.toggle()
+        this.listar_eventos_impresora()
+
+      } catch (e) {
+        console.warn(e);
+      }
+    },
     async listar_eventos_impresora(){
       try {
         const {data} = await axios(`${this.ruta}/listar-eventos-impresoras`)
@@ -110,6 +138,7 @@ export default {
         console.warn(e);
       }
     },
+
     async eventosTipos(){
       try {
         const {data} = await axios(`/api/select/listar-tipos-eventos`)
@@ -133,6 +162,10 @@ export default {
       } catch (e) {
         console.warn(e);
       }
+    },
+    eventoResuelto(dato){
+      this.idEvento = dato.id
+      this.$refs.modalEventoResuelto.toggle()
     },
     abrirModalVerDetalle(dato){
       console.log(dato,"datooooooos");

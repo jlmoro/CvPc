@@ -37,9 +37,7 @@ class ImpresoraController extends Controller
     try {
       return DB::transaction(function() use($request){
 
-        dd($request->all());
-        $request['updated_by'] = auth()->user()->id;
-        $print = Impresoras::find($request->id);
+        $print = Impresora::find($request->id);
         $print->fill($request->all());
         $print->update();
 

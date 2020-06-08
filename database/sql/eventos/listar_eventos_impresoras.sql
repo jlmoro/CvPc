@@ -20,6 +20,12 @@ SELECT *,
     WHERE i.id = ei.id_impresora
 )AS impresora_modelo,
 (
+    SELECT rei.estado_evento
+    FROM resolver_evento_impresora rei
+    WHERE rei.id_evento = ei.id
+
+)AS evento_estado,
+(
     SELECT u.name
     FROM users u
     WHERE u.id = ei.updated_by
