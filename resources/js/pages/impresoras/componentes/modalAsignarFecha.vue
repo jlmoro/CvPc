@@ -62,7 +62,7 @@ export default {
   methods:{
     async asignarFecha(){
       try {
-        const {data} = await axios.post(`${this.ruta}/${this.infoEvento.id}/fecha-solucion-evento`,this.form)
+        const {data} = await axios.put(`${this.ruta}/${this.infoEvento.id}/fecha-solucion-evento-impresora`,this.form)
         if (data.error) {
           this.$Helper.notificacion('warning','Error al registrar',data.error)
           return
@@ -76,21 +76,8 @@ export default {
       }
     },
     async toggle(dato){
-      try {
-        const {data} = await axios(`/api/eventos/${dato.id}/datos-solucion-evento`)
-        if (data.error) {
-          this.$Helper.notificacion('warning','Problemas al mostrar ayuda',data.error)
-          return
-        }
-        if (data !== null) {
-          this.solucionPosible = data
-        }
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        this.infoEvento = _.cloneDeep(dato)
-        this.$refs.modalCrearEvento.toggle()
-      }
+      this.infoEvento = _.cloneDeep(dato)
+      this.$refs.modalCrearEvento.toggle()
     }
   }
 }

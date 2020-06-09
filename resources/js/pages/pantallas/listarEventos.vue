@@ -115,7 +115,7 @@ export default {
         }
         this.$refs.modalEventoResuelto.toggle()
         this.listar_eventos_pantalla()
-        
+
       } catch (e) {
         console.warn(e);
       }
@@ -166,7 +166,7 @@ export default {
       }
     },
     abrirModalVerDetalle(dato){
-      console.log(dato,"datoooooooo");
+      // console.log(dato,"datoooooooo");
       this.pruebaEvent = dato
       if (dato.evento_fecha_resolver !== null) {
         this.$refs.modalVerDetalles.toggle(dato)

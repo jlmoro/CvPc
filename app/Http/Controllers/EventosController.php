@@ -17,6 +17,23 @@ use App\Models\{
 
 class EventosController extends Controller
 {
+  public function evento_impresora_resuelto($id_evento)
+  {
+    try {
+      return DB::transaction(function() use($id_evento){
+        $evento = ResolverEventoImpresora::where('id_evento',$id_evento)->first();
+        ($evento->estado_evento == 2) ? $evento->estado_evento = 3 : $evento->estado_evento = 2;
+        $evento->update();
+
+        return [
+          'mensaje'=>config('domains.mensajes.actualizado')
+        ];
+
+      },5);
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al intentar resolver");
+    }
+  }
   public function evento_pantalla_resuelto($id_evento)
   {
     try {
@@ -32,6 +49,25 @@ class EventosController extends Controller
       },5);
     } catch (\Exception $e) {
       return $this->captura_error($e,"error al intentar resolver");
+    }
+  }
+  public function fecha_solucion_evento_impresora(int $id_evento, Request $request)
+  {
+    try {
+      return DB::transaction(function() use($id_evento, $request){
+
+        $str = ResolverEventoImpresora::where('id_evento',$id_evento)->first();
+        $request['estado_evento'] = 2;
+        $str->fill($request->all());
+        $str->update();
+
+        return[
+          'mensaje'=>config('domains.mensajes.actualizado')
+        ];
+
+      },5);
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"Error al asignar fecha solución");
     }
   }
   public function fecha_solucion_evento_pantalla(int $id_evento, Request $request)

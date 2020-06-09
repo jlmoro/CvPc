@@ -119,6 +119,7 @@ export default {
           this.$Helper.notificacion('warning','Error al confirmar',data.error)
           return
         }
+        this.$Helper.notificacion('success','Evento Resuelto',data.mensaje)
         this.$refs.modalEventoResuelto.toggle()
         this.listar_eventos_impresora()
 
@@ -168,9 +169,9 @@ export default {
       this.$refs.modalEventoResuelto.toggle()
     },
     abrirModalVerDetalle(dato){
-      console.log(dato,"datooooooos");
+      // console.log(dato,"datooooooos");
       this.pruebaEvent = dato
-      if (dato.estado_evento !== null) {
+      if (dato.evento_fecha_resolver !== null) {
         this.$refs.modalVerDetalles.toggle(dato)
       }else {
         this.$refs.modalEstadoEventos.toggle()
@@ -188,6 +189,27 @@ export default {
 
 <style lang="scss" scoped>
 .lista-eventos{
+  .estado-1{
+    background-color: gray;
+    padding: 4px;
+    border-radius: 4px;
+    color: whitesmoke;
+  }
+  .estado-2{
+    background-color: #1c54a9;
+    padding: 4px;
+    border-radius: 4px;
+    color: whitesmoke;
+    &:hover{
+      cursor: pointer;
+    }
+  }
+  .estado-3{
+    background-color: #0c710f;
+    padding: 4px;
+    border-radius: 4px;
+    color: whitesmoke;
+  }
   .icon-descripcion{
     &:hover{
       color: #0094fd;
