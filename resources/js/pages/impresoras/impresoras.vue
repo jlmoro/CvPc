@@ -1,7 +1,10 @@
 <template>
   <section class="listar-impresoras">
     <encabezado-datos tituloEncabezado="Impresoras" tituloBoton="registrar impresora" @accionBonton="crear_impresora"/>
-    <div class="row w-100 mt-4">
+    <div
+    class="row w-100 mt-4"
+    v-loading="estaCargando"
+    >
       <div class="col-md-12">
         <div class="row mb-3">
           <div class="col-md-4">
@@ -31,8 +34,8 @@
             <td>{{data.serial }}</td>
             <td><span class="letra-capital">{{data.nombre_encargado}}</span></td>
             <td><span class="letra-capital">{{data.proveedor}}</span></td>
-            <!-- <td>{{data.created_at | formato_fecha('D-MMM-YYYY')}}</td> -->
-            <td>{{data.created_at }}</td>
+            <td>{{data.created_at | formato_fecha('D-MMM-YYYY')}}</td>
+            <!-- <td>{{data.created_at }}</td> -->
             <td v-if="data.estado === 1"><button type="button" class="estado act" @click="cambiarEstado(data)">Activa</button></td>
             <td v-else><button type="button" class="estado inact" @click="cambiarEstado(data)">Inactiva</button></td>
             <td>
@@ -83,6 +86,7 @@ export default {
   },
   data(){
     return{
+      estaCargando: false,
       ruta:'/api/impresora',
       impresoras:[],
       search: '',
@@ -93,10 +97,15 @@ export default {
     }
   },
   mounted(){
-    this.listar_impresoras()
-    this.listarEncargados()
-    this.listarProveedores()
-    this.eventosTipos()
+    this.estaCargando = true
+    Promise.all([
+      this.listar_impresoras(),
+      this.listarEncargados(),
+      this.listarProveedores(),
+      this.eventosTipos(),
+    ]).then(res=>{
+      this.estaCargando = false
+    })
   },
   computed:{
     listadoImpresoras(){

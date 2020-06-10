@@ -1,5 +1,6 @@
 <template>
   <section class="login">
+    <h1>looooo</h1>
     <div class="row">
       <div class="col-lg-8 m-auto">
         <!-- <card :title="$t('login')" class="card-login"> -->
@@ -103,6 +104,7 @@ export default {
 
       // Fetch the user.
       await this.$store.dispatch('auth/fetchUser')
+      this.$store.dispatch('menu/fetchMenu')
 
       // Redirect home.
       this.$router.push({ name: 'dashboard.principal' })

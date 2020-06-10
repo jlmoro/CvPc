@@ -36,16 +36,20 @@ export default {
   name: "MenuCvpc",
   data(){
     return{
-      dataMenu:[],
+      //dataMenu:[],
       isCollapse: true,
       listandoMenu:''
     }
   },
-  mounted() {
-    this.listar_menu();
+  computed:{
+    ...mapGetters({
+      user: 'auth/user',
+      dataMenu: 'menu/getMenu'
+    }),
+    mitoracomputada(){
+      return 'hola'
+    }
   },
-  computed: mapGetters({ user: 'auth/user' }),
-
   methods: {
     loDelMenu(dato){
       this.$router.push({

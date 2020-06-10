@@ -1,5 +1,6 @@
 <template>
     <div class="row">
+      <h1 class="text-danger">me la monto</h1>
         <div class="col-lg-8 m-auto">
             <card :title="$t('login')">
                 <form @submit.prevent="login" @keydown="form.onKeydown($event)">
@@ -88,9 +89,9 @@ export default {
 
             // Fetch the user.
             await this.$store.dispatch('auth/fetchUser')
-
+            //this.$store.dispatch('menu/fetchMenu')
             // Redirect home.
-            this.$router.push({ name: 'home' })
+            //this.$router.push({ name: 'home' })
         }
     }
 }

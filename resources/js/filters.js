@@ -9,6 +9,6 @@ Vue.filter('letra-capital', function (value) {
 
 Vue.filter('formato_fecha', function (value,formato) {
   if (!value) return ''
-  value = moment().format(formato)
+  value = moment(value).format(formato)
   return value;
 })
