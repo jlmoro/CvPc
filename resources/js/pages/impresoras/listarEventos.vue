@@ -34,8 +34,7 @@
           <td><span class="letra-capital">{{data.impresora_modelo}}</span></td>
           <td><span class="letra-capital">{{data.impresora_placa}}</span></td>
           <td><span class="letra-capital">{{data.usuario_nombre_actualiza}} {{data.usuario_apellido_actualiza}}</span></td>
-          <!-- <td><span>{{data.created_at | formato_fecha('DD-MMM-Y')}}</span></td> -->
-          <td><span>{{data.created_at}}</span></td>
+          <td><span>{{data.created_at | formato_fecha('DD-MMM-Y')}}</span></td>
           <td>
             <span v-show="data.evento_estado == 1" class="f-14 texto-info estado-1">Esperando</span>
             <span v-show="data.evento_estado == 2" class="f-14 texto-info estado-2" @click="eventoResuelto(data)">Asignado</span>
