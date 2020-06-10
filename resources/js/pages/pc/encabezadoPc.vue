@@ -1,11 +1,13 @@
 <template>
   <section class="encabezado-pc">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="User" name="first">User</el-tab-pane>
-      <el-tab-pane label="Config" name="second">Config</el-tab-pane>
-      <el-tab-pane label="Role" name="third">Role</el-tab-pane>
-      <el-tab-pane label="Task" name="fourth">Task</el-tab-pane>
-    </el-tabs>
+    <div>
+      <b-tabs content-class="mt-3" justified v-model="model" @change="tabs($event)">
+        <b-tab title="Organizar PC" active ><p>I'm the first tab</p></b-tab>
+        <b-tab title="Listar Torres"><p>I'm the second tab</p></b-tab>
+        <b-tab title="Eventos Torre"><p>I'm the tab with the very, very long title</p></b-tab>
+        <!-- <b-tab title="Disabled" disabled><p>I'm a disabled tab!</p></b-tab> -->
+      </b-tabs>
+    </div>
   </section>
 </template>
 <script>
@@ -13,12 +15,13 @@ export default {
   name: "encabezadoPc",
   data(){
     return{
-      activeName: 'first'
+      activeName: 'first',
+      model: null
     }
   },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
+    tabs(event){
+      console.log(event,'pestañas de pc');
     }
   }
 }

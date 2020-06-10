@@ -10,7 +10,11 @@ import Global from '~/mixin/Global'
 import lodash from 'lodash'
 import flatpickr from 'flatpickr';
 
+
 Vue.mixin(Global)
+
+import BootstrapVue from 'bootstrap-vue'
+Vue.use(BootstrapVue)
 
 import Helper  from '~/Funciones';
 Vue.prototype.$Helper = Helper;

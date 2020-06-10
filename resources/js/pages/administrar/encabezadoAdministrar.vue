@@ -1,46 +1,46 @@
 <template >
-    <section>
-        <h3 class="mb-2 text-center">Administrables</h3>
+  <section>
+    <h3 class="mb-2 text-center">Administrables</h3>
 
-        <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane
-            v-for="(data,a) in administrar"
-            :key="a"
-            :label="data.nombre"
-            :name="data.ruta"
-            >
-                <span slot="label"><i :class="data.icono"></i> {{data.nombre}}</span>
-            </el-tab-pane>
+    <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane
+      v-for="(data,a) in administrar"
+      :key="a"
+      :label="data.nombre"
+      :name="data.ruta"
+      >
+      <span slot="label"><i :class="data.icono"></i> {{data.nombre}}</span>
+    </el-tab-pane>
 
-            <router-view />
-        </el-tabs>
+    <router-view />
+  </el-tabs>
 
-    </section>
+</section>
 </template>
 
 <script>
 export default {
-    data(){
-        return{
-            activeName: '',
-            administrar:[],
-        }
-    },
-    mounted(){
-        this.listar_administrables()
-    },
-    methods: {
-        handleClick(tab, event) {
-            this.$router.push({
-                name:tab.name
-            })
-        },
-
-        async listar_administrables(){
-            const {data} = await axios(`/api/administrar/listar-administrar`)
-            this.administrar = data
-        }
+  data(){
+    return{
+      activeName: '',
+      administrar:[],
     }
+  },
+  mounted(){
+    this.listar_administrables()
+  },
+  methods: {
+    handleClick(tab, event) {
+      this.$router.push({
+        name:tab.name
+      })
+    },
+
+    async listar_administrables(){
+      const {data} = await axios(`/api/administrar/listar-administrar`)
+      this.administrar = data
+    }
+  }
 }
 </script>
 
