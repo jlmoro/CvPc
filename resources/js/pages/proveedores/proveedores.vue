@@ -3,7 +3,7 @@
 
     <encabezado-datos tituloEncabezado="Proveedores" tituloBoton="nuevo proveedor" @accionBonton="abrirCrearProveedor"/>
 
-    <div class="row">
+    <div class="row" v-loading="isLoading">
       <div v-for="(data,e) in proveedores" :key="e" class="col-md-3">
         <div class="card-padre">
           <div class="row">
@@ -59,11 +59,17 @@ export default {
     return{
       ruta:'/api/proveedores',
       proveedores:[],
-      eliminarProv:''
+      eliminarProv:'',
+      isLoading:false,
     }
   },
   mounted(){
-    this.listar_proveedores()
+    this.isLoading = true
+    Promise.all([
+      this.listar_proveedores()
+    ]).then(res=>{
+      this.isLoading = false
+    })
   },
   methods:{
     editarProveedores(dato){

@@ -1,5 +1,5 @@
 <template >
-    <section class="listar-areas">
+    <section class="listar-areas" v-loading="isLoading">
         <div class="row mb-4">
             <div class="col-12 text-center">
                 <h5 class="mt-3">Listado de áreas y roles</h5>
@@ -103,11 +103,17 @@ export default {
             value: 100,
             visible: false,
             eliminar:'',
-            eliminarRol:''
+            eliminarRol:'',
+            isLoading:false,
         }
     },
     mounted(){
+      this.isLoading = true
+      Promise.all([
         this.listar_areas_roles()
+      ]).then(res => {
+        this.isLoading = false
+      })
     },
     methods:{
       async eliminar_rol(){

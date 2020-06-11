@@ -1,10 +1,7 @@
 <template>
   <section class="listar-impresoras">
     <encabezado-datos tituloEncabezado="Impresoras" tituloBoton="registrar impresora" @accionBonton="crear_impresora"/>
-    <div
-    class="row w-100 mt-4"
-    v-loading="estaCargando"
-    >
+    <div class="row w-100 mt-4" v-loading="estaCargando" >
       <div class="col-md-12">
         <div class="row mb-3">
           <div class="col-md-4">

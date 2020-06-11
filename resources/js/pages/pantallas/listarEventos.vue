@@ -6,53 +6,55 @@
         <h5>Eventos Pantallas</h5>
       </div>
     </div>
+    <div class="" v-loading="isLoading">
 
-    <div class="row mb-3">
-      <div class="col-md-4">
-        <el-input v-model="search" placeholder="Buscar..." clearable></el-input>
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <el-input v-model="search" placeholder="Buscar..." clearable></el-input>
+        </div>
       </div>
+
+      <table class="table f-12">
+        <thead>
+          <th>#</th>
+          <th>Tipo Evento</th>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>Placa</th>
+          <th>Creado por</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+          <th>Descripción</th>
+          <th colspan="2">Acciones</th>
+        </thead>
+        <tbody>
+          <tr v-for="(data,e) in lista_eventos" :key="e">
+            <td>{{ e + 1}}</td>
+            <td><span class="letra-capital">{{data.tipo_evento}}</span></td>
+            <td><span class="letra-capital">{{data.pantalla_marca}}</span></td>
+            <td><span class="letra-capital">{{data.pantalla_modelo}}</span></td>
+            <td><span class="letra-capital">{{data.pantalla_placa}}</span></td>
+            <td><span class="letra-capital">{{data.usuario_nombre_actualiza}} {{data.usuario_apellido_actualiza}}</span></td>
+            <td><span>{{data.created_at | formato_fecha('DD-MMM-Y')}}</span></td>
+            <td>
+              <span v-show="data.evento_estado == 1" class="f-12 texto-info estado-1">Esperando</span>
+              <span v-show="data.evento_estado == 2" class="f-12 texto-info estado-2" @click="eventoResuelto(data)">Asignado</span>
+              <span v-show="data.evento_estado == 3" class="f-12 texto-info estado-3">Resuelto</span>
+            </td>
+            <td><span>{{data.descripcion}}</span></td>
+
+            <td class="text-center">
+              <i class="mdi mdi-pencil accion-editar" @click="modalEditarEvento(data)"></i>
+            </td>
+            <td>
+              <el-tooltip content="Detalles estado evento" placement="bottom">
+                <i class="mdi mdi-magnify" @click="abrirModalVerDetalle(data)"></i>
+              </el-tooltip>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
-    <table class="table f-12">
-      <thead>
-        <th>#</th>
-        <th>Tipo Evento</th>
-        <th>Marca</th>
-        <th>Modelo</th>
-        <th>Placa</th>
-        <th>Creado por</th>
-        <th>Fecha</th>
-        <th>Estado</th>
-        <th>Descripción</th>
-        <th colspan="2">Acciones</th>
-      </thead>
-      <tbody>
-        <tr v-for="(data,e) in lista_eventos" :key="e">
-          <td>{{ e + 1}}</td>
-          <td><span class="letra-capital">{{data.tipo_evento}}</span></td>
-          <td><span class="letra-capital">{{data.pantalla_marca}}</span></td>
-          <td><span class="letra-capital">{{data.pantalla_modelo}}</span></td>
-          <td><span class="letra-capital">{{data.pantalla_placa}}</span></td>
-          <td><span class="letra-capital">{{data.usuario_nombre_actualiza}} {{data.usuario_apellido_actualiza}}</span></td>
-          <td><span>{{data.created_at | formato_fecha('DD-MMM-Y')}}</span></td>
-          <td>
-            <span v-show="data.evento_estado == 1" class="f-12 texto-info estado-1">Esperando</span>
-            <span v-show="data.evento_estado == 2" class="f-12 texto-info estado-2" @click="eventoResuelto(data)">Asignado</span>
-            <span v-show="data.evento_estado == 3" class="f-12 texto-info estado-3">Resuelto</span>
-          </td>
-          <td><span>{{data.descripcion}}</span></td>
-
-          <td class="text-center">
-            <i class="mdi mdi-pencil accion-editar" @click="modalEditarEvento(data)"></i>
-          </td>
-          <td>
-            <el-tooltip content="Detalles estado evento" placement="bottom">
-              <i class="mdi mdi-magnify" @click="abrirModalVerDetalle(data)"></i>
-            </el-tooltip>
-          </td>
-        </tr>
-      </tbody>
-    </table>
 
     <modal-crear ref="modalCrearEvento" :ruta="ruta" @evento:registrado="listar_eventos_pantalla" :tiposEventos="tiposEventos"/>
 
@@ -93,6 +95,7 @@ export default {
       listaUsuarios:[],
       pruebaEvent:'',
       idEvento:null,
+      isLoading:false,
     }
   },
   computed:{
@@ -101,9 +104,14 @@ export default {
     }
   },
   mounted(){
-    this.listar_eventos_pantalla()
-    this.eventosTipos()
-    this.listarUsuarios()
+    this.isLoading = true;
+    Promise.all([
+      this.listar_eventos_pantalla(),
+      this.eventosTipos(),
+      this.listarUsuarios(),
+    ]).then(res=>{
+      this.isLoading = false
+    })
   },
   methods:{
     async eventualidadResuelta(){

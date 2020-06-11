@@ -2,7 +2,7 @@
   <section class="lista-pantallas">
     <encabezado-datos tituloEncabezado="Listado de Pantallas" tituloBoton="registrar pantalla" @accionBonton="modalRegistrarPantalla"/>
 
-    <div class="row w-100 mt-4">
+    <div class="row w-100 mt-4" v-loading="isLoading">
       <div class="col-md-12">
         <div class="row mb-3">
           <div class="col-md-4">
@@ -95,13 +95,19 @@ export default {
       proveedores:[],
       eliminarPant:'',
       tiposEventos:[],
+      isLoading:false
     }
   },
   mounted(){
-    this.listar_pantallas()
-    this.listarEncargados()
-    this.listarProveedores()
-    this.eventosTipos()
+    this.isLoading = true;
+    Promise.all([
+      this.listar_pantallas(),
+      this.listarEncargados(),
+      this.listarProveedores(),
+      this.eventosTipos(),
+    ]).then(res=>{
+      this.isLoading = false
+    })
   },
   computed:{
     listadoPantallas(){

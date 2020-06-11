@@ -106,6 +106,7 @@ export default {
     },
     toggle(datos){
       this.form = _.cloneDeep(datos);
+      this.form.estado = (datos.estado === 1)?true:false
       this.$refs.ModalEditarPantalla.toggle()
     }
   }
@@ -113,5 +114,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.editar-pantalla{
+  
+}
 </style>
