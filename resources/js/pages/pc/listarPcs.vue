@@ -8,7 +8,7 @@
             <el-input v-model="search" placeholder="Buscar..." clearable></el-input>
           </div>
         </div>
-        <table class="table table-hover">
+        <table class="table table-hover f-12">
           <thead class="thead-light text-center">
             <tr>
               <th>#</th>

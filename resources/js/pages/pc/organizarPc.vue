@@ -1,7 +1,7 @@
 <template>
-  <div id="">
-
-  </div>
+  <section>
+    <h5>organizar pc</h5>
+  </section>
 </template>
 <script>
 export default {

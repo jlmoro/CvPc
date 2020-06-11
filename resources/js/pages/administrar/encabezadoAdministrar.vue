@@ -37,8 +37,16 @@ export default {
     },
 
     async listar_administrables(){
-      const {data} = await axios(`/api/administrar/listar-administrar`)
-      this.administrar = data
+      try {
+        const {data} = await axios(`/api/administrar/listar-administrar`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','Error administrables',data.error)
+          return
+        }
+        this.administrar = data
+      } catch (e) {
+        console.warn(e,"error listar administrables");
+      }
     }
   }
 }

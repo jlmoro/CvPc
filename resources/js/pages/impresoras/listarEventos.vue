@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <table class="table">
+    <table class="table f-12">
       <thead>
         <th>#</th>
         <th>Tipo Evento</th>
@@ -36,9 +36,9 @@
           <td><span class="letra-capital">{{data.usuario_nombre_actualiza}} {{data.usuario_apellido_actualiza}}</span></td>
           <td><span>{{data.created_at | formato_fecha('DD-MMM-Y')}}</span></td>
           <td>
-            <span v-show="data.evento_estado == 1" class="f-14 texto-info estado-1">Esperando</span>
-            <span v-show="data.evento_estado == 2" class="f-14 texto-info estado-2" @click="eventoResuelto(data)">Asignado</span>
-            <span v-show="data.evento_estado == 3" class="f-14 texto-info estado-3">Resuelto</span>
+            <span v-show="data.evento_estado == 1" class="f-13 texto-info estado-1">Esperando</span>
+            <span v-show="data.evento_estado == 2" class="f-13 texto-info estado-2" @click="eventoResuelto(data)">Asignado</span>
+            <span v-show="data.evento_estado == 3" class="f-13 texto-info estado-3">Resuelto</span>
           </td>
           <td><span>{{data.descripcion}}</span></td>
 

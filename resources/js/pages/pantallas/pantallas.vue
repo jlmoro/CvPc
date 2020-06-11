@@ -9,7 +9,7 @@
             <el-input v-model="search" placeholder="Buscar..." clearable></el-input>
           </div>
         </div>
-        <table class="table table-hover">
+        <table class="table table-hover f-12">
           <thead class="thead-light text-center">
             <tr>
               <th>#</th>
@@ -24,7 +24,7 @@
               <th colspan="4">Acciones</th>
             </tr>
           </thead>
-          <tr v-if="listadoPantallas.length" v-for="(data,i) in listadoPantallas" :key="i">
+          <tr v-if="data" v-for="(data,i) in listadoPantallas" :key="i">
             <td>{{i + 1}}</td>
             <td><span class="letra-capital">{{data.marca}}</span></td>
             <td><span class="letra-capital">{{data.modelo}}</span></td>
@@ -32,10 +32,10 @@
             <td>{{data.serial}}</td>
             <td><span class="letra-capital">{{data.nombre_encargado}}</span></td>
             <td><span class="letra-capital">{{data.proveedor}}</span></td>
-            <td>{{data.created_at}}</td>
+            <td>{{data.created_at | formato_fecha('DD-MM-yyyy')}}</td>
             <td class="text-center">
-              <button v-if="data.estado === 1" type="button" class="btn-activo" @click="cambiarEstado(data)" >Activo</button>
-              <button v-else type="button" class="btn-inactivo" @click="cambiarEstado(data)" >Inactivo</button>
+              <button v-if="data.estado === 1" type="button" class="btn-activo f-12" @click="cambiarEstado(data)" >Activo</button>
+              <button v-else type="button" class="btn-inactivo f-12" @click="cambiarEstado(data)" >Inactivo</button>
             </td>
             <td>
               <el-popover placement="bottom" title="Observaciones" width="250" trigger="hover"
@@ -44,13 +44,13 @@
             </el-popover>
           </td>
           <td>
-            <i class="mdi mdi-pencil f-18 acciones btnEditar" @click="modalEditar(data)"></i>
+            <i class="mdi mdi-pencil f-16 acciones btnEditar" @click="modalEditar(data)"></i>
           </td>
           <td>
-            <i class="mdi mdi-delete f-18 acciones btnEliminar" @click="modalEliminar(data)"></i>
+            <i class="mdi mdi-delete f-16 acciones btnEliminar" @click="modalEliminar(data)"></i>
           </td>
           <td>
-            <i class="mdi mdi-calendar f-18 acciones btnEventos" @click="modalCrearEvento(data)"></i>
+            <i class="mdi mdi-calendar f-16 acciones btnEventos" @click="modalCrearEvento(data)"></i>
           </td>
         </tr>
         <tr v-else>

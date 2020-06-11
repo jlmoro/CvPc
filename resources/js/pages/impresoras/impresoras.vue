@@ -11,7 +11,7 @@
             <el-input v-model="search" placeholder="Buscar..." clearable></el-input>
           </div>
         </div>
-        <table class="table table-hover">
+        <table class="table table-hover f-12">
           <thead class="thead-light text-center">
             <tr>
               <th>#</th>
@@ -44,13 +44,13 @@
               </el-popover>
             </td>
             <td>
-              <i class="mdi mdi-pencil f-18 acciones btnEditar" @click="modalEditar(data)"></i>
+              <i class="mdi mdi-pencil f-16 acciones btnEditar" @click="modalEditar(data)"></i>
             </td>
             <td>
-              <i class="mdi mdi-delete f-18 acciones btnEliminar" @click="modalEliminar(data)"></i>
+              <i class="mdi mdi-delete f-16 acciones btnEliminar" @click="modalEliminar(data)"></i>
             </td>
             <td>
-              <i class="mdi mdi-calendar f-18 acciones btnEventos" @click="modalCrearEvento(data)"></i>
+              <i class="mdi mdi-calendar f-16 acciones btnEventos" @click="modalCrearEvento(data)"></i>
             </td>
           </tr>
         </table>

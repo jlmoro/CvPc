@@ -2,10 +2,11 @@
   <section class="encabezado-pc">
     <div>
       <b-tabs content-class="mt-3" justified >
-        <b-tab title="Organizar PC" active @click="pest($event)"><p>I'm the first tab</p></b-tab>
-        <b-tab title="Listar Torres"><p>I'm the second tab</p></b-tab>
-        <b-tab title="Eventos Torre"><p>I'm the tab with the very, very long title</p></b-tab>
+        <b-tab title="Listar Torres" @click="pest(1)"></b-tab>
+        <b-tab title="Organizar PC" active @click="pest(2)"></b-tab>
+        <b-tab title="Eventos Torre" @click="pest(3)"></b-tab>
         <!-- <b-tab title="Disabled" disabled><p>I'm a disabled tab!</p></b-tab> -->
+        <router-view />
       </b-tabs>
     </div>
   </section>
@@ -20,8 +21,25 @@ export default {
     }
   },
   methods: {
-    pest(event){
-      console.log(event,'pestañas 1');
+    pest(num){
+      switch (num) {
+        case 1:
+          this.$router.push({
+            name:'pc.listar'
+          })
+          break;
+        case 2:
+          this.$router.push({
+            name:'pc.organizar'
+          })
+          break;
+        case 3:
+          this.$router.push({
+            name:'eventos.pc'
+          })
+          break;
+        default:
+      }
     }
   }
 }
