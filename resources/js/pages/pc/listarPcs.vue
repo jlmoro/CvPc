@@ -1,6 +1,6 @@
 <template>
   <section class="listar-pcs">
-    <encabezado-datos tituloEncabezado="Lista de PC´s" tituloBoton="registrar pc" @accionBonton="crear_pc"/>
+    <encabezado-datos tituloEncabezado="Lista de Chasis" tituloBoton="registrar chasis" @accionBonton="crear_pc"/>
     <div class="row w-100 mt-4">
       <div class="col-md-12">
         <div class="row mb-3">

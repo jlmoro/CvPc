@@ -1,5 +1,5 @@
 <template >
-  <section>
+  <section v-loading="isLoading">
     <h3 class="mb-2 text-center">Administrables</h3>
 
     <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
@@ -24,10 +24,16 @@ export default {
     return{
       activeName: '',
       administrar:[],
+      isLoading: false,
     }
   },
   mounted(){
-    this.listar_administrables()
+    this.isLoading = true
+    Promise.all([
+      this.listar_administrables()
+    ]).then(res => {
+      this.isLoading = false
+    })
   },
   methods: {
     handleClick(tab, event) {

@@ -2,8 +2,8 @@
   <section class="encabezado-pc">
     <div>
       <b-tabs content-class="mt-3" justified >
-        <b-tab title="Listar Torres" @click="pest(1)"></b-tab>
-        <b-tab title="Organizar PC" active @click="pest(2)"></b-tab>
+        <b-tab title="Lista Chasis" @click="pest(1)"></b-tab>
+        <b-tab title="Organizar PC" @click="pest(2)"></b-tab>
         <b-tab title="Eventos Torre" @click="pest(3)"></b-tab>
         <!-- <b-tab title="Disabled" disabled><p>I'm a disabled tab!</p></b-tab> -->
         <router-view />
@@ -16,7 +16,7 @@ export default {
   name: "encabezadoPc",
   data(){
     return{
-      activeName: 'first',
+      // activeName: 'first',
       model: null
     }
   },

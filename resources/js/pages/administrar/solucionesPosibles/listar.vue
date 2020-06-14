@@ -1,5 +1,5 @@
 <template>
-  <section class="solucion-poible">
+  <section class="solucion-poible" v-loading="isLoading">
 
     <encabezadoDatos tituloEncabezado="Soluciones Posibles" tituloBoton="registrar solución" @accionBonton="modalRegistrarSolucion"/>
 
@@ -55,10 +55,7 @@ export default {
     CrearTipo:()=>import('./components/registrarSolucion'),
     EditarTipo:()=>import('./components/editarSolucionPosible'),
   },
-  mounted() {
-    this.eventosTipos()
-    this.listarSolucionesPosibles()
-  },
+
   data(){
     return{
       ruta:'/api/administrar/solucion-posible',
@@ -66,7 +63,17 @@ export default {
       eliminarSol:'',
       listarSoluciones:[],
       tiposEventos:[],
+      isLoading:false
     }
+  },
+  mounted() {
+    this.isLoading = true
+    Promise.all([
+      this.eventosTipos(),
+      this.listarSolucionesPosibles(),
+    ]).then(res => {
+      this.isLoading = false
+    })
   },
   methods: {
     async eliminarSolucionPosible(){

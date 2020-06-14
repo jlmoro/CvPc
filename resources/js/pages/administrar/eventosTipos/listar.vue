@@ -1,5 +1,5 @@
 <template>
-  <section class="eventos-tipos">
+  <section class="eventos-tipos" v-loading="isLoading">
 
     <encabezadoDatos tituloEncabezado="Tipos Eventos" tituloBoton="nuevo tipo" @accionBonton="modalCrearTipoEvento"/>
 
@@ -41,15 +41,22 @@ export default {
     CrearTipo:()=>import('./components/crearTipoEvento'),
     EditarTipo:()=>import('./components/editarTipoEvento'),
   },
-  mounted() {
-    this.listarEventosTipos()
-  },
+
   data(){
     return{
       ruta:'/api/administrar/eventos-tipos',
       dataEventosTipos:[],
-      eliminarTipo:''
+      eliminarTipo:'',
+      isLoading:false
     }
+  },
+  mounted() {
+    this.isLoading = true
+    Promise.all([
+      this.listarEventosTipos()
+    ]).then(res => {
+      this.isLoading = false
+    })
   },
   methods: {
     async listarEventosTipos(){

@@ -1,5 +1,5 @@
 <template>
-  <section class="eventos-tipos">
+  <section class="eventos-tipos" v-loading="isLoading">
 
     <encabezadoDatos tituloEncabezado="Perifericos" tituloBoton="nuevo periferico" @accionBonton="modalCrearPeriferico"/>
 
@@ -41,15 +41,21 @@ export default {
     CrearTipo:()=>import('./components/registrarPerifericos'),
     EditarTipo:()=>import('./components/editarPerifericos'),
   },
-  mounted() {
-    this.listarPerifericos()
-  },
   data(){
     return{
       ruta:'/api/administrar/perifericos',
       dataPerifericos:[],
-      eliminarPeri:''
+      eliminarPeri:'',
+      isLoading:false,
     }
+  },
+  mounted() {
+    this.isLoading = true
+    Promise.all([
+      this.listarPerifericos()
+    ]).then(res => {
+      this.isLoading = false
+    })
   },
   methods: {
     async listarPerifericos(){

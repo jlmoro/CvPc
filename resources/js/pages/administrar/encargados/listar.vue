@@ -1,5 +1,5 @@
 <template >
-  <section class="listar-encargados">
+  <section class="listar-encargados" v-loading="isLoading">
 
     <encabezadoDatos tituloEncabezado="Encargados" tituloBoton="nuevo encargado" @accionBonton="crear_encargado"/>
 
@@ -61,12 +61,18 @@ export default {
       lista_areas:[],
       encargados:[],
       dialogFormVisible: false,
-      eliminarE:''
+      eliminarE:'',
+      isLoading:false
     }
   },
   mounted(){
-    this.listar_areas()
-    this.listar_encargados()
+    this.isLoading = true
+    Promise.all([
+      this.listar_areas(),
+      this.listar_encargados(),
+    ]).then(res => {
+      this.isLoading = false
+    })
   },
   methods:{
     async eliminandoE(){
