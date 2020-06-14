@@ -49,8 +49,8 @@ Route::group(['middleware' =>'auth:api'], function (){
             $controlador = "EncargadosController";
             Route::post("crear-encargado","$controlador@crear_encargado");
             Route::get("listar-encargados","$controlador@listar_encargados");
+            Route::delete("{id_encargado}/eliminar-encargado","$controlador@eliminar_encargado");
             // Route::put("editar-invitado","$controlador@editar_invitado");
-            // Route::delete("{id_invitado}/eliminar-invitado","$controlador@eliminar_invitado");
         });
         Route::prefix('solucion-posible')->group( function(){
             $controlador = "SolucionesPosiblesController";

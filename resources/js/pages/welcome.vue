@@ -53,13 +53,13 @@
                 <!-- <login-with-github /> -->
               </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-md-12">
                 <router-link :to="{ name: 'password.request' }" class="small ml-auto my-auto">
                   {{ $t('forgot_password') }}
                 </router-link>
               </div>
-            </div>
+            </div> -->
           </form>
         </card>
       </div>

@@ -10,15 +10,17 @@
         <div class="row w-100 mb-5 mt-2">
           <div class="col-12 text-center">
             <croppa
-            placeholder="Seleccione una imagen"
-            :placeholder-font-size="14"
-            :width="169"
-            :height="158"
-            :show-remove-button="true"
-            :prevent-white-space="true"
-            ref="CroppaEncargado"
-            >
-          </croppa>
+              placeholder="Seleccione una imagen"
+              :placeholder-font-size="14"
+              :width="169"
+              :height="158"
+              :show-remove-button="true"
+              :prevent-white-space="true"
+              ref="CroppaEncargado"
+              initial-size="natural"
+              initial-position="100% 20%"
+              <img crossOrigin="anonymous" :src="`/storage/${encargado.foto}`" slot="initial"
+            />
         </div>
       </div>
       <div class="row w-100">
@@ -158,6 +160,12 @@ export default {
     },
     toggle(datos){
       this.encargado = _.cloneDeep(datos);
+      if (this.encargado.foto == null) {
+        this.encargado.foto = `/img/user_default.jpg`
+      }else {
+        this.encargado.foto = this.encargado.foto
+      }
+      console.log(this.encargado)
       this.$refs.modalEncargado.toggle()
     }
   }

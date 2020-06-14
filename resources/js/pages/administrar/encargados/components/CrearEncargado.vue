@@ -14,10 +14,13 @@
             :placeholder-font-size="14"
             :width="169"
             :height="158"
+            :quality="1"
             :show-remove-button="true"
             :prevent-white-space="true"
+            initial-position="100% 20%"
             ref="CroppaEncargado"
             >
+            <!-- ref="CroppaEncargado" -->
           </croppa>
         </div>
       </div>
@@ -116,6 +119,7 @@ export default {
         altInput: true,
         altFormat: "F j, Y",
         dateFormat: "Y-m-d",
+        maxDate: 'today'
       },
       tipo_documento: [{
         value: '1',

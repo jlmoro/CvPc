@@ -143,13 +143,11 @@ export default {
           return
         }
         this.$Helper.notificacion('success','Eliminado Correctamente',data.mensaje)
-
-      } catch (e) {
-        console.warn(e);
-      } finally {
         this.listar_impresoras()
         this.$refs.modalEliminar.toggle()
-      }
+      } catch (e) {
+        console.warn(e);
+      }  
     },
     modalEliminar(dato){
       this.eliminarImp = dato

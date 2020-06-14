@@ -31,7 +31,7 @@
           <hr style="width: 194px; border-top-color: #00000038;">
           <div class="row">
             <div class="col-md-12 card-pie">
-              <span class="mdi mdi-magnify ver-mas"></span>
+              <!-- <span class="mdi mdi-magnify ver-mas"></span> -->
             </div>
           </div>
         </div>
@@ -78,14 +78,13 @@ export default {
     async eliminandoE(){
       try {
         const {data} = await axios.delete(`${this.ruta}/${this.eliminarE.id}/eliminar-encargado`)
-        if (data.error) {
           if (data.error) {
             this.$Helper.notificacion('warning','Error al eliminar',data.error)
             return
           }
+          this.$Helper.notificacion('success','Encargado Eliminado',data.mensaje)
           this.listar_encargados()
-        }
-
+          this.$refs.modalEliminarEncargado.toggle()
       } catch (e) {
         console.warn(e);
       }
