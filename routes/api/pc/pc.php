@@ -48,6 +48,14 @@ Route::group(['middleware' =>'auth:api'], function (){
       Route::delete("{id_fuente}/eliminar-fuente","$controlador@eliminar_fuente");
     });
 
+    Route::prefix('equipo')->group( function(){
+      $controlador = "PcController";
+      Route::post("registrar-equipo","$controlador@registrar_equipo");
+      Route::get("listar-equipo","$controlador@listar_equipo");
+      Route::put("editar-fuente","$controlador@editar_fuente");
+      Route::delete("{id_equipo}/eliminando-equipo","$controlador@eliminando_equipo");
+    });
+
     // Route::prefix('perifericos')->group( function(){
     //     $controlador = "PerifericosTiposController";
     //     Route::post("registrar-periferico","$controlador@registrar_periferico");

@@ -11,10 +11,67 @@ use App\Models\{
   MemoriaRam,
   PlacaBase,
   DiscoDuro,
+  Equipo,
 };
 
 class PcController extends Controller
 {
+  public function eliminando_equipo($id_equipo)
+  {
+    try {
+      return DB::transaction(function() use($id_equipo){
+        $equipo = Equipo::find($id_equipo);
+        $equipo->delete();
+
+        return[
+          'mensaje'=>config('domains.mensajes.eliminado')
+        ];
+      },5);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,'error al eliminar equipo');
+    }
+
+  }
+  public function registrar_equipo(Request $request)
+  {
+    try {
+      return DB::transaction(function() use($request){
+
+        $placa = Equipo::where('id_chasis',$request->id_chasis)->count();
+
+        if ($placa > 0) {
+          return[
+            'mensaje2'=>'No es posible asignar ese chasis, pues ya está siendo usado'
+          ];
+        }else {
+
+          $request['created_by'] = auth()->user()->id;
+          $request['updated_by'] = auth()->user()->id;
+          Equipo::create($request->all());
+
+          return[
+            'mensaje'=>config('domains.mensajes.creado')
+          ];
+        }
+
+      },5);
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al registrar equipo");
+    }
+  }
+
+  public function listar_equipo()
+  {
+    try {
+
+      return DB::select($this->ejecutar_sql("pc/listar_equipo"));
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al listar equipo");
+    }
+  }
+
   public function listar_disco()
   {
     try {

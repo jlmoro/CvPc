@@ -41,6 +41,11 @@ export default [
         component: page('pc/listarPerifericos')
       },
       {
+        path: 'organizarPc',
+        name: 'organizar.listar',
+        component: page('pc/organizarPc')
+      },
+      {
         path: 'eventos',
         name: 'eventos.pc',
         component: page('pc/listarEventos')

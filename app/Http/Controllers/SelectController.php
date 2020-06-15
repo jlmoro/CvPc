@@ -13,10 +13,90 @@ use App\Models\{
   Pantalla,
   Impresora,
   Users,
+  FuentePoder,
+  Procesador,
+  MemoriaRam,
+  PlacaBase,
+  DiscoDuro,
+  Equipo,
+  PerifericosTipos,
 };
 
 class SelectController extends Controller
 {
+  public function listar_perifericos()
+  {
+    try {
+
+      return PerifericosTipos::select('id','nombre')->get();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e);
+    }
+  }
+  public function listar_disco()
+  {
+    try {
+
+      return DiscoDuro::select('id','marca','capacidad')->get();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e);
+    }
+  }
+  public function listar_board()
+  {
+    try {
+
+      return PlacaBase::select('id','marca_placa_base','modelo_placa')->get();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e);
+    }
+  }
+  public function listar_ram()
+  {
+    try {
+
+      return MemoriaRam::select('id','marca','modelo_tecnologia','capacidad')->get();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e);
+    }
+  }
+  public function listar_procesador()
+  {
+    try {
+
+      return Procesador::select('id','marca','modelo_tecnologia')->get();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e);
+    }
+  }
+  public function listar_fuentes()
+  {
+    try {
+
+      return FuentePoder::select('id','marca','potencia')->get();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e);
+    }
+  }
+  public function listar_chasis()
+  {
+    try {
+
+      return Pc::select('id','placa','marca')
+      ->where('estado',1)
+      ->orderBy('created_at','DESC')
+      ->get();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e);
+    }
+  }
   public function listar_usuarios()
   {
     try {

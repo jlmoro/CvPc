@@ -11,5 +11,14 @@ Route::group(['middleware' =>'auth:api'], function (){
         Route::get("listar-pantallas","$controlador@listar_pantallas");
         Route::get("listar-impresoras","$controlador@listar_impresoras");
         Route::get("listar-usuarios","$controlador@listar_usuarios");
+
+        Route::get("listar-chasis","$controlador@listar_chasis");
+        Route::get("listar-fuentes","$controlador@listar_fuentes");
+        Route::get("listar-procesador","$controlador@listar_procesador");
+        Route::get("listar-ram","$controlador@listar_ram");
+        Route::get("listar-board","$controlador@listar_board");
+        Route::get("listar-disco","$controlador@listar_disco");
+        Route::get("listar-perifericos","$controlador@listar_perifericos");
+
     });
 });

@@ -9,7 +9,8 @@
         <b-tab title="Placas Base" @click="pest(5)"></b-tab>
         <b-tab title="Disco SSD/HDD" @click="pest(6)"></b-tab>
         <b-tab title="Prifericos" @click="pest(7)"></b-tab>
-        <b-tab title="Eventos Torre" @click="pest(8)"></b-tab>
+        <b-tab title="Equipo" @click="pest(8)"></b-tab>
+        <b-tab title="Eventos Torre" @click="pest(9)"></b-tab>
         <router-view />
       </b-tabs>
     </div>
@@ -63,6 +64,11 @@ export default {
           })
           break;
         case 8:
+          this.$router.push({
+            name:'organizar.listar'
+          })
+          break;
+        case 9:
           this.$router.push({
             name:''
           })
