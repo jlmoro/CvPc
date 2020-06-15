@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class PlacaBase extends Model
 {
   protected $table = 'placa_base';
-  protected $primary_key = 'id'
+  protected $primary_key = 'id';
   protected $guarded = [];
 }

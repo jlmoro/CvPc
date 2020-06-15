@@ -23,5 +23,38 @@ Route::group(['middleware' =>'auth:api'], function (){
       Route::put("editar-fuente","$controlador@editar_fuente");
       Route::delete("{id_fuente}/eliminar-fuente","$controlador@eliminar_fuente");
     });
+
+    Route::prefix('memoria')->group( function(){
+      $controlador = "PcController";
+      Route::post("registrar-memoria","$controlador@registrar_memoria");
+      Route::get("listar-memorias","$controlador@listar_memorias");
+      Route::put("editar-fuente","$controlador@editar_fuente");
+      Route::delete("{id_fuente}/eliminar-fuente","$controlador@eliminar_fuente");
+    });
+
+    Route::prefix('board')->group( function(){
+      $controlador = "PcController";
+      Route::post("registrar-board","$controlador@registrar_board");
+      Route::get("listar-board","$controlador@listar_board");
+      Route::put("editar-fuente","$controlador@editar_fuente");
+      Route::delete("{id_fuente}/eliminar-fuente","$controlador@eliminar_fuente");
+    });
+
+    Route::prefix('disco')->group( function(){
+      $controlador = "PcController";
+      Route::post("registrar-board","$controlador@registrar_board");
+      Route::get("listar-discos","$controlador@listar_disco");
+      Route::put("editar-fuente","$controlador@editar_fuente");
+      Route::delete("{id_fuente}/eliminar-fuente","$controlador@eliminar_fuente");
+    });
+
+    // Route::prefix('perifericos')->group( function(){
+    //     $controlador = "PerifericosTiposController";
+    //     Route::post("registrar-periferico","$controlador@registrar_periferico");
+    //     Route::get("listar-perifericos","$controlador@listar_perifericos");
+    //     Route::put("editar-periferico","$controlador@editar_periferico");
+    //     Route::delete("{id_periferico}/eliminar-periferico","$controlador@eliminar_periferico");
+    // });
+
   });
 });

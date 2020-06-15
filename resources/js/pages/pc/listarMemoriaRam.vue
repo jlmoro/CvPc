@@ -1,6 +1,6 @@
 <template>
-  <section class="listar-procesadores" v-loading="isLoading">
-    <encabezado-datos tituloEncabezado="Procesadores" tituloBoton="registrar procesador" @accionBonton="crear_procesador"/>
+  <section class="listar-memorias" v-loading="isLoading">
+    <encabezado-datos tituloEncabezado="Memoria RAM" tituloBoton="registrar RAM" @accionBonton="crear_memoria"/>
     <div class="row w-100 mt-4">
       <div class="col-md-12">
         <div class="row mb-3">
@@ -14,8 +14,9 @@
               <th>#</th>
               <th>Marca</th>
               <th>Modelo/Tecnología</th>
+              <th>Capacidad</th>
               <th>Frecuencia</th>
-              <th>Generación</th>
+              <th>Serial</th>
               <th>Fecha Registro</th>
               <th colspan="3">Acciones</th>
             </tr>
@@ -24,8 +25,9 @@
             <td>{{i + 1}}</td>
             <td><span class="letra-capital">{{data.marca}}</span></td>
             <td class="text-center">{{data.modelo_tecnologia}}</td>
-            <td class="text-center">{{data.frecuencia}} GHz</td>
-            <td v-if="data.generacion !== null"><span class="letra-capital">{{data.generacion}}</span></td>
+            <td class="text-center">{{data.capacidad}} GB</td>
+            <td class="text-center">{{data.frecuencia}} MHz</td>
+            <td v-if="data.serial !== null"><span class="letra-capital">{{data.serial}}</span></td>
             <td v-else><span class="letra-capital">no registra</span></td>
             <td>{{data.created_at | formato_fecha('DD-MMM-yyyy')}}</td>
             <td>
@@ -51,13 +53,14 @@
 
 <modal-eliminar ref="modalEliminar"
 titulo="eliminar impresora"
-:cuerpo="`¿Seguro desea eliminar la fuente ${eliminarPc.marca} ${eliminarPc.modelo_tecnologia}?`"
+:cuerpo="`¿Seguro desea eliminar la fuente ${eliminarRam.marca} ${eliminarRam.modelo_tecnologia}
+${eliminarRam.capacidad} GB?`"
 @eliminar="eliminandoPc"
 />
 
-<modal-crear ref="modalCrearFuente" :ruta="ruta" @procesador:registrado="listar_procesador" />
+<modal-crear ref="modalCrearFuente" :ruta="ruta" @procesador:registrado="listar_memoria" />
 
-<modal-editar ref="modalEditarPc" :ruta="ruta" @fuente:actualizada="listar_procesador" />
+<modal-editar ref="modalEditarPc" :ruta="ruta" @fuente:actualizada="listar_memoria" />
 
 </section>
 </template>
@@ -70,36 +73,36 @@ export default {
   },
   data(){
     return{
-      ruta:'/api/pc/procesador',
-      procesadores:[],
+      ruta:'/api/pc/memoria',
+      memorias:[],
       search: '',
-      eliminarPc:'',
+      eliminarRam:'',
       isLoading:false
     }
   },
   mounted(){
     this.isLoading = true
     Promise.all([
-      this.listar_procesador(),
+      this.listar_memoria(),
     ]).then(res => {
       this.isLoading = false
     })
   },
   computed:{
     listadoProcesadores(){
-      return this.procesadores.filter(data => !this.search || data.marca.toLowerCase().includes(this.search.toLowerCase()))
+      return this.memorias.filter(data => !this.search || data.marca.toLowerCase().includes(this.search.toLowerCase()))
     }
   },
   methods:{
     async eliminandoPc(){
       try {
-        const {data} = await axios.delete(`${this.ruta}/${this.eliminarPc.id}/eliminar-fuente`)
+        const {data} = await axios.delete(`${this.ruta}/${this.eliminarRam.id}/eliminar-fuente`)
         if (data.error) {
           this.$Helper.notificacion('warning','Error al eliminar impresora',data.error)
           return
         }
         this.$Helper.notificacion('success','Eliminado Correctamente',data.mensaje)
-        this.listar_procesador()
+        this.listar_memoria()
         this.$refs.modalEliminar.toggle()
 
       } catch (e) {
@@ -114,26 +117,26 @@ export default {
           return
         }
         this.$Helper.notificacion('success','Estado Actualizado',data.mensaje)
-        this.listar_procesador()
+        this.listar_memoria()
       } catch (e) {
         console.warn(e);
       }
     },
     modalEliminar(dato){
-      this.eliminarPc = dato
+      this.eliminarRam = dato
       this.$refs.modalEliminar.toggle()
     },
-    crear_procesador(){
+    crear_memoria(){
       this.$refs.modalCrearFuente.toggle()
     },
-    async listar_procesador(){
+    async listar_memoria(){
       try {
-        const {data} = await axios(`${this.ruta}/listar-procesadores`)
+        const {data} = await axios(`${this.ruta}/listar-memorias`)
         if (data.error) {
           this.$Helper.notificacion('warning','Error al listar',data.error)
           return
         }
-        this.procesadores = data
+        this.memorias = data
       } catch (e){
         console.warn(e);
       }
@@ -170,7 +173,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.listar-procesadores{
+.listar-memorias{
   .estado{
     border-radius: 5px;
     padding: 2px;

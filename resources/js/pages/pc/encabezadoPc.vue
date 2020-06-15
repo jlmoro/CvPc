@@ -44,22 +44,22 @@ export default {
           break;
         case 4:
           this.$router.push({
-            name:''
+            name:'ram.listar'
           })
           break;
         case 5:
           this.$router.push({
-            name:''
+            name:'board.listar'
           })
           break;
         case 6:
           this.$router.push({
-            name:''
+            name:'disco.listar'
           })
           break;
         case 7:
           this.$router.push({
-            name:''
+            name:'perife.listar'
           })
           break;
         case 8:

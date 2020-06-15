@@ -1,6 +1,6 @@
 <template>
-  <section class="listar-procesadores" v-loading="isLoading">
-    <encabezado-datos tituloEncabezado="Procesadores" tituloBoton="registrar procesador" @accionBonton="crear_procesador"/>
+  <section class="listar-boards" v-loading="isLoading">
+    <encabezado-datos tituloEncabezado="Placas Base" tituloBoton="registrar placa base" @accionBonton="crear_board"/>
     <div class="row w-100 mt-4">
       <div class="col-md-12">
         <div class="row mb-3">
@@ -20,7 +20,7 @@
               <th colspan="3">Acciones</th>
             </tr>
           </thead>
-          <tr v-for="(data,i) in listadoProcesadores" :key="i">
+          <tr v-for="(data,i) in listadoBoards" :key="i">
             <td>{{i + 1}}</td>
             <td><span class="letra-capital">{{data.marca}}</span></td>
             <td class="text-center">{{data.modelo_tecnologia}}</td>
@@ -55,9 +55,9 @@ titulo="eliminar impresora"
 @eliminar="eliminandoPc"
 />
 
-<modal-crear ref="modalCrearFuente" :ruta="ruta" @procesador:registrado="listar_procesador" />
+<modal-crear ref="modalCrearFuente" :ruta="ruta" @procesador:registrado="listar_board" />
 
-<modal-editar ref="modalEditarPc" :ruta="ruta" @fuente:actualizada="listar_procesador" />
+<modal-editar ref="modalEditarPc" :ruta="ruta" @fuente:actualizada="listar_board" />
 
 </section>
 </template>
@@ -70,8 +70,8 @@ export default {
   },
   data(){
     return{
-      ruta:'/api/pc/procesador',
-      procesadores:[],
+      ruta:'/api/pc/board',
+      boards:[],
       search: '',
       eliminarPc:'',
       isLoading:false
@@ -80,14 +80,14 @@ export default {
   mounted(){
     this.isLoading = true
     Promise.all([
-      this.listar_procesador(),
+      this.listar_board(),
     ]).then(res => {
       this.isLoading = false
     })
   },
   computed:{
-    listadoProcesadores(){
-      return this.procesadores.filter(data => !this.search || data.marca.toLowerCase().includes(this.search.toLowerCase()))
+    listadoBoards(){
+      return this.boards.filter(data => !this.search || data.marca.toLowerCase().includes(this.search.toLowerCase()))
     }
   },
   methods:{
@@ -99,7 +99,7 @@ export default {
           return
         }
         this.$Helper.notificacion('success','Eliminado Correctamente',data.mensaje)
-        this.listar_procesador()
+        this.listar_board()
         this.$refs.modalEliminar.toggle()
 
       } catch (e) {
@@ -114,7 +114,7 @@ export default {
           return
         }
         this.$Helper.notificacion('success','Estado Actualizado',data.mensaje)
-        this.listar_procesador()
+        this.listar_board()
       } catch (e) {
         console.warn(e);
       }
@@ -123,17 +123,17 @@ export default {
       this.eliminarPc = dato
       this.$refs.modalEliminar.toggle()
     },
-    crear_procesador(){
+    crear_board(){
       this.$refs.modalCrearFuente.toggle()
     },
-    async listar_procesador(){
+    async listar_board(){
       try {
-        const {data} = await axios(`${this.ruta}/listar-procesadores`)
+        const {data} = await axios(`${this.ruta}/listar-board`)
         if (data.error) {
           this.$Helper.notificacion('warning','Error al listar',data.error)
           return
         }
-        this.procesadores = data
+        this.boards = data
       } catch (e){
         console.warn(e);
       }
@@ -170,7 +170,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.listar-procesadores{
+.listar-boards{
   .estado{
     border-radius: 5px;
     padding: 2px;

@@ -8,10 +8,46 @@ use App\Models\{
   Pc,
   FuentePoder,
   Procesador,
+  MemoriaRam,
+  PlacaBase,
+  DiscoDuro,
 };
 
 class PcController extends Controller
 {
+  public function listar_disco()
+  {
+    try {
+
+      return DiscoDuro::all();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al listar board");
+    }
+  }
+
+  public function listar_board()
+  {
+    try {
+
+      return PlacaBase::all();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al listar board");
+    }
+  }
+
+  public function listar_memorias()
+  {
+    try {
+
+      return MemoriaRam::all();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al listar RAM");
+    }
+
+  }
 
   public function registrar_procesador(Request $request)
   {
