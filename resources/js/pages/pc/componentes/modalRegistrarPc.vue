@@ -1,5 +1,5 @@
 <template>
-  <section class="crear-pc" v-loading="isLoading">
+  <section class="crear-pc">
     <modal ref="ModalRegistrarPc">
       <div slot="header" class="row">
         <div class="col-12">
@@ -78,23 +78,20 @@ export default {
         encargado:null,
         proveedor:null,
         estado:true,
-        isLoading:false
       }
     }
   },
   methods:{
     async guardarPc(){
       try {
-        this.isLoading = true
         this.form.estado = (this.form.estado === true)?1:0
         const {data} = await axios.post(`${this.ruta}/registrar-pc`,this.form)
         if (data.error) {
-          this.$Helper.notificacion('warning','Error registrando pc',data.error)
+          this.$Helper.notificacion('warning','Error registrando chasis',data.error)
           return
         }
-        this.$Helper.notificacion('success','PC Registrado',data.mensaje)
         this.$emit('pc:creado')
-        this.isLoading = false
+        this.$Helper.notificacion('success','Chasis Registrado',data.mensaje)
         this.$refs.ModalRegistrarPc.toggle()
 
       } catch (e) {

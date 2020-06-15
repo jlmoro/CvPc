@@ -3,7 +3,7 @@
     <modal ref="ModalCrearImpresora">
       <div slot="header" class="row">
         <div class="col-12">
-          <h5>Editar PC</h5>
+          <h5>Editar Chasis</h5>
         </div>
       </div>
       <div slot="body" class="row w-100">
@@ -106,6 +106,7 @@ export default {
     },
     toggle(datos){
       this.form = _.cloneDeep(datos);
+      this.form.estado = (datos.estado === 1)?true:false
       this.$refs.ModalCrearImpresora.toggle()
     }
   }

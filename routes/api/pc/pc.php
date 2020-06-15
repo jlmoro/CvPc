@@ -7,5 +7,7 @@ Route::group(['middleware' =>'auth:api'], function (){
     Route::put("{id_pc}/cambiar-estado","$controlador@cambiar_estado");
     Route::get("listar-pc","$controlador@listar_pc");
     Route::delete("{id_pc}/eliminar-pc","$controlador@eliminar_pc");
+
+    
   });
 });

@@ -8,5 +8,8 @@ class Pc extends Model
 {
     protected $table = 'pc';
     protected $primaryKey = 'id';
-    protected $guarded = [];
+    protected $guarded = [
+      'encargado',
+      'proveedor'
+    ];
 }
