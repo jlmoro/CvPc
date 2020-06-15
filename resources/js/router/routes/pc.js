@@ -11,9 +11,14 @@ export default [
         component: page('pc/listarPcs'),
       },
       {
-        path: 'organizar',
-        name: 'pc.organizar',
-        component: page('pc/organizarPc')
+        path: 'fuentes',
+        name: 'fuentes.listar',
+        component: page('pc/listarFuentes')
+      },
+      {
+        path: 'procesador',
+        name: 'procesador.listar',
+        component: page('pc/listarProcesadores')
       },
       {
         path: 'eventos',
