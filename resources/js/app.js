@@ -8,7 +8,6 @@ import moment from 'moment'
 import Funciones from './Funciones'
 // import filters from './filters'
 
-
 import '~/plugins'
 import '~/components'
 import './filters'
@@ -19,6 +18,7 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
+  el: '#app',
   i18n,
   store,
   router,
