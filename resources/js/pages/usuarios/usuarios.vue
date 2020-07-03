@@ -38,8 +38,8 @@
       </div>
     </div>
 
-    <modal-crear ref="modalCrearProveedor" :ruta="ruta" @proveedor:creado="listar_usuarios"/>
-    <modal-editar ref="modalEditarProveedor" :ruta="ruta" @proveedor:actualizado="listar_usuarios"/>
+    <modal-crear ref="modalCrearProveedor" :ruta="ruta" @proveedor:creado="listar_usuarios" :areas="areas"/>
+    <modal-editar ref="modalEditarProveedor" :ruta="ruta" @proveedor:actualizado="listar_usuarios" :areas="areas"/>
 
     <modal-eliminar ref="ModalEliminar"
     titulo="eliminar proveedor"
@@ -59,6 +59,7 @@ export default {
     return{
       ruta:'/api/usuarios',
       usuarios:[],
+      areas:[],
       eliminarProv:'',
       isLoading:false,
     }
@@ -66,7 +67,8 @@ export default {
   mounted(){
     this.isLoading = true
     Promise.all([
-      this.listar_usuarios()
+      this.listar_usuarios(),
+      this.listar_areas(),
     ]).then(res=>{
       this.isLoading = false
     })
@@ -92,6 +94,20 @@ export default {
     modalEliminar(dato){
       this.eliminarProv = dato
       this.$refs.ModalEliminar.toggle()
+    },
+    async listar_areas(){
+      try {
+
+        const {data} = await axios(`/api/select/listar-areas`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','Error Áreas',data.error)
+          return
+        }
+        this.areas = data
+
+      } catch (e) {
+        return console.warn(e);
+      }
     },
     async listar_usuarios(){
       try {

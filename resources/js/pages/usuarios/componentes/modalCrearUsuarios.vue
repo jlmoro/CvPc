@@ -60,8 +60,14 @@
     <div class="row w-100 mt-1">
       <div class="col-6">
         <label for="area">Area:</label>
-        <el-input type="text" placeholder="Area" v-model="form.area" maxlength="30" show-word-limit >
-        </el-input>
+        <el-select v-model="value" filterable clearable placeholder="Select">
+          <el-option
+            v-for="(item,a) in areas"
+            :key="a"
+            :label="item.nombre"
+            :value="item.id">
+          </el-option>
+        </el-select>
       </div>
       <div class="col-6">
         <label for="rol">Rol:</label>
@@ -72,12 +78,12 @@
     <div class="row w-100 mt-1">
       <div class="col-6">
         <label for="password">Contraseña:</label>
-        <el-input type="text" placeholder="Pass" v-model="form.password" maxlength="30" show-word-limit >
+        <el-input type="password" placeholder="Pass" v-model="form.password" maxlength="30" show-word-limit >
         </el-input>
       </div>
       <div class="col-6">
         <label for="cc">Confirmar Contraseña:</label>
-        <el-input type="text" placeholder="C Pass" v-model="form.cc" maxlength="30" show-word-limit >
+        <el-input type="password" placeholder="C Pass" v-model="form.cc" maxlength="30" show-word-limit >
         </el-input>
       </div>
     </div>
@@ -93,13 +99,31 @@
 <script>
 export default {
   props:[
-    'ruta'
+    'ruta',
+    'areas'
   ],
   data(){
     return{
       form:{
         logo:'',
       },
+      options: [{
+        value: 'Option1',
+        label: 'Option1'
+      }, {
+        value: 'Option2',
+        label: 'Option2'
+      }, {
+        value: 'Option3',
+        label: 'Option3'
+      }, {
+        value: 'Option4',
+        label: 'Option4'
+      }, {
+        value: 'Option5',
+        label: 'Option5'
+      }],
+      value: ''
     }
   },
   methods:{
