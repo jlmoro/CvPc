@@ -4,43 +4,48 @@
     <encabezadoDatos tituloEncabezado="Encargados" tituloBoton="nuevo encargado" @accionBonton="crear_encargado"/>
 
     <div class="row">
-      <div v-for="(data,e) in encargados" :key="e" class="col-md-4">
-        <div class="card-padre">
-          <div class="row">
-            <div class="col-md-12 card-encabezado">
-              <span class="letra-capital f-16">{{data.documento}}</span>
-              <div class="card-acciones">
-                <span class="mdi mdi-pencil editar-user" @click="editarEncargado(data)"></span>
-                <span class="mdi mdi-delete eliminar-user" @click="modalEliminar(data)"></span>
+      <div class="col-md-12">
+        <div class="row">
+          <div v-for="(data,e) in encargados" :key="e" class="col-md-4">
+            <div class="card-padre">
+              <div class="row">
+                <div class="col-md-12 card-encabezado">
+                  <span class="letra-capital f-16">{{data.documento}}</span>
+                  <div class="card-acciones">
+                    <span class="mdi mdi-pencil editar-user" @click="editarEncargado(data)"></span>
+                    <span class="mdi mdi-delete eliminar-user" @click="modalEliminar(data)"></span>
+                  </div>
+                </div>
+              </div>
+              <hr style="border-top-color: #0000003b;">
+              <div class="row">
+                <div class="col-md-12">
+                  <img v-if="data.foto != null"  class="img-user" :src="`/storage/${data.foto}`"/>
+                  <img v-else class="img-user" src="/img/user_default.jpg"/>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <span class="letra-capital f-14">{{data.nombre_completo}}</span> -
+                  <span class="f-12">{{data.telefono}}</span>
+                </div>
+              </div>
+              <hr style="width: 194px; border-top-color: #00000038;">
+              <div class="row">
+                <div class="col-md-12 card-pie">
+                  <!-- <span class="mdi mdi-magnify ver-mas"></span> -->
+                </div>
               </div>
             </div>
-          </div>
-          <hr style="border-top-color: #0000003b;">
-          <div class="row">
-            <div class="col-md-12">
-              <img v-if="data.foto != null"  class="img-user" :src="`/storage/${data.foto}`"/>
-              <img v-else class="img-user" src="/img/user_default.jpg"/>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <span class="letra-capital f-14">{{data.nombre_completo}}</span> -
-              <span class="f-12">{{data.telefono}}</span>
-            </div>
-          </div>
-          <hr style="width: 194px; border-top-color: #00000038;">
-          <div class="row">
-            <div class="col-md-12 card-pie">
-              <!-- <span class="mdi mdi-magnify ver-mas"></span> -->
-            </div>
+
           </div>
         </div>
       </div>
     </div>
     <modal-eliminar ref="modalEliminarEncargado"
-      titulo="eliminar encargado"
-      :cuerpo="`¿Desea eliminar el encargado(a) ${eliminarE.nombre_completo}?`"
-      @eliminar="eliminandoE"
+    titulo="eliminar encargado"
+    :cuerpo="`¿Desea eliminar el encargado(a) ${eliminarE.nombre_completo}?`"
+    @eliminar="eliminandoE"
     />
     <crear-encargado ref="modalCrearEncargado" :areas="lista_areas" :ruta="ruta" @encargado:creado="listar_encargados" />
     <editar-encargado ref="modalEditarEncargado" :areas="lista_areas" :ruta="ruta" @encargado:actualizado="listar_encargados" />
@@ -78,13 +83,13 @@ export default {
     async eliminandoE(){
       try {
         const {data} = await axios.delete(`${this.ruta}/${this.eliminarE.id}/eliminar-encargado`)
-          if (data.error) {
-            this.$Helper.notificacion('warning','Error al eliminar',data.error)
-            return
-          }
-          this.$Helper.notificacion('success','Encargado Eliminado',data.mensaje)
-          this.listar_encargados()
-          this.$refs.modalEliminarEncargado.toggle()
+        if (data.error) {
+          this.$Helper.notificacion('warning','Error al eliminar',data.error)
+          return
+        }
+        this.$Helper.notificacion('success','Encargado Eliminado',data.mensaje)
+        this.listar_encargados()
+        this.$refs.modalEliminarEncargado.toggle()
       } catch (e) {
         console.warn(e);
       }

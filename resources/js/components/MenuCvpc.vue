@@ -11,8 +11,7 @@
       </div>
     </div>
 
-    <el-menu class="el-menu-vertical-demo"
-    :collapse="isCollapse">
+    <el-menu class="el-menu-vertical-demo" :collapse="isCollapse">
     <el-submenu v-for="(data,m) in dataMenu" :key="m" :index="`${m + 1}`" @click="loDelMenu(data)">
       <template slot="title">
         <i :class="`${data.icono}`" class="f-16"></i>
@@ -46,9 +45,6 @@ export default {
       user: 'auth/user',
       dataMenu: 'menu/getMenu'
     }),
-    mitoracomputada(){
-      return 'hola'
-    }
   },
   methods: {
     loDelMenu(dato){
