@@ -7,13 +7,13 @@
     </div>
 
     <div  slot="body" class="">
-      <div class="row w-100 mb-5 mt-2">
+      <div class="row w-100 mb-3 mt-2">
         <div class="col-12 text-center">
           <croppa
           placeholder="Seleccione una imagen"
-          :placeholder-font-size="14"
-          :width="200"
-          :height="191"
+          :placeholder-font-size="12"
+          :width="140"
+          :height="146"
           :show-remove-button="true"
           :prevent-white-space="true"
           ref="CroppaProveedor"
@@ -35,6 +35,18 @@
     </div>
     <div class="row w-100 mt-1">
       <div class="col-6">
+        <label for="tipo_doc">Tipo Documento:</label>
+        <el-input type="text" placeholder="Tipo Doc" v-model="form.tipo_doc" maxlength="30" show-word-limit >
+        </el-input>
+      </div>
+      <div class="col-6">
+        <label for="documento">Documento:</label>
+        <el-input type="number" placeholder="Documento" v-model="form.documento" maxlength="12" show-word-limit >
+        </el-input>
+      </div>
+    </div>
+    <div class="row w-100 mt-1">
+      <div class="col-6">
         <label for="telefono">Teléfono:</label>
         <el-input type="text" placeholder="Teléfono" v-model="form.telefono" maxlength="30" show-word-limit >
         </el-input>
@@ -42,6 +54,30 @@
       <div class="col-6">
         <label for="direccion">Correo:</label>
         <el-input type="email" placeholder="Correo" v-model="form.direccion" maxlength="30" show-word-limit >
+        </el-input>
+      </div>
+    </div>
+    <div class="row w-100 mt-1">
+      <div class="col-6">
+        <label for="area">Area:</label>
+        <el-input type="text" placeholder="Area" v-model="form.area" maxlength="30" show-word-limit >
+        </el-input>
+      </div>
+      <div class="col-6">
+        <label for="rol">Rol:</label>
+        <el-input type="text" placeholder="Rol" v-model="form.rol" maxlength="30" show-word-limit >
+        </el-input>
+      </div>
+    </div>
+    <div class="row w-100 mt-1">
+      <div class="col-6">
+        <label for="password">Contraseña:</label>
+        <el-input type="text" placeholder="Pass" v-model="form.password" maxlength="30" show-word-limit >
+        </el-input>
+      </div>
+      <div class="col-6">
+        <label for="cc">Confirmar Contraseña:</label>
+        <el-input type="text" placeholder="C Pass" v-model="form.cc" maxlength="30" show-word-limit >
         </el-input>
       </div>
     </div>
