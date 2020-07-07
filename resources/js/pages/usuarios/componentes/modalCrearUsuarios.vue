@@ -1,5 +1,5 @@
 <template>
-  <modal-b ref="modalProveedor">
+  <modal-b ref="modalUsuario">
     <div slot="header" class="row">
       <div class="col-12">
         <h5>Crear Usuario</h5>
@@ -37,8 +37,14 @@
     <div class="row w-100 mt-1">
       <div class="col-6">
         <label for="tipo_doc">Tipo Documento:</label>
-        <el-input type="text" placeholder="Tipo Documento" v-model="form.tipo_doc" maxlength="30" show-word-limit >
-        </el-input>
+        <el-select v-model="form.tipo_doc" filterable clearable placeholder="Tipo Documento">
+          <el-option
+            v-for="(item,d) in tipoDoc"
+            :key="d"
+            :label="item.label"
+            :value="item.id">
+          </el-option>
+        </el-select>
       </div>
       <div class="col-6">
         <label for="documento">Documento:</label>
@@ -49,7 +55,7 @@
     <div class="row w-100 mt-1">
       <div class="col-6">
         <label for="telefono">Teléfono:</label>
-        <el-input type="text" placeholder="Teléfono" v-model="form.telefono" maxlength="30" show-word-limit >
+        <el-input type="number" placeholder="Teléfono" v-model="form.telefono" maxlength="30" show-word-limit >
         </el-input>
       </div>
       <div class="col-6">
@@ -75,8 +81,8 @@
         <el-select v-model="form.id_rol" filterable clearable placeholder="Seleccione Rol">
           <el-option
             v-for="(item,r) in roles"
-            :key="a"
-            :label="item.nombre"
+            :key="r"
+            :label="item.rol"
             :value="item.id">
           </el-option>
         </el-select>
@@ -90,14 +96,14 @@
       </div>
       <div class="col-6">
         <label for="cc">Confirmar Contraseña:</label>
-        <el-input type="password" placeholder="C Pass" v-model="form.cc" maxlength="30" show-word-limit >
+        <el-input type="password" placeholder="C Pass" v-model="form.cpassword" maxlength="30" show-word-limit >
         </el-input>
       </div>
     </div>
   </div>
 
   <div slot="footer" class="">
-    <button type="button" class="btn-crear" @click="crear_proveedor">Guardar</button>
+    <button type="button" class="btn-crear" @click="crear_usuario">Guardar</button>
     <button type="button" class="btn-cancelar" @click="toggle">Cancelar</button>
   </div>
 </modal-b>
@@ -113,27 +119,48 @@ export default {
     return{
       form:{
         foto:null,
-        roles:[],
         id_area:null,
+        tipo_doc:null,
       },
+      tipoDoc: [{
+          id: 1,
+          label: 'C.C.'
+        }, {
+          id: 2,
+          label: 'C.E.'
+        },
+      ],
+      roles:[],
     }
   },
   methods:{
-    async crear_proveedor(){
+    async crear_usuario(){
       try {
         // this.form.logo = this.$refs.CroppaProveedor.img.src
+
+        /*
+        error desconocido de un tal status
+        */
         const {data} = await axios.post(`${this.ruta}/crear-usuario`,this.form)
-        this.form = {}
-        this.$emit('proveedor:creado')
+        console.log(this.form);
+        return
+
+
+        // if (data.error) {
+        //   this.$Helper.notificacion('warning','Error al crear usuario',data.error)
+        //   return
+        // }
+        this.$emit('usuario:creado')
         this.$Helper.notificacion('success','Guardado',data.mensaje)
-        this.$refs.modalProveedor.toggle()
+        this.form = {}
+        this.form.id_rol = ''
+        this.$refs.modalUsuario.toggle()
       } catch (e) {
         console.warn(e);
       }
     },
     async listar_roles(area){
       this.form.id_rol = ''
-      console.log(area);
       try {
 
         const {data} = await axios(`/api/select/${area}/listar-roles`)
@@ -142,13 +169,12 @@ export default {
           return
         }
         this.roles = data
-
       } catch (e) {
         return console.warn(e);
       }
     },
     toggle(){
-      this.$refs.modalProveedor.toggle()
+      this.$refs.modalUsuario.toggle()
     }
   }
 }

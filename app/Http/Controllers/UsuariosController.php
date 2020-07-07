@@ -9,6 +9,26 @@ use App\Models\Roles;
 
 class UsuariosController extends Controller
 {
+  public function crear_usuario(Request $request)
+  {
+    try {
+
+      return DB::transaction(function() use($request){
+
+        dd($request->all());
+        
+        User::create($request->all());
+
+        return[
+          'mensaje'=>config('domains.mensajes.creado')
+        ];
+      },5);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"Error al crear usuarios");
+    }
+
+  }
   public function listar_usuarios()
   {
     try {

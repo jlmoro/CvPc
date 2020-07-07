@@ -12,7 +12,7 @@ class EventosTiposController extends Controller
   {
     try {
 
-      return EventosTipos::select('id','nombre_tipo')->get();
+      return EventosTipos::select('id','nombre_tipo','sigla')->get();
 
     } catch (\Exception $e) {
       return $this->captura_error($e,"error al listar tipos de eventos");

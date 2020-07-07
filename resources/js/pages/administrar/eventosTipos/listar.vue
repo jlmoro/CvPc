@@ -8,11 +8,14 @@
         <ul class="list-group">
           <li v-for="(data,e) in dataEventosTipos" :key="e" class="list-group-item lista-eventos-tipos">
             <div class="row w-100">
-              <div class="col-sm-2">
+              <div class="col-sm-1">
                 <span class="cantidad f-14">{{e + 1}}</span>
               </div>
-              <div class="col-sm-7">
+              <div class="col-sm-6">
                 <span class="letra-capital">{{data.nombre_tipo}}</span>
+              </div>
+              <div class="col-sm-2">
+                <span class="">{{data.sigla}}</span>
               </div>
               <div class="col-sm-3 text-right">
                 <i class="mdi mdi-pencil f-16 editar" @click="modalEditarTipoEvento(data)"></i>
