@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use DB,Validator;
-use App\Models\EventosTipos;
+use Illuminate\Http\Request;
+use App\Models\{
+  EventosTipos,
+  EventosTiposDescripcion,
+};
 
 class EventosTiposController extends Controller
 {
@@ -12,7 +15,14 @@ class EventosTiposController extends Controller
   {
     try {
 
-      return EventosTipos::select('id','nombre_tipo','sigla')->get();
+      $eventosT = EventosTipos::select('id','nombre_tipo','sigla')->get();
+      foreach ($eventosT as $key => $value) {
+        $value->descripcion = EventosTiposDescripcion::select('id','nombre')
+        ->where('id_evento_tipo',$value->id)
+        ->get();
+      }
+
+      return $eventosT;
 
     } catch (\Exception $e) {
       return $this->captura_error($e,"error al listar tipos de eventos");

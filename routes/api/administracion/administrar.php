@@ -44,6 +44,10 @@ Route::group(['middleware' =>'auth:api'], function (){
             Route::get("listar-eventos","$controlador@listar_eventos");
             Route::put("editar-evento-tipo","$controlador@editar_evento_tipo");
             Route::delete("{id_tipo_evento}/eliminar-evento-tipo","$controlador@eliminar_evento_tipo");
+
+            $controlador2 = "EventosTiposDescripcionController";
+            Route::post("{id_evento_tipo}/crear-evento-descripcion","$controlador@crear_evento_descripcion");
+
         });
         Route::prefix('encargados')->group( function(){
             $controlador = "EncargadosController";
