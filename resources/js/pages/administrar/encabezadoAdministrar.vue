@@ -2,18 +2,17 @@
   <section v-loading="isLoading">
     <h3 class="mb-2 text-center">Administrables</h3>
 
-    <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane
-      v-for="(data,a) in administrar"
-      :key="a"
-      :label="data.nombre"
-      :name="data.ruta"
-      >
-      <span slot="label"><i :class="data.icono"></i> {{data.nombre}}</span>
-    </el-tab-pane>
-
+  <div >
+    <b-tabs content-class="mt-3" fill >
+      <b-tab v-for="(data,a) in administrar" :key="a" @click="cambioPagina(data)">
+        <template v-slot:title>
+          <i :class="data.icono"></i> <span>{{data.nombre}}</span>
+        </template>
+      </b-tab>
+    </b-tabs>
     <router-view />
-  </el-tabs>
+  </div>
+
 
 </section>
 </template>
@@ -22,7 +21,7 @@
 export default {
   data(){
     return{
-      activeName: '',
+      activeName: true,
       administrar:[],
       isLoading: false,
     }
@@ -36,11 +35,17 @@ export default {
     })
   },
   methods: {
-    handleClick(tab, event) {
+    cambioPagina(data) {
       this.$router.push({
-        name:tab.name
+        name:data.ruta
       })
     },
+
+    // handleClick(tab, event) {
+    //   this.$router.push({
+    //     name:tab.name
+    //   })
+    // },
 
     async listar_administrables(){
       try {

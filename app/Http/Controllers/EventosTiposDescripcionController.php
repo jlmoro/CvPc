@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use DB,Validator;
 use Illuminate\Http\Request;
-use App\Models\{EventosTiposDescripcion};
+use App\Models\{
+  EventosTiposDescripcion
+};
 
 class EventosTiposDescripcionController extends Controller
 {
@@ -14,8 +16,13 @@ class EventosTiposDescripcionController extends Controller
 
         return DB::transaction(function() use($id_evento_tipo,$request){
 
-          dd($request->all());
-          
+          $request['id_evento_tipo'] = $id_evento_tipo;
+          EventosTiposDescripcion::create($request->all());
+
+          return[
+            'mensaje'=>config('domains.mensajes.creado')
+          ];
+
         },5);
 
       } catch (\Exception $e) {

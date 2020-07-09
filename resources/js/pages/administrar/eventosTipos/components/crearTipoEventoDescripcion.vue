@@ -9,7 +9,7 @@
       <div class="row justify-content-center" slot="body">
         <div class="col-md-12 text-center">
           <label for="crearTipoE" class="letra-capital">Descripción: </label>
-          <input type="text" v-model="form.nombre_tipo" name="" value="">
+          <input type="text" v-model="form.nombre" name="" value="">
           <!-- <input type="text" v-model="form.nombre_tipo" id="crearTipoE" class="input-general"/> -->
         </div>
       </div>
@@ -38,22 +38,22 @@ export default {
   methods: {
     async guardarDescripcion(){
       try {
-        const {data} = await axios.post(`${this.ruta}/crear-evento-descripcion`,this.form)
+        const {data} = await axios.post(`${this.ruta}/${this.tipoEvento.id}/crear-evento-descripcion`,this.form)
         if (data.error) {
           this.$Helper.notificacion('warning','Atención',data.error)
           return
         }
         this.$emit('eventoTipo:creado')
         this.form = ''
-        this.$Helper.notificacion('success','Descripcion Evento Guardado',data.mensaje)
+        this.$Helper.notificacion('success','Descripción Evento Guardado',data.mensaje)
         this.$refs.modalCrearEventoTipo.toggle()
       } catch (e) {
         console.warn(e);
       }
     },
     toggle(dato){
-      this.tipoEvento = _.cloneDeep(dato)
-      console.log(this.tipoEvento);
+      this.tipoEvento = _.cloneDeep(dato);
+      // console.log(this.tipoEvento.id);
       this.$refs.modalCrearEventoTipo.toggle()
     }
   }

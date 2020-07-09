@@ -32,13 +32,13 @@
                                     <i class="mdi mdi-pencil acciones btn-editar-area mr-1" @click.stop="abrirEditarArea(data)"></i>
                                     <i class="mdi mdi-delete acciones btn-eliminar-area mr-2" @click.stop="abrirEliminarArea(data)"></i>
                                     <i class="mdi mdi-plus acciones btn-crear-rol ml-1" @click.stop="abrirCrearRol(data)"></i>
-
                                 </div>
                             </div>
                         </template>
                         <div class="row w-100">
                           <div class="col-md-12">
-                            <ul class="list-group" style="width:440px; float: right;">
+                            <!-- <ul class="list-group" style="width:440px; float: right;"> -->
+                            <ul class="list-group" >
                               <li v-if="data.roles" v-for="(data2,r) in data.roles" :key="r" class="list-group-item">
                                 <div class="row">
                                   <div class="col-md1">
