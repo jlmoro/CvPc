@@ -20,6 +20,7 @@ use App\Models\{
   DiscoDuro,
   Equipo,
   PerifericosTipos,
+  EventosTiposDescripcion,
 };
 
 class SelectController extends Controller
@@ -136,6 +137,19 @@ class SelectController extends Controller
     } catch (\Exception $e) {
       return $this->captura_error($e,"error al listar impresoras");
     }
+  }
+  public function listar_descripcion_eventos($id_evento_tipo)
+  {
+    try {
+      return EventosTiposDescripcion::select('nombre')
+      ->orderBy('created_at','DESC')
+      ->where('id_evento_tipo',$id_evento_tipo)
+      ->get();
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al listar descripción evento");
+    }
+
   }
   public function listar_tipos_eventos()
   {

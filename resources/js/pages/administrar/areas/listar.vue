@@ -100,7 +100,6 @@ export default {
             rol:'',
             ruta:'/api/administrar/areas',
             areas:[],
-            value: 100,
             visible: false,
             eliminar:'',
             eliminarRol:'',
@@ -164,14 +163,14 @@ export default {
       abrirEditarRol(dato){
         this.$refs.modalEditarRol.toggle(dato)
       },
-        async listar_areas_roles(){
-            try {
-                const {data} = await axios(`${this.ruta}/listar-areas`)
-                this.areas = data
-            } catch (e) {
-                console.warn(e);
-            }
+      async listar_areas_roles(){
+        try {
+          const {data} = await axios(`${this.ruta}/listar-areas`)
+          this.areas = data
+        } catch (e) {
+          console.warn(e);
         }
+      }
     }
 }
 </script>

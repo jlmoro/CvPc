@@ -3,7 +3,7 @@
     <modal-b ref="modalCrearEventoTipo">
       <div class="row" slot="header">
         <div class="col-12">
-          <p class="f-20">Descripcion Tipo Evento</p>
+          <p class="f-20">Descripción Tipo Evento</p>
         </div>
       </div>
       <div class="row justify-content-center" slot="body">

@@ -56,11 +56,11 @@ class SolucionesPosiblesController extends Controller
   {
     try {
 
-      return DB::select("SELECT sp.id,sp.id_evento_tipo,sp.solucion_posible,
+      return DB::select("SELECT sp.id,sp.id_descripcion_evento,sp.solucion_posible,
         (
-          SELECT et.nombre_tipo
-          FROM eventos_tipos et
-          WHERE et.id = sp.id_evento_tipo
+          SELECT et.nombre
+          FROM eventos_tipos_descripcion et
+          WHERE et.id = sp.id_descripcion_evento
         )AS nombre_evento_tipo
         FROM soluciones_posibles sp");
 
@@ -73,7 +73,7 @@ class SolucionesPosiblesController extends Controller
     try {
       return DB::transaction(function() use($request){
 
-        $request['id_evento_tipo'] = $request->tipo_evento;
+        $request['id_descripcion_evento'] = $request->tipo_evento;
         SolucionesPosibles::create($request->all());
 
         return[

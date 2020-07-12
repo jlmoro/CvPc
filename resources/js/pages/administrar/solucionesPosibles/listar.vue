@@ -11,7 +11,7 @@
               <template slot="title">
                 <div class="row w-100">
                   <div class="col-1">
-                    <span class="item-secuencia">{{ s + 1}}</span>
+                    <span class="item-secuencia">{{ s + 1 }}</span>
                   </div>
                   <div class="col-8 ">
                     <span class="letra-capital">{{data.nombre_evento_tipo}}</span>

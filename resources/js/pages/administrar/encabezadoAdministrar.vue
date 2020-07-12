@@ -2,7 +2,7 @@
   <section v-loading="isLoading">
     <h3 class="mb-2 text-center">Administrables</h3>
 
-  <div >
+  <div class="mb-5">
     <b-tabs content-class="mt-3" fill >
       <b-tab v-for="(data,a) in administrar" :key="a" @click="cambioPagina(data)">
         <template v-slot:title>
@@ -40,12 +40,6 @@ export default {
         name:data.ruta
       })
     },
-
-    // handleClick(tab, event) {
-    //   this.$router.push({
-    //     name:tab.name
-    //   })
-    // },
 
     async listar_administrables(){
       try {
