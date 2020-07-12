@@ -1,5 +1,5 @@
 <template>
-  <modal-b ref="modalUsuario">
+  <modal-b ref="modalUsuario" >
     <div slot="header" class="row">
       <div class="col-12">
         <h5>Crear Usuario</h5>
@@ -24,19 +24,19 @@
     </div>
     <div class="row w-100 mb-1">
       <div class="col-6">
-        <label for="nombre-prov">Nombre(s):</label>
-        <el-input type="text" placeholder="Nombre(s)" v-model="form.name" maxlength="60" show-word-limit >
+        <label for="nombre-usu">Nombre(s):</label>
+        <el-input type="text" id="nombre-usu" placeholder="Nombre(s)" v-model="form.name" maxlength="60" show-word-limit >
         </el-input>
       </div>
       <div class="col-6">
-        <label for="nombre-prov">Apellido(s):</label>
-        <el-input type="text" placeholder="Apellido(s)" v-model="form.lastname" maxlength="60" show-word-limit >
+        <label for="apellido-usu">Apellido(s):</label>
+        <el-input type="text" id="apellido-usu" placeholder="Apellido(s)" v-model="form.lastname" maxlength="60" show-word-limit >
         </el-input>
       </div>
     </div>
     <div class="row w-100 mt-1">
       <div class="col-6">
-        <label for="tipo_doc">Tipo Documento:</label>
+        <label >Tipo Documento:</label>
         <el-select v-model="form.tipo_doc" filterable clearable placeholder="Tipo Documento">
           <el-option
             v-for="(item,d) in tipoDoc"
@@ -47,26 +47,26 @@
         </el-select>
       </div>
       <div class="col-6">
-        <label for="documento">Documento:</label>
-        <el-input type="number" placeholder="Documento" v-model="form.documento" maxlength="12" show-word-limit >
+        <label for="doc-usu">Documento:</label>
+        <el-input type="number" id="doc-usu" placeholder="Documento" v-model="form.documento" maxlength="12" show-word-limit >
         </el-input>
       </div>
     </div>
     <div class="row w-100 mt-1">
       <div class="col-6">
-        <label for="telefono">Teléfono:</label>
-        <el-input type="number" placeholder="Teléfono" v-model="form.telefono" maxlength="30" show-word-limit >
+        <label for="tel-usu">Teléfono:</label>
+        <el-input type="number" id="tel-usu" placeholder="Teléfono" v-model="form.telefono" maxlength="30" show-word-limit >
         </el-input>
       </div>
       <div class="col-6">
-        <label for="direccion">Correo:</label>
-        <el-input type="email" placeholder="Correo" v-model="form.direccion" maxlength="30" show-word-limit >
+        <label for="correo-usu">Correo:</label>
+        <el-input type="email" id="correo-usu" placeholder="Correo" v-model="form.correo" maxlength="30" show-word-limit >
         </el-input>
       </div>
     </div>
     <div class="row w-100 mt-1">
       <div class="col-6">
-        <label for="area">Area:</label>
+        <label >Area:</label>
         <el-select v-model="form.id_area" filterable clearable placeholder="Seleccione Área" @change="listar_roles($event)">
           <el-option
             v-for="(item,a) in areas"
@@ -77,7 +77,7 @@
         </el-select>
       </div>
       <div class="col-6">
-        <label for="rol">Rol:</label>
+        <label>Rol:</label>
         <el-select v-model="form.id_rol" filterable clearable placeholder="Seleccione Rol">
           <el-option
             v-for="(item,r) in roles"
@@ -90,13 +90,13 @@
     </div>
     <div class="row w-100 mt-1">
       <div class="col-6">
-        <label for="password">Contraseña:</label>
-        <el-input type="password" placeholder="Pass" v-model="form.password" maxlength="30" show-word-limit >
+        <label for="pass">Contraseña:</label>
+        <el-input type="password" id="pass" placeholder="Contraseña" v-model="form.password" maxlength="30" show-word-limit >
         </el-input>
       </div>
       <div class="col-6">
         <label for="cc">Confirmar Contraseña:</label>
-        <el-input type="password" placeholder="C Pass" v-model="form.cpassword" maxlength="30" show-word-limit >
+        <el-input type="password" placeholder="Confirmar Contraseña" v-model="form.cpassword" maxlength="30" show-word-limit >
         </el-input>
       </div>
     </div>
@@ -135,25 +135,34 @@ export default {
   },
   methods:{
     async crear_usuario(){
+      // console.log(this.form);
+
+      //corregir el form data para la imagen y los otros datos
+
+      this.form.foto.generateBlob((blob) => {
+        // console.log(blob,"el tal blob ese");
+        var fd = new FormData(this.form)
+        fd.append('foto', blob)
+        fd.append('name', name)
+        fd.append('tipo_doc', tipo_doc)
+        fd.append('documento', documento)
+        fd.append('telefono', telefono)
+        fd.append('email', correo)
+        fd.append('id_rol', id_rol)
+        fd.append('password', password)
+      })
+
+      console.log(fd,"datooooos");
+      return
+
       try {
-        // this.form.logo = this.$refs.CroppaProveedor.img.src
-
-        /*
-        error desconocido de un tal status
-        */
-        const {data} = await axios.post(`${this.ruta}/crear-usuario`,this.form)
-        console.log(this.form);
-        return
-
-
-        // if (data.error) {
-        //   this.$Helper.notificacion('warning','Error al crear usuario',data.error)
-        //   return
-        // }
+        const {data} = await axios(`${this.ruta}/crear-usuario`,fd)
+        if (data.error) {
+          this.$Helper.notificacion('warning','No se pudo crear el usuario',data.error)
+          return
+        }
         this.$emit('usuario:creado')
-        this.$Helper.notificacion('success','Guardado',data.mensaje)
-        this.form = {}
-        this.form.id_rol = ''
+        this.$Helper.notificacion('success','Usuario Creado',data.mensaje)
         this.$refs.modalUsuario.toggle()
       } catch (e) {
         console.warn(e);
@@ -162,7 +171,6 @@ export default {
     async listar_roles(area){
       this.form.id_rol = ''
       try {
-
         const {data} = await axios(`/api/select/${area}/listar-roles`)
         if (data.error) {
           this.$Helper.notificacion('warning','Problemas al listar roles',data.error)

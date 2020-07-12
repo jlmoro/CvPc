@@ -38,8 +38,8 @@
       </div>
     </div>
 
-    <modal-crear ref="modalCrearProveedor" :ruta="ruta" @proveedor:creado="listar_usuarios" :areas="areas"/>
-    <modal-editar ref="modalEditarProveedor" :ruta="ruta" @proveedor:actualizado="listar_usuarios" :areas="areas"/>
+    <modal-crear ref="modalCrearProveedor" :ruta="ruta" @usuario:creado="listar_usuarios" :areas="areas"/>
+    <modal-editar ref="modalEditarProveedor" :ruta="ruta" :areas="areas"/>
 
     <modal-eliminar ref="ModalEliminar"
     titulo="eliminar proveedor"

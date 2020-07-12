@@ -49,6 +49,12 @@ export default {
           return
         }
         this.administrar = data
+        
+        let dato = _.head(data)
+        this.$router.push({
+          name:dato.ruta
+        })
+
       } catch (e) {
         console.warn(e,"error listar administrables");
       }
