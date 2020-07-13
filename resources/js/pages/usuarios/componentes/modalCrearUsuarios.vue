@@ -138,19 +138,22 @@ export default {
       // console.log(this.form);
 
       //corregir el form data para la imagen y los otros datos
-
+      let foto
       this.form.foto.generateBlob((blob) => {
-        // console.log(blob,"el tal blob ese");
-        var fd = new FormData(this.form)
-        fd.append('foto', blob)
-        fd.append('name', name)
-        fd.append('tipo_doc', tipo_doc)
-        fd.append('documento', documento)
-        fd.append('telefono', telefono)
-        fd.append('email', correo)
-        fd.append('id_rol', id_rol)
-        fd.append('password', password)
+
       })
+
+      var fd = new FormData(this.form)
+      fd.append('foto', blob)
+      fd.append('name', name)
+      fd.append('tipo_doc', tipo_doc)
+      fd.append('documento', documento)
+      fd.append('telefono', telefono)
+      fd.append('email', correo)
+      fd.append('id_rol', id_rol)
+      fd.append('password', password)
+
+
 
       console.log(fd,"datooooos");
       return

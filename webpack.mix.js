@@ -13,7 +13,7 @@ mix
 
 if (mix.inProduction()) {
     mix
-    // .extract() // Disabled until resolved: https://github.com/JeffreyWay/laravel-mix/issues/1889
+    // .extract() 
     // .version() // Use `laravel-mix-versionhash` for the generating correct Laravel Mix manifest file.
     .versionHash()
 } else {
@@ -23,6 +23,7 @@ if (mix.inProduction()) {
 mix.webpackConfig({
     plugins: [
         new webpack.ProvidePlugin({
+            el: '#app',
             $: 'jquery',
             jQuery: 'jquery',
             // moment: 'moment',
