@@ -9,7 +9,7 @@
     <div  slot="body" class="">
       <div class="row w-100 mb-3 mt-2">
         <div class="col-12 text-center">
-          <croppa
+          <!-- <croppa
           v-model="form.foto"
           placeholder="Seleccione una imagen"
           :placeholder-font-size="12"
@@ -17,9 +17,18 @@
           :height="146"
           :show-remove-button="true"
           :prevent-white-space="true"
-          >
+          > -->
           <!-- ref="CroppaProveedor" -->
-        </croppa>
+        <!-- </croppa> -->
+        <el-upload
+          class="avatar-uploader"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload">
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
       </div>
     </div>
     <div class="row w-100 mb-1">
@@ -119,8 +128,8 @@ export default {
     return{
       form:{
         foto:null,
-        id_area:null,
-        tipo_doc:null,
+        // id_area:null,
+        // tipo_doc:null,
       },
       tipoDoc: [{
           id: 1,
@@ -130,40 +139,50 @@ export default {
           label: 'C.E.'
         },
       ],
+      imageUrl: '',
+      imagen:{},
       roles:[],
     }
   },
+
   methods:{
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('La imagen debe estar en formato JPG!');
+      }
+      if (!isLt2M) {
+        this.$message.error('La imagen excede los 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
     async crear_usuario(){
-      // console.log(this.form);
-
-      //corregir el form data para la imagen y los otros datos
-      let foto
-      this.form.foto.generateBlob((blob) => {
-
-      })
-
-      var fd = new FormData(this.form)
-      fd.append('foto', blob)
-      fd.append('name', name)
-      fd.append('tipo_doc', tipo_doc)
-      fd.append('documento', documento)
-      fd.append('telefono', telefono)
-      fd.append('email', correo)
-      fd.append('id_rol', id_rol)
-      fd.append('password', password)
-
-
-
-      console.log(fd,"datooooos");
-      return
 
       try {
-        const {data} = await axios(`${this.ruta}/crear-usuario`,fd)
+        var fd = new FormData()
+        this.form.foto.generateBlob((blob) => {
+          fd.append('foto', blob)
+          fd.append('name', this.form.name)
+          fd.append('tipo_doc', this.form.tipo_doc)
+          fd.append('documento', this.form.documento)
+          fd.append('telefono', this.form.telefono)
+          fd.append('email', this.form.correo)
+          fd.append('id_rol', this.form.id_rol)
+          fd.append('password', this.form.password)
+
+        })
+        = await axios.post(`${this.ruta}/crear-usuario`,fd)
+
         if (data.error) {
           this.$Helper.notificacion('warning','No se pudo crear el usuario',data.error)
           return
         }
+
         this.$emit('usuario:creado')
         this.$Helper.notificacion('success','Usuario Creado',data.mensaje)
         this.$refs.modalUsuario.toggle()

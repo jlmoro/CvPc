@@ -16,7 +16,7 @@ class UsuariosController extends Controller
       return DB::transaction(function() use($request){
 
         dd($request->all());
-        
+
         User::create($request->all());
 
         return[
