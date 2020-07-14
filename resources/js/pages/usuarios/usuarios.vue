@@ -4,7 +4,7 @@
     <encabezado-datos tituloEncabezado="Usuarios" tituloBoton="Crear Usuario" @accionBonton="abrirCrearUsuario"/>
 
     <div class="row" v-loading="isLoading">
-      <div v-for="(data,e) in usuarios" :key="e" class="col-md-3">
+      <div v-for="(data,e) in usuarios" :key="e" class="col-md-4">
         <div class="card-padre">
           <div class="row">
             <div class="col-md-12 card-encabezado">

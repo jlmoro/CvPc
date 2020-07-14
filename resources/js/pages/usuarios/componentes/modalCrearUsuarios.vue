@@ -20,15 +20,11 @@
           > -->
           <!-- ref="CroppaProveedor" -->
         <!-- </croppa> -->
-        <el-upload
-          class="avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload">
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
+
+        <!-- <div class="centerx">
+          <vs-upload action="https://jsonplaceholder.typicode.com/posts/" @on-success="successUpload" />
+        </div> -->
+
       </div>
     </div>
     <div class="row w-100 mb-1">
@@ -126,6 +122,11 @@ export default {
   ],
   data(){
     return{
+
+      dialogImageUrl: '',
+      dialogVisible: false,
+      disabled: false,
+
       form:{
         foto:null,
         // id_area:null,
@@ -146,6 +147,19 @@ export default {
   },
 
   methods:{
+    // successUpload(){
+    //   this.$vs.notify({color:'success',title:'Upload Success',text:'Lorem ipsum dolor sit amet, consectetur'})
+    // },
+    handleRemove(file) {
+      console.log(file);
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
+    handleDownload(file) {
+      console.log(file);
+    },
 
     /*prueba de upload de element para remplazar el vue-croppa
       revisar el tratado de imagenes para laravel y vue
@@ -216,28 +230,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
-}
+
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
+  width: 165px;
+  height: 165px;
+  line-height: 165px;
   text-align: center;
-}
-.avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
 }
 .croppa-container{
   border-radius: 26px;
