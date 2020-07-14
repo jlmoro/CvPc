@@ -146,6 +146,11 @@ export default {
   },
 
   methods:{
+
+    /*prueba de upload de element para remplazar el vue-croppa
+      revisar el tratado de imagenes para laravel y vue
+    */
+
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
@@ -176,7 +181,7 @@ export default {
           fd.append('password', this.form.password)
 
         })
-        = await axios.post(`${this.ruta}/crear-usuario`,fd)
+        const {data} = await axios.post(`${this.ruta}/crear-usuario`,fd)
 
         if (data.error) {
           this.$Helper.notificacion('warning','No se pudo crear el usuario',data.error)
@@ -211,6 +216,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 .croppa-container{
   border-radius: 26px;
 }
