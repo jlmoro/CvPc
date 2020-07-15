@@ -9,21 +9,18 @@
     <div  slot="body" class="">
       <div class="row w-100 mb-3 mt-2">
         <div class="col-12 text-center">
-          <!-- <croppa
-          v-model="form.foto"
+          <!-- v-model="form.foto" -->
+          <croppa
           placeholder="Seleccione una imagen"
+          :accept="'image/png'"
           :placeholder-font-size="12"
           :width="140"
           :height="146"
           :show-remove-button="true"
           :prevent-white-space="true"
-          > -->
-          <!-- ref="CroppaProveedor" -->
-        <!-- </croppa> -->
-
-        <!-- <div class="centerx">
-          <vs-upload action="https://jsonplaceholder.typicode.com/posts/" @on-success="successUpload" />
-        </div> -->
+          ref="CroppaUsuarios"
+          >
+        </croppa>
 
       </div>
     </div>
@@ -65,7 +62,7 @@
       </div>
       <div class="col-6">
         <label for="correo-usu">Correo:</label>
-        <el-input type="email" id="correo-usu" placeholder="Correo" v-model="form.correo" maxlength="30" show-word-limit >
+        <el-input type="email" id="correo-usu" placeholder="Correo" v-model="form.email" maxlength="30" show-word-limit >
         </el-input>
       </div>
     </div>
@@ -147,61 +144,17 @@ export default {
   },
 
   methods:{
-    // successUpload(){
-    //   this.$vs.notify({color:'success',title:'Upload Success',text:'Lorem ipsum dolor sit amet, consectetur'})
-    // },
-    handleRemove(file) {
-      console.log(file);
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
-    handleDownload(file) {
-      console.log(file);
-    },
 
-    /*prueba de upload de element para remplazar el vue-croppa
-      revisar el tratado de imagenes para laravel y vue
-    */
 
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error('La imagen debe estar en formato JPG!');
-      }
-      if (!isLt2M) {
-        this.$message.error('La imagen excede los 2MB!');
-      }
-      return isJPG && isLt2M;
-    },
     async crear_usuario(){
 
       try {
-        var fd = new FormData()
-        this.form.foto.generateBlob((blob) => {
-          fd.append('foto', blob)
-          fd.append('name', this.form.name)
-          fd.append('tipo_doc', this.form.tipo_doc)
-          fd.append('documento', this.form.documento)
-          fd.append('telefono', this.form.telefono)
-          fd.append('email', this.form.correo)
-          fd.append('id_rol', this.form.id_rol)
-          fd.append('password', this.form.password)
-
-        })
-        const {data} = await axios.post(`${this.ruta}/crear-usuario`,fd)
-
+        this.form.foto = this.$refs.CroppaUsuarios.img.src
+        const {data} = await axios.post(`${this.ruta}/crear-usuario`,this.form)
         if (data.error) {
           this.$Helper.notificacion('warning','No se pudo crear el usuario',data.error)
           return
         }
-
         this.$emit('usuario:creado')
         this.$Helper.notificacion('success','Usuario Creado',data.mensaje)
         this.$refs.modalUsuario.toggle()

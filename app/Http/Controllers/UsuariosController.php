@@ -15,7 +15,16 @@ class UsuariosController extends Controller
 
       return DB::transaction(function() use($request){
 
-        dd($request->all());
+        $foto = $this->guardar_imagen($request->foto,'usuarios');
+        if($foto['estado'] == true){
+          $request['foto'] = $foto['ruta'];
+        }else {
+          return 'Error al guardar foto usuario';
+        }
+
+        $request['password'] = bcrypt($request->password);
+
+        // dd($request->all());
 
         User::create($request->all());
 
@@ -27,7 +36,6 @@ class UsuariosController extends Controller
     } catch (\Exception $e) {
       return $this->captura_error($e,"Error al crear usuarios");
     }
-
   }
   public function listar_usuarios()
   {

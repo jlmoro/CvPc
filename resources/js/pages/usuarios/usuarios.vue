@@ -8,17 +8,32 @@
         <div class="card-padre">
           <div class="row">
             <div class="col-md-12 card-encabezado">
-              <span class="letra-capital f-16">{{data.documento}}</span>
-              <div class="card-acciones">
-                <span class="mdi mdi-pencil editar-user" @click="editarUsuarios(data)"></span>
-                <span class="mdi mdi-delete eliminar-user" @click="modalEliminar(data)"></span>
+              <div class="row">
+                <div class="col-md-2 ml-1">
+                  <el-switch
+                    style="display: block"
+                    v-model="value2"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949"
+                    >
+                  </el-switch>
+                </div>
+                <div class="col-md-7">
+                  <span class="letra-capital f-16">{{data.documento}}</span>
+                </div>
+                <div class="col-md-3">
+                  <div class="card-acciones">
+                    <span class="mdi mdi-pencil editar-user" @click="editarUsuarios(data)"></span>
+                    <span class="mdi mdi-delete eliminar-user" @click="modalEliminar(data)"></span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           <hr style="border-top-color: #0000003b;">
           <div class="row">
             <div class="col-md-12">
-              <img v-if="data.logo != null"  class="img-user" :src="`/storage/${data.foto}`"/>
+              <img v-if="data.foto != null"  class="img-user" :src="`/storage/${data.foto}`"/>
               <img v-else class="img-user" src="img/user_default.jpg"/>
             </div>
           </div>
@@ -130,7 +145,8 @@ export default {
 
 .listar-usuarios{
   .card-padre{
-    width: 246px;
+    max-width: 246px;
+    height: 340px;
     border: solid 1px #00000040;
     border-radius: 3px;
     text-align: center;
