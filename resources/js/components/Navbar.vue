@@ -23,7 +23,8 @@
             <a class="nav-link dropdown-toggle text-dark"
                href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
             >
-              <img :src="user.photo_url" class="rounded-circle profile-photo mr-1">
+              <img v-if="user.foto != null" :src="`storage/${user.foto}`" class="rounded-circle profile-photo mr-1">
+              <img v-else :src="user.photo_url" class="rounded-circle profile-photo mr-1">
               {{ user.name }}
             </a>
             <div class="dropdown-menu">

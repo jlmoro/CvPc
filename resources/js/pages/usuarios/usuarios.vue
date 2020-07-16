@@ -9,19 +9,19 @@
           <div class="row">
             <div class="col-md-12 card-encabezado">
               <div class="row">
-                <div class="col-md-2 ml-1">
+                <div class="col-md-2 ml-1 pr-0">
                   <el-switch
                     style="display: block"
-                    v-model="value2"
+                    v-model="data.estado == 1?true:false"
                     active-color="#13ce66"
                     inactive-color="#ff4949"
                     >
                   </el-switch>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-7 pl-0 pr-0">
                   <span class="letra-capital f-16">{{data.documento}}</span>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md pl-0 pr-0">
                   <div class="card-acciones">
                     <span class="mdi mdi-pencil editar-user" @click="editarUsuarios(data)"></span>
                     <span class="mdi mdi-delete eliminar-user" @click="modalEliminar(data)"></span>
@@ -77,6 +77,7 @@ export default {
       areas:[],
       eliminarProv:'',
       isLoading:false,
+      estado:null,
     }
   },
   mounted(){
@@ -146,6 +147,7 @@ export default {
 .listar-usuarios{
   .card-padre{
     max-width: 246px;
+    min-width: 246px;
     height: 340px;
     border: solid 1px #00000040;
     border-radius: 3px;
