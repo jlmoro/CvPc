@@ -15,6 +15,7 @@
                     v-model="data.estado == 1?true:false"
                     active-color="#13ce66"
                     inactive-color="#ff4949"
+                    @change="estadoUser(data)"
                     >
                   </el-switch>
                 </div>
@@ -90,6 +91,9 @@ export default {
     })
   },
   methods:{
+    estadoUser(dato){
+      console.log(dato);
+    },
     editarUsuarios(dato){
       this.$refs.modalEditarProveedor.toggle(dato);
     },
