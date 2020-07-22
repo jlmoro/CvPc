@@ -94,7 +94,10 @@ export default {
     async login () {
       // Submit the form.
       const { data } = await this.form.post('/api/login')
-
+      if (data.mensaje) {
+        this.$Helper.notificacion('warning','Usuario Inactivo',data.mensaje)
+        return
+      }
       // Save the token.
       this.$store.dispatch('auth/saveToken', {
         token: data.token,

@@ -16,6 +16,13 @@ class UsuariosController extends Controller
       return DB::transaction(function() use($id_usuario){
 
         $us = User::find($id_usuario);
+        $us_curr = auth()->user()->id;
+
+        if ($us_curr == $id_usuario) {
+          return[
+            'mensaje2'=>'El usuario actual no puede inactivarse'
+          ];
+        }
 
         ($us->estado == 1) ? $us->estado = 0 : $us->estado = 1;
 

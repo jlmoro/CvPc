@@ -9,13 +9,14 @@
           <div class="row">
             <div class="col-md-12 card-encabezado">
               <div class="row">
-                <div  class="col-md-2 ml-1 pr-0">
+                <div class="col-md-2 ml-1 pr-0">
                   <el-switch
                     style="display: block"
                     v-model="data.estado_usuario"
                     active-color="#13ce66"
                     inactive-color="#ff4949"
                     @change="estadoUser(data)"
+                    :disabled="data.id == user.id"
                     >
                   </el-switch>
                 </div>
@@ -25,7 +26,7 @@
                 <div class="col-md pl-0 pr-0">
                   <div class="card-acciones">
                     <span class="mdi mdi-pencil editar-user" @click="editarUsuarios(data)"></span>
-                    <span class="mdi mdi-delete eliminar-user" @click="modalEliminar(data)"></span>
+                    <span v-show="data.id !== user.id" class="mdi mdi-delete eliminar-user" @click="modalEliminar(data)"></span>
                   </div>
                 </div>
               </div>
@@ -68,6 +69,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   components: {
     ModalCrear:()=> import('./componentes/modalCrearUsuarios'),
@@ -83,7 +85,11 @@ export default {
       estado:null,
     }
   },
-  
+  computed:{
+    ...mapGetters({
+      user: 'auth/user',
+    }),
+  },
   mounted(){
     this.isLoading = true
     Promise.all([
@@ -99,6 +105,11 @@ export default {
         const {data} = await axios.put(`${this.ruta}/${dato.id}/estado-usuario`)
         if (data.error) {
           this.$Helper.notificacion('warning','Imposible cambiar estado',data.error)
+          return
+        }
+        if (data.mensaje2) {
+          this.$Helper.notificacion('warning','No es posible inactivar',data.mensaje2)
+          this.listar_usuarios()
           return
         }
         this.listar_usuarios()
