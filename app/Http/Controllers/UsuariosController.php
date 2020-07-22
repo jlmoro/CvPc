@@ -9,6 +9,29 @@ use App\Models\Roles;
 
 class UsuariosController extends Controller
 {
+  public function estado_usuario($id_usuario)
+  {
+    try {
+
+      return DB::transaction(function() use($id_usuario){
+
+        $us = User::find($id_usuario);
+
+        ($us->estado == 1) ? $us->estado = 0 : $us->estado = 1;
+
+        $us->update();
+
+        return[
+          'mensaje'=>config('domains.mensajes.actualizado')
+        ];
+
+      },5);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error actualizar el estado");
+    }
+
+  }
   public function crear_usuario(Request $request)
   {
     try {

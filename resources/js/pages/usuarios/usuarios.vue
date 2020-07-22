@@ -9,10 +9,10 @@
           <div class="row">
             <div class="col-md-12 card-encabezado">
               <div class="row">
-                <div class="col-md-2 ml-1 pr-0">
+                <div  class="col-md-2 ml-1 pr-0">
                   <el-switch
                     style="display: block"
-                    v-model="data.estado == 1?true:false"
+                    v-model="data.estado_usuario"
                     active-color="#13ce66"
                     inactive-color="#ff4949"
                     @change="estadoUser(data)"
@@ -32,22 +32,24 @@
             </div>
           </div>
           <hr style="border-top-color: #0000003b;">
-          <div class="row">
-            <div class="col-md-12">
-              <img v-if="data.foto != null"  class="img-user" :src="`/storage/${data.foto}`"/>
-              <img v-else class="img-user" src="img/user_default.jpg"/>
+          <div :class="data.estado == 0?'usuario-inactivo':''">
+            <div class="row">
+              <div class="col-md-12">
+                <img v-if="data.foto != null"  class="img-user" :src="`/storage/${data.foto}`"/>
+                <img v-else class="img-user" src="img/user_default.jpg"/>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <span class="letra-capital f-14">{{data.name}} {{data.lastname}} - {{data.telefono}}</span><br>
-              <span class="f-12">{{data.email}}</span>
+            <div class="row">
+              <div class="col-md-12">
+                <span class="letra-capital f-14">{{data.name}} {{data.lastname}} - {{data.telefono}}</span><br>
+                <span class="f-12">{{data.email}}</span>
+              </div>
             </div>
-          </div>
-          <hr style="width: 194px; border-top-color: #00000038;">
-          <div class="row">
-            <div class="col-md-12 card-pie">
-              <span class="mdi mdi-magnify ver-mas"></span>
+            <hr style="width: 194px; border-top-color: #00000038;">
+            <div class="row">
+              <div class="col-md-12 card-pie">
+                <span class="mdi mdi-magnify ver-mas"></span>
+              </div>
             </div>
           </div>
         </div>
@@ -81,6 +83,7 @@ export default {
       estado:null,
     }
   },
+  
   mounted(){
     this.isLoading = true
     Promise.all([
@@ -91,8 +94,19 @@ export default {
     })
   },
   methods:{
-    estadoUser(dato){
-      console.log(dato);
+    async estadoUser(dato){
+      try {
+        const {data} = await axios.put(`${this.ruta}/${dato.id}/estado-usuario`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','Imposible cambiar estado',data.error)
+          return
+        }
+        this.listar_usuarios()
+        this.$Helper.notificacion('success','Estado actualizado',data.mensaje)
+
+      } catch (e) {
+        console.warn(e);
+      }
     },
     editarUsuarios(dato){
       this.$refs.modalEditarProveedor.toggle(dato);
@@ -132,7 +146,15 @@ export default {
     async listar_usuarios(){
       try {
         const {data} = await axios(`${this.ruta}/listar-usuarios`)
-        //notificacion si falla
+        if (data.error) {
+          this.$Helper.notificacion('warning','No es posible listar usuarios',data.error)
+          return
+        }
+
+        data.forEach((ele, i)=>{
+          ele.estado == 1?ele.estado_usuario = true:ele.estado_usuario = false
+        })
+
         this.usuarios = data;
 
       } catch (e){
@@ -149,6 +171,9 @@ export default {
 <style lang="scss" scoped>
 
 .listar-usuarios{
+  .usuario-inactivo{
+    opacity: 0.3
+  }
   .card-padre{
     max-width: 246px;
     min-width: 246px;
