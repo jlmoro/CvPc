@@ -73,7 +73,8 @@ class SolucionesPosiblesController extends Controller
     try {
       return DB::transaction(function() use($request){
 
-        $request['id_descripcion_evento'] = $request->tipo_evento;
+        $request['id_descripcion_evento'] = $request->descripcion_evento;
+
         SolucionesPosibles::create($request->all());
 
         return[

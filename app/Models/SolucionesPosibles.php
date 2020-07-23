@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SolucionesPosibles extends Model
 {
-    protected $table="soluciones_posibles";
-    protected $primary_key="id";
-    protected $guarded = ['tipo_evento','nombre_evento_tipo'];
+    protected $table = "soluciones_posibles";
+    protected $primarykey = "id";
+    protected $guarded = ['tipo_evento','descripcion_evento'];
 }

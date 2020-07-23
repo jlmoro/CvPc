@@ -141,7 +141,7 @@ class SelectController extends Controller
   public function listar_descripcion_eventos($id_evento_tipo)
   {
     try {
-      return EventosTiposDescripcion::select('nombre')
+      return EventosTiposDescripcion::select('id','nombre')
       ->orderBy('created_at','DESC')
       ->where('id_evento_tipo',$id_evento_tipo)
       ->get();
