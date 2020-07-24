@@ -7,6 +7,7 @@
         <div id="chartdiv" class="lista-cantidad-eventos" />
       </div>
       <div class="col-md-6">
+        <h5 class="mb-4 text-center">Próximos Eventos</h5>
         <div class='demo-app'>
           <!-- <div class='demo-app-top'>
             <button @click="toggleWeekends">toggle weekends</button>
@@ -33,9 +34,10 @@
     </section>
   </template>
   <script>
+
   import * as am4core from "@amcharts/amcharts4/core";
   import * as am4charts from "@amcharts/amcharts4/charts";
-  import am4themes_kelly from "@amcharts/amcharts4/themes/kelly";
+  import am4themes_dataviz from "@amcharts/amcharts4/themes/dataviz";
   import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 
   import FullCalendar from '@fullcalendar/vue'
@@ -97,7 +99,7 @@
             return
           }
           // Themes begin
-          am4core.useTheme(am4themes_kelly);
+          am4core.useTheme(am4themes_dataviz);
           am4core.useTheme(am4themes_animated);
           // Themes end
 
@@ -110,44 +112,30 @@
 
           // Create axes
           let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-          categoryAxis.dataFields.category = "nombre_tipo";
+          categoryAxis.dataFields.category = "sigla";
           categoryAxis.renderer.grid.template.location = 0;
           categoryAxis.renderer.minGridDistance = 30;
-          categoryAxis.renderer.labels.template.horizontalCenter = "right";
-          categoryAxis.renderer.labels.template.verticalCenter = "middle";
-          categoryAxis.renderer.labels.template.rotation = 300;
-          categoryAxis.tooltip.disabled = true;
-          categoryAxis.renderer.minHeight = 110;
+
+          categoryAxis.renderer.labels.template.adapter.add("dy", function(dy, target) {
+            if (target.dataItem && target.dataItem.index & 2 == 2) {
+              return dy + 25;
+            }
+            return dy;
+          });
 
           let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-          valueAxis.renderer.minWidth = 50;
 
           // Create series
           let series = chart.series.push(new am4charts.ColumnSeries());
-          series.sequencedInterpolation = true;
           series.dataFields.valueY = "cantidad_eventos";
-          series.dataFields.categoryX = "nombre_tipo";
-          series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
-          series.columns.template.strokeWidth = 0;
+          series.dataFields.categoryX = "sigla";
+          series.name = "cantidad_eventos";
+          series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
+          series.columns.template.fillOpacity = .8;
 
-          series.tooltip.pointerOrientation = "vertical";
-
-          series.columns.template.column.cornerRadiusTopLeft = 10;
-          series.columns.template.column.cornerRadiusTopRight = 10;
-          series.columns.template.column.fillOpacity = 0.8;
-
-          // on hover, make corner radiuses bigger
-          let hoverState = series.columns.template.column.states.create("hover");
-          hoverState.properties.cornerRadiusTopLeft = 0;
-          hoverState.properties.cornerRadiusTopRight = 0;
-          hoverState.properties.fillOpacity = 1;
-
-          series.columns.template.adapter.add("fill", function(fill, target) {
-            return chart.colors.getIndex(target.dataItem.index);
-          });
-
-          // Cursor
-          chart.cursor = new am4charts.XYCursor();
+          let columnTemplate = series.columns.template;
+          columnTemplate.strokeWidth = 2;
+          columnTemplate.strokeOpacity = 1;
         } catch (e) {
           console.warn(e);
         }

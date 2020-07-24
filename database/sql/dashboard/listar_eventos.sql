@@ -1,4 +1,4 @@
-SELECT et.id,et.nombre_tipo,
+SELECT et.id,et.nombre_tipo,et.sigla,
 (
     SELECT COUNT(e.id)
     FROM eventos e
