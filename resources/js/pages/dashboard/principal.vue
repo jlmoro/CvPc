@@ -1,7 +1,7 @@
 <template>
   <section class="grafica-principal">
     <!-- <div id="chartdiv" class="lista-cantidad-eventos" style="height: 36em;"/> -->
-    <div class="row">
+    <div class="row" v-loading="isLoading">
       <div class="col-md-6 text-center">
         <h5>Cantidad de Eventos</h5>
         <div id="chartdiv" class="lista-cantidad-eventos" />
@@ -21,13 +21,15 @@
           :header="{
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            right: 'dayGridMonth'
             }"
             :plugins="calendarPlugins"
             :weekends="calendarWeekends"
             :events="calendarEvents"
             @dateClick="handleDateClick"
+            @event-selected="eventselect($event)"
             />
+            <!-- right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' -->
           </div>
         </div>
       </div>
@@ -53,6 +55,7 @@
     },
     data(){
       return {
+        isLoading:false,
         calendarPlugins: [ // plugins must be defined in the JS
           dayGridPlugin,
           timeGridPlugin,
@@ -61,15 +64,51 @@
 
         calendarWeekends: true,
         calendarEvents: [ // initial event data
-          { title: 'Event Now', start: new Date() }
+          {
+            title  : 'event1',
+            start  : '2020-07-26',
+          },
+          {
+            title  : 'event2',
+            start  : '2020-07-25',
+            end    : '2020-07-27',
+          },
+          {
+            title  : 'event3',
+            start  : '2020-07-25',
+            allDay : true,
+          },
         ]
       }
     },
     mounted() {
-      this.listarEventosChart()
+      this.isLoading = true
+      Promise.all([
+        this.listarEventosChart(),
+        this.listarEventosCalendario()
+      ]).then(res=>{
+        this.isLoading = false
+      })
     },
 
     methods: {
+      async listarEventosCalendario(){
+        try {
+
+          const {data} = await axios(`/api/dashboard/principal/eventos-calendario`)
+          if (data.error) {
+            this.$Helper.notificacion('warning','Error listados eventos calendario',data.error)
+            return
+          }
+          this.calendarEvents = data
+
+        } catch (e) {
+          console.warn(e);
+        }
+      },
+      eventselect(event){
+        console.log(event,"dato seleccionado");
+      },
       toggleWeekends() {
         this.calendarWeekends = !this.calendarWeekends // update a property
       },
@@ -127,6 +166,7 @@
 
           // Create series
           let series = chart.series.push(new am4charts.ColumnSeries());
+          // console.log(series,"lo que hay en series");
           series.dataFields.valueY = "cantidad_eventos";
           series.dataFields.categoryX = "sigla";
           series.name = "cantidad_eventos";
