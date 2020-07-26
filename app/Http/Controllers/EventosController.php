@@ -209,7 +209,7 @@ class EventosController extends Controller
   {
     try {
       return DB::transaction(function() use($id_impresora,$request){
-
+        // dd($request->all());
         $request['created_by'] = auth()->user()->id;
         $request['updated_by'] = auth()->user()->id;
         $request['id_impresora'] = $id_impresora;

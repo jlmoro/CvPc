@@ -154,7 +154,9 @@ class SelectController extends Controller
   public function listar_tipos_eventos()
   {
     try {
-      return EventosTipos::select('id','nombre_tipo as nombre')->orderBy('created_at','DESC')->get();
+      return EventosTipos::select('id','nombre_tipo as nombre','sigla')
+      ->orderBy('created_at','DESC')
+      ->get();
 
     } catch (\Exception $e) {
       return $this->captura_error($e,"error al listar tipos eventos");

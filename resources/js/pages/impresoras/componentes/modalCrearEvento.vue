@@ -7,19 +7,31 @@
         </div>
       </div>
       <div slot="body" class="">
-
         <div class="row w-100 mb-3">
         <div class="col-md-6">
           <label for="">Tipo Evento:</label>
-          <el-select v-model="form.id_tipo_evento" filterable placeholder="Seleccione Tipo Evento" clearable >
+          <el-select v-model="form.id_tipo_evento" filterable placeholder="Seleccione Tipo Evento" clearable @change="listar_descripcion_eventos($event)">
             <el-option
-            v-for="(item,e) in tiposEventos"
-            :key="e"
-            :label="item.nombre"
-            :value="item.id">
-          </el-option>
-        </el-select>
-      </div>
+              v-for="(item,e) in tiposEventos"
+              :key="e"
+              :label="item.nombre"
+              :value="item.id">
+              <span style="float: left">{{ item.nombre }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.sigla }}</span>
+            </el-option>
+          </el-select>
+        </div>
+        <div class="col-md-6">
+          <label for="">Descripción Evento:</label>
+          <el-select v-model="form.id_detalle_evento" filterable placeholder="Seleccione Descripción Evento" clearable>
+            <el-option
+              v-for="(item,e) in dataDescripcion"
+              :key="e"
+              :label="item.nombre"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </div>
     </div>
     <div class="row w-100">
       <div class="col-md-12">
@@ -46,11 +58,27 @@ export default {
     return{
       form:{
         id_tipo_evento:null,
+        id_detalle_evento:null
       },
+      dataDescripcion:[],
       impresora:{}
     }
   },
   methods:{
+    async listar_descripcion_eventos(event){
+      this.form.id_detalle_evento = ''
+      try {
+        const {data} = await axios(`/api/select/${event}/listar-descripcion-eventos`)
+        if (data.error) {
+          this.$Helper.notificacion('danger','Error descripción eventos',data.error)
+          return
+        }
+        this.dataDescripcion = data
+
+      } catch (e) {
+        console.warn(e);
+      }
+    },
     async registrarEvento(){
       try {
         const {data} = await axios.post(`${this.ruta}/eventos/${this.impresora.id}/registrar-evento-impresora`,this.form)

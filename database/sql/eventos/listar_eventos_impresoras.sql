@@ -1,8 +1,8 @@
 SELECT *,
 (
-    SELECT et.nombre_tipo
-    FROM eventos_tipos et
-    WHERE et.id = ei.id_tipo_evento
+    SELECT etd.nombre
+    FROM eventos_tipos_descripcion etd
+    WHERE etd.id = ei.id_detalle_evento
 )AS tipo_evento,
 (
     SELECT i.marca
