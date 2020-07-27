@@ -1,8 +1,8 @@
 SELECT *,
 (
-  SELECT et.nombre_tipo
-  FROM eventos_tipos et
-  WHERE et.id = ep.id_tipo_evento
+  SELECT etd.nombre
+  FROM eventos_tipos_descripcion etd
+  WHERE etd.id = ep.id_detalle_evento
 )AS tipo_evento,
 (
   SELECT i.marca
@@ -58,5 +58,10 @@ SELECT *,
     FROM resolver_evento_pantalla rep
     LEFT JOIN users u ON u.id = rep.id_usuario_resolver
     WHERE rep.id_evento = ep.id
-)AS persona_apellido_asignado
+)AS persona_apellido_asignado,
+(
+    SELECT sp.solucion_posible
+    FROM soluciones_posibles sp
+    WHERE sp.id_descripcion_evento = ep.id_detalle_evento
+)AS solucion_ayuda
 FROM eventos_pantalla ep

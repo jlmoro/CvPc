@@ -25,7 +25,7 @@
           <th>Fecha</th>
           <th>Estado</th>
           <th>Descripción</th>
-          <th colspan="2">Acciones</th>
+          <th colspan="3">Acciones</th>
         </thead>
         <tbody>
           <tr v-for="(data,e) in lista_eventos" :key="e">
@@ -41,14 +41,22 @@
               <span v-show="data.evento_estado == 2" class="f-13 texto-info estado-2" @click="eventoResuelto(data)">Asignado</span>
               <span v-show="data.evento_estado == 3" class="f-13 texto-info estado-3">Resuelto</span>
             </td>
-            <td><span>{{data.descripcion}}</span></td>
+            <td>
+              <textarea class="descripcion-evento" readonly v-model="data.descripcion"></textarea>
+              <!-- <span>{{data.descripcion}}</span> -->
+            </td>
 
             <td class="text-center">
               <i class="mdi mdi-pencil accion-editar" @click="modalEditarEvento(data)"></i>
             </td>
             <td>
               <el-tooltip content="Detalles estado evento" placement="bottom">
-                <i class="mdi mdi-magnify" @click="abrirModalVerDetalle(data)"></i>
+                <i class="mdi mdi-magnify f-16" @click="abrirModalVerDetalle(data)"></i>
+              </el-tooltip>
+            </td>
+            <td>
+              <el-tooltip content="Ayuda" placement="bottom">
+                <i class="mdi mdi-help-circle-outline f-16" @click="abrirModalAyuda(data)"></i>
               </el-tooltip>
             </td>
           </tr>
@@ -75,6 +83,7 @@
     />
 
     <modal-ver-detalle ref="modalVerDetalles"/>
+    <modal-ver-ayuda ref="modalVerAyuda"/>
   </section>
 </template>
 
@@ -84,7 +93,8 @@ export default {
     modalCrear: () => import('./componentes/modalCrearEvento'),
     modalEditar: () => import('./componentes/modalEditarEvento'),
     modalAsignarFecha: () => import('./componentes/modalAsignarFecha'),
-    modalVerDetalle: () => import('./verDetalle')
+    modalVerDetalle: () => import('./verDetalle'),
+    modalVerAyuda: () => import('./verAyuda')
   },
   data(){
     return{
@@ -175,8 +185,10 @@ export default {
       this.idEvento = dato.id
       this.$refs.modalEventoResuelto.toggle()
     },
+    abrirModalAyuda(dato){
+      this.$refs.modalVerAyuda.toggle(dato)
+    },
     abrirModalVerDetalle(dato){
-      // console.log(dato,"datooooooos");
       this.pruebaEvent = dato
       if (dato.evento_fecha_resolver !== null) {
         this.$refs.modalVerDetalles.toggle(dato)
@@ -196,6 +208,12 @@ export default {
 
 <style lang="scss" scoped>
 .lista-eventos{
+  .descripcion-evento{
+    resize: none;
+    border: none;
+    width: 178px;
+    height: 120px;
+  }
   .estado-1{
     background-color: gray;
     padding: 4px;

@@ -25,7 +25,7 @@
           <th>Fecha</th>
           <th>Estado</th>
           <th>Descripción</th>
-          <th colspan="2">Acciones</th>
+          <th colspan="3">Acciones</th>
         </thead>
         <tbody>
           <tr v-for="(data,e) in lista_eventos" :key="e">
@@ -48,7 +48,12 @@
             </td>
             <td>
               <el-tooltip content="Detalles estado evento" placement="bottom">
-                <i class="mdi mdi-magnify" @click="abrirModalVerDetalle(data)"></i>
+                <i class="mdi mdi-magnify f-16" @click="abrirModalVerDetalle(data)"></i>
+              </el-tooltip>
+            </td>
+            <td>
+              <el-tooltip content="Ayuda" placement="bottom">
+                <i class="mdi mdi-help-circle-outline f-16" @click="modalVerAyuda(data)"></i>
               </el-tooltip>
             </td>
           </tr>
@@ -173,8 +178,11 @@ export default {
         console.warn(e);
       }
     },
+    modalVerAyuda(dato){
+      console.log(dato,"datoooooooo");
+
+    },
     abrirModalVerDetalle(dato){
-      // console.log(dato,"datoooooooo");
       this.pruebaEvent = dato
       if (dato.evento_fecha_resolver !== null) {
         this.$refs.modalVerDetalles.toggle(dato)

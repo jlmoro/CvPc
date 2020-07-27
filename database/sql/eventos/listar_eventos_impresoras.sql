@@ -65,5 +65,10 @@ SELECT *,
     LEFT JOIN roles r ON e.id_rol = r.id
     LEFT JOIN areas a ON r.id_area = a.id
     WHERE im.id = ei.id_impresora
-)AS evento_area
+)AS evento_area,
+(
+    SELECT sp.solucion_posible
+    FROM soluciones_posibles sp
+    WHERE sp.id_descripcion_evento = ei.id_detalle_evento
+)AS solucion_ayuda
 FROM eventos_impresoras ei
