@@ -41,7 +41,10 @@
               <span v-show="data.evento_estado == 2" class="f-12 texto-info estado-2" @click="eventoResuelto(data)">Asignado</span>
               <span v-show="data.evento_estado == 3" class="f-12 texto-info estado-3">Resuelto</span>
             </td>
-            <td><span>{{data.descripcion}}</span></td>
+            <td>
+              <!-- <span>{{data.descripcion}}</span> -->
+              <textarea class="descripcion-evento" v-model="data.descripcion"></textarea>
+            </td>
 
             <td class="text-center">
               <i class="mdi mdi-pencil accion-editar" @click="modalEditarEvento(data)"></i>
@@ -202,6 +205,29 @@ export default {
 
 <style lang="scss" scoped>
 .lista-eventos{
+  .table{
+    tbody{
+      tr{
+        border-radius: 5px;
+        transition-duration: .85s;
+        &:hover{
+          .descripcion-evento{
+            background-color: #d3d3d35c; 
+          }
+          background-color: #d3d3d35c;
+          transform: translateY(-3px);
+          box-shadow: 0px 3px 2px 1px #49505f7d;
+          transition-duration: .4s;
+        }
+      }
+    }
+  }
+  .descripcion-evento{
+    resize: none;
+    height: 115px;
+    width: 188px;
+    border: none;
+  }
   .estado-1{
     background-color: gray;
     padding: 4px;

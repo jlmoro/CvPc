@@ -8,5 +8,5 @@ class EventosPantallas extends Model
 {
   protected $table = 'eventos_pantalla';
   protected $primaryKey = 'id';
-  protected $guarded = [];
+  protected $guarded = ['id_tipo_evento'];
 }
