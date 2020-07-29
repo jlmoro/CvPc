@@ -7,8 +7,8 @@ export default [
     children: [
       {
         path: 'listar',
-        name: 'pc.listar',
-        component: page('pc/listarPcs'),
+        name: 'chasis.listar',
+        component: page('pc/listarChasis'),
       },
       {
         path: 'equipos',

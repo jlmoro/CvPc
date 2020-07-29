@@ -28,7 +28,7 @@ export default {
       switch (num) {
         case 1:
           this.$router.push({
-            name:'pc.listar'
+            name:'chasis.listar'
           })
           break;
         case 2:
