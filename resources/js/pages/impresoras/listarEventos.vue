@@ -208,6 +208,23 @@ export default {
 
 <style lang="scss" scoped>
 .lista-eventos{
+  .table{
+    tbody{
+      tr{
+        border-radius: 5px;
+        transition-duration: .85s;
+        &:hover{
+          .descripcion-evento{
+            background-color: #d3d3d35c;
+          }
+          background-color: #d3d3d35c;
+          transform: translateY(-3px);
+          box-shadow: 0px 3px 2px 1px #49505f7d;
+          transition-duration: .4s;
+        }
+      }
+    }
+  }
   .descripcion-evento{
     resize: none;
     border: none;

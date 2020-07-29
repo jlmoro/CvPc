@@ -1,7 +1,7 @@
 <template>
   <section class="listar-eventos-pc">
-    <div class="row">
-      <h5>listados de eventos pc</h5>
+    <div class="mb-4 text-center">
+      <h5 class="mt-4">Lisado de Eventos PC</h5>
     </div>
   </section>
 </template>
@@ -16,4 +16,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.listar-eventos-pc{
+
+}
 </style>

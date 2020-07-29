@@ -11,43 +11,18 @@ export default [
         component: page('pc/listarPcs'),
       },
       {
-        path: 'fuentes',
-        name: 'fuentes.listar',
-        component: page('pc/listarFuentes')
+        path: 'equipos',
+        name: 'equipos.listar',
+        component: page('pc/listarEquipos')
       },
       {
-        path: 'procesador',
-        name: 'procesador.listar',
-        component: page('pc/listarProcesadores')
-      },
-      {
-        path: 'memoriaram',
-        name: 'ram.listar',
-        component: page('pc/listarMemoriaRam')
-      },
-      {
-        path: 'board',
-        name: 'board.listar',
-        component: page('pc/listarPlacasBase')
-      },
-      {
-        path: 'discos',
-        name: 'disco.listar',
-        component: page('pc/listarDisco')
-      },
-      {
-        path: 'perifericos',
-        name: 'perife.listar',
-        component: page('pc/listarPerifericos')
-      },
-      {
-        path: 'organizarPc',
-        name: 'organizar.listar',
-        component: page('pc/organizarPc')
+        path: 'nuevo-equipo',
+        name: 'equipo.registrar',
+        component: page('pc/registrarEquipo')
       },
       {
         path: 'eventos',
-        name: 'eventos.pc',
+        name: 'eventospc.listar',
         component: page('pc/listarEventos')
       },
     ]
