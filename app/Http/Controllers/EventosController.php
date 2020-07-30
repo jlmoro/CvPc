@@ -17,6 +17,28 @@ use App\Models\{
 
 class EventosController extends Controller
 {
+  public function eliminar_evento_impresora($id_evento)
+  {
+    try {
+
+      return DB::transaction(function() use($id_evento){
+
+        $e_i = ResolverEventoImpresora::where('id_evento',$id_evento)->first();
+        $e_i->delete();
+
+        $even_impre = EventosImpresoras::find($id_evento);
+        $even_impre->delete();
+
+        return[
+          'mensaje'=>config('domains.mensajes.eliminado')
+        ];
+      },5);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al eliminar evento");
+    }
+
+  }
   public function evento_impresora_resuelto($id_evento)
   {
     try {

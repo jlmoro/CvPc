@@ -24,12 +24,13 @@
               <th colspan="4">Acciones</th>
             </tr>
           </thead>
-          <tr v-if="data" v-for="(data,i) in listadoPantallas" :key="i">
+          <tbody>
+          <tr v-for="(data,i) in listadoPantallas" :key="i">
             <td>{{i + 1}}</td>
             <td><span class="letra-capital">{{data.marca}}</span></td>
             <td><span class="letra-capital">{{data.modelo}}</span></td>
             <td>{{data.placa}}</td>
-            <td>{{data.serial}}</td>
+            <td class="text-center">{{data.serial}}</td>
             <td><span class="letra-capital">{{data.nombre_encargado}}</span></td>
             <td><span class="letra-capital">{{data.proveedor}}</span></td>
             <td>{{data.created_at | formato_fecha('DD-MM-yyyy')}}</td>
@@ -53,9 +54,7 @@
             <i class="mdi mdi-calendar f-16 acciones btnEventos" @click="modalCrearEvento(data)"></i>
           </td>
         </tr>
-        <tr v-else>
-          <td><span>No hay datos a mostrar</span></td>
-        </tr>
+      </tbody>
       </table>
     </div>
   </div>
@@ -211,6 +210,20 @@ export default {
 </script>
 <style lang="scss" scoped>
 .lista-pantallas{
+  .table{
+    tbody{
+      tr{
+        border-radius: 5px;
+        transition-duration: .85s;
+        &:hover{
+          background-color: #c0c4cc;
+          transform: translateY(-3px);
+          box-shadow: 0px 3px 2px 1px #49505f7d;
+          transition-duration: .4s;
+        }
+      }
+    }
+  }
   .btnEventos{
     color: white;
     border: solid 1px midnightblue;

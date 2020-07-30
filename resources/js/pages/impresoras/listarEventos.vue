@@ -46,9 +46,6 @@
               <!-- <span>{{data.descripcion}}</span> -->
             </td>
 
-            <td class="text-center">
-              <i class="mdi mdi-pencil accion-editar" @click="modalEditarEvento(data)"></i>
-            </td>
             <td>
               <el-tooltip content="Detalles estado evento" placement="bottom">
                 <i class="mdi mdi-magnify f-16" @click="abrirModalVerDetalle(data)"></i>
@@ -58,6 +55,10 @@
               <el-tooltip content="Ayuda" placement="bottom">
                 <i class="mdi mdi-help-circle-outline f-16" @click="abrirModalAyuda(data)"></i>
               </el-tooltip>
+            </td>
+            <td class="text-center">
+              <i class="mdi mdi-delete accion-eliminar" @click="modalEliminarEvento(data)"></i>
+              <!-- <i class="mdi mdi-pencil accion-editar" @click="modalEditarEvento(data)"></i> -->
             </td>
           </tr>
         </tbody>
@@ -80,6 +81,12 @@
     titulo="Evento Resuelto"
     cuerpo="¿ Se ha resuelto la eventualidad ?"
     @confirmarE="eventualidadResuelta"
+    />
+
+    <modal-eliminar ref="eliminarEvento"
+    titulo="Eliminar Evento"
+    :cuerpo="`¿Desea eliminar el evento para la impresora ${eliminarEvento.impresora_placa}?`"
+    @eliminar="eliminandoEvento"
     />
 
     <modal-ver-detalle ref="modalVerDetalles"/>
@@ -106,6 +113,7 @@ export default {
       pruebaEvent:{},
       idEvento:null,
       isLoading:false,
+      eliminarEvento:'',
     }
   },
   computed:{
@@ -124,6 +132,26 @@ export default {
     })
   },
   methods:{
+    async eliminandoEvento(){
+      try {
+
+        const {data} = await axios.delete(`${this.ruta}/${this.eliminarEvento.id}/eliminar-evento`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','No es posible eliminar evento',data.error)
+          return
+        }
+        this.$refs.eliminarEvento.toggle()
+        this.$Helper.notificacion('success','Evento Eliminado',data.mensaje)
+        this.listar_eventos_impresora()
+
+      } catch (e) {
+          console.warn(e);
+      }
+    },
+    modalEliminarEvento(dato){
+      this.eliminarEvento = dato
+      this.$refs.eliminarEvento.toggle()
+    },
     modalAsignarFecha() {
       let dato = this.pruebaEvent
       this.$refs.modalEstadoEventos.toggle()
@@ -255,6 +283,20 @@ export default {
   .icon-descripcion{
     &:hover{
       color: #0094fd;
+    }
+  }
+  .accion-eliminar{
+    border: solid 1px #710a0a;
+    border-radius: 2px;
+    padding: 2px;
+    font-size: 14px;
+    color: #710a0a;
+    transition-duration: .85;
+    &:hover{
+      background-color: #710a0a;
+      color: white;
+      cursor: pointer;
+      transition-duration: .4;
     }
   }
   .accion-editar{

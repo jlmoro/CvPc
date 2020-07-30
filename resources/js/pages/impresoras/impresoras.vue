@@ -23,21 +23,22 @@
               <th colspan="4">Acciones</th>
             </tr>
           </thead>
-          <tr v-for="(data,i) in listadoImpresoras" :key="i">
-            <td>{{i + 1}}</td>
-            <td><span class="letra-capital">{{data.marca}}</span></td>
-            <td>{{data.modelo}}</td>
-            <td>{{data.placa}}</td>
-            <td>{{data.serial }}</td>
-            <td><span class="letra-capital">{{data.nombre_encargado}}</span></td>
-            <td><span class="letra-capital">{{data.proveedor}}</span></td>
-            <td>{{data.created_at | formato_fecha('D-MMM-YYYY')}}</td>
-            <td v-if="data.estado === 1"><button type="button" class="estado act" @click="cambiarEstado(data)">Activa</button></td>
-            <td v-else><button type="button" class="estado inact" @click="cambiarEstado(data)">Inactiva</button></td>
-            <td>
-              <el-popover placement="bottom" title="Observaciones" width="250" trigger="hover"
-              :content="data.observaciones">
-              <span slot="reference" class="mdi mdi-alert-circle-outline f-20 btnDescrip "></span>
+          <tbody>
+            <tr v-for="(data,i) in listadoImpresoras" :key="i">
+              <td>{{i + 1}}</td>
+              <td><span class="letra-capital">{{data.marca}}</span></td>
+              <td>{{data.modelo}}</td>
+              <td>{{data.placa}}</td>
+              <td>{{data.serial }}</td>
+              <td><span class="letra-capital">{{data.nombre_encargado}}</span></td>
+              <td><span class="letra-capital">{{data.proveedor}}</span></td>
+              <td>{{data.created_at | formato_fecha('D-MMM-YYYY')}}</td>
+              <td v-if="data.estado === 1"><button type="button" class="estado act" @click="cambiarEstado(data)">Activa</button></td>
+              <td v-else><button type="button" class="estado inact" @click="cambiarEstado(data)">Inactiva</button></td>
+              <td>
+                <el-popover placement="bottom" title="Observaciones" width="250" trigger="hover"
+                :content="data.observaciones">
+                <span slot="reference" class="mdi mdi-alert-circle-outline f-20 btnDescrip "></span>
               </el-popover>
             </td>
             <td>
@@ -50,6 +51,7 @@
               <i class="mdi mdi-calendar f-16 acciones btnEventos" @click="modalCrearEvento(data)"></i>
             </td>
           </tr>
+        </tbody>
         </table>
       </div>
     </div>
@@ -147,7 +149,7 @@ export default {
         this.$refs.modalEliminar.toggle()
       } catch (e) {
         console.warn(e);
-      }  
+      }
     },
     modalEliminar(dato){
       this.eliminarImp = dato
@@ -204,6 +206,21 @@ export default {
 
 <style lang="scss" scoped>
 .listar-impresoras{
+  .table{
+    tbody{
+      tr{
+        border-radius: 5px;
+        transition-duration: .85s;
+        &:hover{
+          background-color: #c0c4cc;
+          transform: translateY(-3px);
+          box-shadow: 0px 3px 2px 1px #49505f7d;
+          transition-duration: .4s;
+        }
+      }
+    }
+  }
+
   .btnEventos{
     color: white;
     border: solid 1px midnightblue;

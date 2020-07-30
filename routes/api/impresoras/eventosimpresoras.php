@@ -7,6 +7,8 @@ Route::group(['middleware' =>'auth:api'], function (){
       Route::get("listar-eventos-impresoras","$controlador@listar_eventos_impresoras");
       Route::put("{id_evento}/fecha-solucion-evento-impresora","$controlador@fecha_solucion_evento_impresora");
       Route::put("{id_evento}/evento-impresora-resuelto","$controlador@evento_impresora_resuelto");
+
+      Route::delete("{id_evento}/eliminar-evento","$controlador@eliminar_evento_impresora");
     });
   });
 });
