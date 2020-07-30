@@ -1,8 +1,10 @@
 <template>
   <section class="listar-fuentes" v-loading="isLoading">
+
     <div class="mb-4 text-center">
       <h5 class="mt-4">Listado de Equipos</h5>
     </div>
+
     <div class="row w-100 mt-4">
       <div class="col-md-12">
         <div class="row mb-3">
@@ -12,13 +14,15 @@
         </div>
       </div>
     </div>
+
+    <modal-crear ref="modalRegistroChasis" />
   </section>
 </template>
 
 <script>
 export default {
   components:{
-    ModalCrear:()=> import('./componentes/modalFuentePoder'),
+    ModalCrear:()=> import('./componentes/modalRegistrarChasis'),
     ModalEditar:()=> import('./componentes/modalEditarFuentePoder')
   },
   data(){
@@ -36,6 +40,9 @@ export default {
       this.isLoading = false
     })
   },
+  methods: {
+    
+  }
 
 }
 </script>
