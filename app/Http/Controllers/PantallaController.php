@@ -8,6 +8,23 @@ use App\Models\Pantalla;
 
 class PantallaController extends Controller
 {
+  public function editar_pantalla(Request $request)
+  {
+    try {
+
+      $pantalla = Pantalla::find($request->id);
+      $pantalla->fill($request->all());
+      $pantalla->update();
+
+      return[
+        'mensaje'=>config('domains.mensajes.actualizado')
+      ];
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"Error al actualizar pantalla");
+    }
+
+  }
   public function cambiar_estado($id_pantalla)
   {
     try {

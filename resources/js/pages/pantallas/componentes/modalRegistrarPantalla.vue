@@ -98,10 +98,10 @@ export default {
         this.form.estado = (this.form.estado === true)?1:0
         const {data} = await axios.post(`${this.ruta}/registrar-pantalla`,this.form)
         if (data.error) {
-          this.$Helper.notificacion('warning','Error creando impresora',data.error)
+          this.$Helper.notificacion('warning','Problema al registrar pantalla',data.error)
           return
         }
-        this.$Helper.notificacion('success','Impresora Registrada',data.mensaje)
+        this.$Helper.notificacion('success','Pantalla Registrada',data.mensaje)
         this.$emit('impresora:creada')
         this.$refs.ModalRegistrarPantalla.toggle()
 

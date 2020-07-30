@@ -8,5 +8,10 @@ class Pantalla extends Model
 {
     protected $table = 'pantalla';
     protected $primaryKey = 'id';
-    protected $guarded = ['proveedor','encargado'];
+    protected $guarded = [
+      'proveedor',
+      'encargado',
+      'nombre_encargado',
+      'area'
+    ];
 }

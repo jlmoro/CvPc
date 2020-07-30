@@ -46,9 +46,6 @@
               <textarea class="descripcion-evento" v-model="data.descripcion"></textarea>
             </td>
 
-            <td class="text-center">
-              <i class="mdi mdi-pencil accion-editar" @click="modalEditarEvento(data)"></i>
-            </td>
             <td>
               <el-tooltip content="Detalles estado evento" placement="bottom">
                 <i class="mdi mdi-magnify f-16" @click="abrirModalVerDetalle(data)"></i>
@@ -58,6 +55,10 @@
               <el-tooltip content="Ayuda" placement="bottom">
                 <i class="mdi mdi-help-circle-outline f-16" @click="modalVerAyuda(data)"></i>
               </el-tooltip>
+            </td>
+            <td class="text-center">
+              <i class="mdi mdi-delete accion-eliminar" @click="modalEliminarEvento(data)"></i>
+              <!-- <i class="mdi mdi-delete accion-editar" @click="modalEditarEvento(data)"></i> -->
             </td>
           </tr>
         </tbody>
@@ -82,6 +83,12 @@
     @confirmarE="eventualidadResuelta"
     />
 
+    <modal-eliminar ref="eliminarEventoPantalla"
+    titulo="Eliminar Evento Pantalla"
+    :cuerpo="`¿Desea eliminar evento de la pantalla ${eliminarEvento.pantalla_placa}?`"
+    @eliminar="eliminandoEvento"
+    />
+
     <modal-ver-detalle ref="modalVerDetalles"/>
   </section>
 </template>
@@ -104,6 +111,7 @@ export default {
       pruebaEvent:'',
       idEvento:null,
       isLoading:false,
+      eliminarEvento:'',
     }
   },
   computed:{
@@ -122,6 +130,24 @@ export default {
     })
   },
   methods:{
+    async eliminandoEvento(){
+      try {
+        const {data} = await axios.delete(`${this.ruta}/${this.eliminarEvento.id}/eliminar-evento-pantalla`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','No es posible eliminar evento',data.error)
+          return
+        }
+        this.$Helper.notificacion('success','Evento Eliminado',data.mensaje)
+        this.$refs.eliminarEventoPantalla.toggle()
+        this.listar_eventos_pantalla()
+      } catch (e) {
+        console.warn(e);
+      }
+    },
+    modalEliminarEvento(dato){
+      this.eliminarEvento = dato
+      this.$refs.eliminarEventoPantalla.toggle()
+    },
     async eventualidadResuelta(){
       try {
         const {data} = await axios.put(`${this.ruta}/${this.idEvento}/evento-pantalla-resuelto`)
@@ -212,7 +238,7 @@ export default {
         transition-duration: .85s;
         &:hover{
           .descripcion-evento{
-            background-color: #d3d3d35c; 
+            background-color: #d3d3d35c;
           }
           background-color: #d3d3d35c;
           transform: translateY(-3px);
@@ -252,6 +278,20 @@ export default {
   .icon-descripcion{
     &:hover{
       color: #0094fd;
+    }
+  }
+  .accion-eliminar{
+    border: solid 1px #710a0a;
+    border-radius: 2px;
+    padding: 2px;
+    font-size: 14px;
+    color: #710a0a;
+    transition-duration: .85;
+    &:hover{
+      background-color: #710a0a;
+      color: white;
+      cursor: pointer;
+      transition-duration: .4;
     }
   }
   .accion-editar{

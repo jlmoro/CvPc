@@ -70,7 +70,7 @@
   :encargados="encargados" :proveedores="proveedores"/>
 
   <modal-editar ref="modalEditarPantalla" :ruta="ruta"
-  @impresora:editada="listar_pantallas"
+  @pantalla:actualizada="listar_pantallas"
   :encargados="encargados" :proveedores="proveedores"/>
 
   <modal-crear-evento ref="modalRegistrarEvento" :ruta="ruta" :tiposEventos="tiposEventos"/>

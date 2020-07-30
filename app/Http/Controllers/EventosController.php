@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use DB,Validator;
 use Illuminate\Http\Request;
 use App\Models\{
-  Eventos,
   SolucionesPosibles,
-  ResolverEvento,
   EventosImpresoras,
   EventosPantallas,
   EventosPc,
@@ -17,6 +15,24 @@ use App\Models\{
 
 class EventosController extends Controller
 {
+  public function eliminar_evento_pantalla($id_evento)
+  {
+    try {
+      $e_p = ResolverEventoPantalla::where('id_evento',$id_evento)->first();
+      $e_p->delete();
+
+      $even_pant = EventosPantallas::find($id_evento);
+      $even_pant->delete();
+
+      return[
+        'mensaje'=>config('domains.mensajes.eliminado')
+      ];
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al eliminar evento");
+    }
+  }
+
   public function eliminar_evento_impresora($id_evento)
   {
     try {
@@ -37,8 +53,8 @@ class EventosController extends Controller
     } catch (\Exception $e) {
       return $this->captura_error($e,"error al eliminar evento");
     }
-
   }
+
   public function evento_impresora_resuelto($id_evento)
   {
     try {
@@ -56,6 +72,7 @@ class EventosController extends Controller
       return $this->captura_error($e,"error al intentar resolver");
     }
   }
+  
   public function evento_pantalla_resuelto($id_evento)
   {
     try {

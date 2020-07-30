@@ -87,11 +87,11 @@ export default {
         this.form.estado = (this.form.estado === true)?1:0
         const {data} = await axios.put(`${this.ruta}/editar-pantalla`,this.form)
         if (data.error) {
-          this.$Helper.notificacion('warning','Error creando impresora',data.error)
+          this.$Helper.notificacion('warning','Error actualizando pantalla',data.error)
           return
         }
-        this.$Helper.notificacion('success','Impresora Registrada',data.mensaje)
-        this.$emit('pantalla:registrada')
+        this.$emit('pantalla:actualizada')
+        this.$Helper.notificacion('success','Pantalla Actualizada',data.mensaje)
         this.$refs.ModalEditarPantalla.toggle()
 
       } catch (e) {
@@ -115,6 +115,6 @@ export default {
 
 <style lang="scss" scoped>
 .editar-pantalla{
-  
+
 }
 </style>
