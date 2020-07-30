@@ -6,8 +6,9 @@
           <h5>Información de Ayuda</h5>
         </div>
       </div>
-      <div slot="body" class="">
-        <span>{{verAyuda.solucion_ayuda}}</span>
+      <div slot="body" class="text-center">
+        <span class="text-center" v-if="verAyuda.solucion_ayuda == null">{{verAyuda.solucion_ayuda}}</span>
+        <span class="text-center" else> No se ha registrado comentario de ayuda</span>
       </div>
       <div slot="footer" class="">
         <!-- <button type="button" class="btn-crear" @click="registrarEvento">Registrar</button> -->

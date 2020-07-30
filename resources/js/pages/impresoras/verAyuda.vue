@@ -7,7 +7,8 @@
         </div>
       </div>
       <div slot="body" class="">
-        <span>{{verAyuda.solucion_ayuda}}</span>
+        <span v-if="verAyuda.solucion_ayuda == null">{{verAyuda.solucion_ayuda}}</span>
+        <span else> No se ha registrado comentario de ayuda</span>
       </div>
       <div slot="footer" class="">
         <!-- <button type="button" class="btn-crear" @click="registrarEvento">Registrar</button> -->

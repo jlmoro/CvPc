@@ -90,6 +90,9 @@
     />
 
     <modal-ver-detalle ref="modalVerDetalles"/>
+
+    <modal-ver-ayuda ref="modalVerAyuda"/>
+
   </section>
 </template>
 
@@ -99,7 +102,8 @@ export default {
     modalCrear: () => import('./componentes/modalCrearEvento'),
     modalEditar: () => import('./componentes/modalEditarEvento'),
     modalAsignarFecha: () => import('./componentes/modalAsignarFecha'),
-    modalVerDetalle: () => import('./verDetalle')
+    modalVerDetalle: () => import('./verDetalle'),
+    modalVerAyuda: () => import('./verAyuda')
   },
   data(){
     return{
@@ -208,8 +212,7 @@ export default {
       }
     },
     modalVerAyuda(dato){
-      console.log(dato,"datoooooooo");
-
+      this.$refs.modalVerAyuda.toggle(dato)
     },
     abrirModalVerDetalle(dato){
       this.pruebaEvent = dato
