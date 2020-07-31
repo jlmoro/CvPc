@@ -1,13 +1,24 @@
 <template>
-  <section class="listar-fuentes" v-loading="isLoading">
+  <section class="listar-chasis" v-loading="isLoading">
 
     <encabezadoDatos tituloEncabezado="Listado de Chasís" tituloBoton="registrar chasís" @accionBonton="modalRegistrarChasis"/>
 
     <div class="row w-100 mt-4">
       <div class="col-md-12">
         <div class="row mb-3">
-          <div class="col-md-4">
+          <div class="col-md-6">
             <el-input v-model="search" placeholder="Buscar..." clearable></el-input>
+          </div>
+          <div class="col-md-6 text-right">
+            <span>Filas: </span>
+            <el-select v-model="perPage" @change="cantidadFilas($event)">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </div>
         </div>
       </div>
@@ -27,7 +38,8 @@
             <th colspan="4">Acciones</th>
           </thead>
           <tbody class="text-center f-12">
-            <tr v-for="(data,c) in dataChasis" :key="c">
+            <!-- <tr v-for="(data,c) in dataChasis" :key="c"> -->
+            <tr v-for="(data,c) in listaFiltradaChasis" :key="c">
               <td>{{ c + 1}}</td>
               <td><span class="letra-capital">{{data.marca}}</span></td>
               <td>{{data.placa}}</td>
@@ -86,16 +98,32 @@ export default {
       encargados:[],
       proveedores:[],
       dataChasis:[],
-      perPage: null,
+      perPage: 5,
       total:null,
       currentPage: 1,
       listadoChasis:[],
+      options: [{
+          value: 5,
+          label: '5'
+        }, {
+          value: 10,
+          label: '10'
+        }, {
+          value: 15,
+          label: '15'
+        }],
     }
   },
   computed: {
-    // rows() {
-    //   return this.dataChasis.length
-    // }
+    listaFiltradaChasis() {
+      if (this.search !== '') {
+        // return dataChasis.filter(marca => word.length > 6);
+        return this.dataChasis.filter(data => !this.search
+          || data.marca.toLowerCase().includes(this.search.toLowerCase()))
+      }else {
+        return this.dataChasis
+      }
+    }
   },
   mounted(){
     this.isLoading = true
@@ -123,8 +151,9 @@ export default {
       }
     },
     async listaChasis(){
-      let params:{
-        page: this.currentPage
+      let params = {
+        page: this.currentPage,
+        perPage: this.perPage
       }
       try {
         const {data} = await axios(`${this.ruta}/listar-pc/`,{params})
@@ -141,10 +170,14 @@ export default {
         console.warn(e);
       }
     },
+    cantidadFilas(filas){
+      this.perPage = filas
+      this.currentPage = 1
+      this.listaChasis()
+    },
     cambioPagina(page){
       this.currentPage = page
       this.listaChasis()
-      console.log(page,"paginarrrrrrr");
     },
     async listarEncargados() {
       try {
@@ -180,7 +213,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.listar-fuentes{
+.listar-chasis{
+  .el-input{
+    width: 315px !important;
+  }
+  .el-select{
+    width: 68px !important;
+  }
   .table{
     tbody{
       tr{

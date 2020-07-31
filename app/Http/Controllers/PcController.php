@@ -211,7 +211,7 @@ class PcController extends Controller
       return $this->captura_error($e,"error al cambiar estado de la impresora");
     }
   }
-  public function listar_pc()
+  public function listar_pc(Request $request)
   {
     try {
 
@@ -221,7 +221,8 @@ class PcController extends Controller
       ->join('encargados', 'pc.id_encargado', '=', 'encargados.id')
       ->join('proveedores', 'pc.id_proveedor', '=', 'proveedores.id')
       ->select('pc.*', 'encargados.nombre_completo as nombre_ecnargado', 'proveedores.nombre_proveedor')
-      ->paginate(3);
+      ->orderBy('pc.created_at','DESC')
+      ->paginate($request->perPage);
       // $chasis->withPath('pc/listar/');
 
       return [
