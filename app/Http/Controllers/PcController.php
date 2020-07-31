@@ -214,9 +214,7 @@ class PcController extends Controller
   public function listar_pc(Request $request)
   {
     try {
-
       // return DB::select($this->ejecutar_sql("pc/listar_chasis"));
-
       $chasis = DB::table('pc')
       ->join('encargados', 'pc.id_encargado', '=', 'encargados.id')
       ->join('proveedores', 'pc.id_proveedor', '=', 'proveedores.id')

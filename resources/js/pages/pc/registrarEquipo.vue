@@ -4,6 +4,17 @@
       <h5 class="mt-4">Registrar Equipo</h5>
     </div>
 
+    <div class="container">
+      <div class="row w-100">
+        <div class="col-md-6">
+          
+        </div>
+        <div class="col-md-6">
+
+        </div>
+      </div>
+    </div>
+
   </section>
 </template>
 
