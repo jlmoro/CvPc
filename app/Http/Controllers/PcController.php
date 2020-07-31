@@ -16,6 +16,21 @@ use App\Models\{
 
 class PcController extends Controller
 {
+  public function cambiar_estado_chasis(int $id_chasis)
+  {
+    try {
+      $chasis = Pc::find($id_chasis);
+      ($chasis->estado == 1)?$chasis->estado = 0 : $chasis->estado = 1;
+      $chasis->update();
+      return[
+        'mensaje'=>config('domains.mensajes.actualizado')
+      ];
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,'error al cambiar estado chasis');
+    }
+  }
+
   public function eliminando_equipo($id_equipo)
   {
     try {
@@ -72,54 +87,6 @@ class PcController extends Controller
     }
   }
 
-  public function listar_disco()
-  {
-    try {
-
-      return DiscoDuro::all();
-
-    } catch (\Exception $e) {
-      return $this->captura_error($e,"error al listar board");
-    }
-  }
-
-  public function listar_board()
-  {
-    try {
-
-      return PlacaBase::all();
-
-    } catch (\Exception $e) {
-      return $this->captura_error($e,"error al listar board");
-    }
-  }
-
-  public function listar_memorias()
-  {
-    try {
-
-      return MemoriaRam::all();
-
-    } catch (\Exception $e) {
-      return $this->captura_error($e,"error al listar RAM");
-    }
-
-  }
-
-  public function registrar_procesador(Request $request)
-  {
-    try {
-      return DB::transaction(function() use($request){
-
-        Procesador::create($request->all());
-        return[
-          'mensaje'=>config('domains.mensajes.creado')
-        ];
-      },5);
-    } catch (\Exception $e) {
-      return $this->captura_error($e,"error al registrar procesador");
-    }
-  }
   public function listar_procesadores()
   {
     try {
@@ -226,7 +193,7 @@ class PcController extends Controller
 
       },5);
     } catch (\Exception $e) {
-      return $this->captura_error($e,"Error al registrar pc");
+      return $this->captura_error($e,"Error al registrar chasís");
     }
   }
   public function cambiar_estado($id_pc)
@@ -247,7 +214,27 @@ class PcController extends Controller
   public function listar_pc()
   {
     try {
-      return DB::select($this->ejecutar_sql("pc/listar_chasis"));
+
+      // return DB::select($this->ejecutar_sql("pc/listar_chasis"));
+
+      $chasis = DB::table('pc')
+      ->join('encargados', 'pc.id_encargado', '=', 'encargados.id')
+      ->join('proveedores', 'pc.id_proveedor', '=', 'proveedores.id')
+      ->select('pc.*', 'encargados.nombre_completo as nombre_ecnargado', 'proveedores.nombre_proveedor')
+      ->paginate(3);
+      // $chasis->withPath('pc/listar/');
+
+      return [
+        'paginate'=>[
+          'total'=>$chasis->total(),
+          'currentPage'=>$chasis->currentPage(),
+          'perPage'=>$chasis->perPage(),
+          'last_page'=>$chasis->lastPage(),
+          'from'=>$chasis->firstItem(),
+          'to'=>$chasis->lastPage(),
+        ],
+        'chasis'=>$chasis
+      ];
     } catch (\Exception $e) {
       return $this->captura_error($e,"Error al listar PC's");
     }

@@ -90,6 +90,7 @@ export default {
           this.$Helper.notificacion('warning','Error registrando chasis',data.error)
           return
         }
+        this.form = ''
         this.$emit('pc:creado')
         this.$Helper.notificacion('success','Chasis Registrado',data.mensaje)
         this.$refs.ModalRegistrarPc.toggle()

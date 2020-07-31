@@ -179,7 +179,7 @@ class SelectController extends Controller
       return $encargados;
 
     } catch (\Exception $e) {
-      return $this->captura_error($e);
+      return $this->captura_error($e,"Error al listar encargados");
     }
   }
   public function listar_areas()
