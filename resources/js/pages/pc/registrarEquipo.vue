@@ -6,10 +6,19 @@
 
     <div class="container">
       <div class="row w-100">
-        <div class="col-md-6">
-          
-        </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
+
+          <fieldset>
+            <legend>Placa Base </legend>
+            <div class="">
+              <label for="">Marca:</label>
+              <input type="text">
+            </div>
+            <div class="">
+              <label for="">Modelo:</label>
+              <input type="text">
+            </div>
+          </fieldset>
 
         </div>
       </div>

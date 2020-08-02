@@ -140,27 +140,14 @@ export default {
   },
   methods: {
     async descargaPdf(){
-      let params = {
-        page: this.currentPage,
-        perPage: this.perPage
-      }
+
       try {
-        const {data} = await axios.post(`${this.ruta}/descarga-pdf`,params)
+        const {data} = await axios(`${this.ruta}/descarga-pdf`)
         if (data.error) {
           this.$Helper.notificacion('warning','Error al descargar',data.error)
           return
         }
-        // console.log(data,"lo del pdf");
-
-        // const url = window.URL.createObjectURL(new Blob([data]));
-        // // const link = document.createElement('a');
-        // const link = document.createElement(data);
-        // console.log(link,"lo del linkkkkkkk");
-        // return
-        // link.href = url;
-        // link.setAttribute('download', 'file.pdf');
-        // document.body.appendChild(link);
-        // link.click();
+        console.log("lo del pdf");
 
       } catch (e) {
         console.warn(e);
@@ -243,6 +230,21 @@ export default {
 
 <style lang="scss" scoped>
 .listar-chasis{
+  .icono-excel{
+    // border: 1px solid #710606e6;
+    border-radius: 2px;
+    padding: 3px;
+    font-size: 16px;
+    // color: white;
+    // background-color: #710606e6;
+    transition-duration: .85s;
+    &:hover{
+      // color: #710606e6;
+      // background-color: white;
+      transition-duration: .4s;
+      cursor: pointer;
+    }
+  }
   .icono-pdf{
     border: 1px solid #710606e6;
     border-radius: 2px;

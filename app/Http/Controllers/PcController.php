@@ -17,26 +17,26 @@ use App\Models\{
 
 class PcController extends Controller
 {
-  public function descarga_pdf(Request $request)
+
+  public function descarga_pdf()
   {
     try {
-      /*
-      pendiente descargar listado de chasis en pdf y ajustar los demás listados
-      */
-      $params = $request;
-      $chasis = $this->listar_pc($params);
-      foreach ($chasis as $key => $value) {
-        dd($value->chasis);
-      }
-      dd($chasis);
-      $pdf = PDF::loadView('pdf.listaChasis',compact($chasis));
 
-      return $pdf->download('lista-chasis.pdf');
+      $chasis = DB::table('pc')
+      ->join('encargados', 'pc.id_encargado', '=', 'encargados.id')
+      ->join('proveedores', 'pc.id_proveedor', '=', 'proveedores.id')
+      ->select('pc.*', 'encargados.nombre_completo as nombre_ecnargado', 'proveedores.nombre_proveedor')
+      ->orderBy('pc.created_at','DESC')
+      ->get();
+
+      $pdf = PDF::loadView('pdf.listaChasis',compact('chasis'));
+      // dd($pdf);
+      return $pdf->download('lista_chasis.pdf');
+      // return $pdf->stream('lista_chasis.pdf');
 
     } catch (\Exception $e) {
       return $this->captura_error($e,'error al descar pdf');
     }
-
   }
   public function cambiar_estado_chasis(int $id_chasis)
   {

@@ -7,6 +7,7 @@ import Croppa from 'vue-croppa'
 import moment from 'moment'
 import Funciones from './Funciones'
 
+
 import '~/plugins'
 import '~/components'
 import './filters'
