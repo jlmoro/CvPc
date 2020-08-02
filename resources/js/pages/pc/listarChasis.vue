@@ -9,7 +9,10 @@
           <div class="col-md-6">
             <el-input v-model="search" placeholder="Buscar..." clearable></el-input>
           </div>
-          <div class="col-md-6 text-right">
+          <div class="col-md-2">
+            <i class="mdi mdi-adobe-acrobat icono-pdf" @click="descargaPdf"></i>
+          </div>
+          <div class="col-md-4 text-right">
             <span>Filas: </span>
             <el-select v-model="perPage" @change="cantidadFilas($event)">
               <el-option
@@ -136,7 +139,33 @@ export default {
     })
   },
   methods: {
+    async descargaPdf(){
+      let params = {
+        page: this.currentPage,
+        perPage: this.perPage
+      }
+      try {
+        const {data} = await axios.post(`${this.ruta}/descarga-pdf`,params)
+        if (data.error) {
+          this.$Helper.notificacion('warning','Error al descargar',data.error)
+          return
+        }
+        // console.log(data,"lo del pdf");
 
+        // const url = window.URL.createObjectURL(new Blob([data]));
+        // // const link = document.createElement('a');
+        // const link = document.createElement(data);
+        // console.log(link,"lo del linkkkkkkk");
+        // return
+        // link.href = url;
+        // link.setAttribute('download', 'file.pdf');
+        // document.body.appendChild(link);
+        // link.click();
+
+      } catch (e) {
+        console.warn(e);
+      }
+    },
     async cambiarEstado(dato){
       try {
         const {data} = await axios.put(`${this.ruta}/${dato.id}/cambiar-estado-chasis`)
@@ -214,6 +243,21 @@ export default {
 
 <style lang="scss" scoped>
 .listar-chasis{
+  .icono-pdf{
+    border: 1px solid #710606e6;
+    border-radius: 2px;
+    padding: 3px;
+    font-size: 16px;
+    color: white;
+    background-color: #710606e6;
+    transition-duration: .85s;
+    &:hover{
+      color: #710606e6;
+      background-color: white;
+      transition-duration: .4s;
+      cursor: pointer;
+    }
+  }
   .el-input{
     width: 315px !important;
   }

@@ -8,6 +8,8 @@ Route::group(['middleware' =>'auth:api'], function (){
     Route::get("listar-pc","$controlador@listar_pc"); //listado de chasis con paginar
     Route::delete("{id_pc}/eliminar-pc","$controlador@eliminar_pc");
 
+    Route::post("descarga-pdf","$controlador@descarga_pdf"); //ruta para registro de chasís
+
     Route::prefix('disco')->group( function(){
       $controlador = "PcController";
       Route::post("registrar-board","$controlador@registrar_board");

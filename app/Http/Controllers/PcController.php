@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB,Validator;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use App\Models\{
   Pc,
@@ -16,6 +17,27 @@ use App\Models\{
 
 class PcController extends Controller
 {
+  public function descarga_pdf(Request $request)
+  {
+    try {
+      /*
+      pendiente descargar listado de chasis en pdf y ajustar los demás listados
+      */
+      $params = $request;
+      $chasis = $this->listar_pc($params);
+      foreach ($chasis as $key => $value) {
+        dd($value->chasis);
+      }
+      dd($chasis);
+      $pdf = PDF::loadView('pdf.listaChasis',compact($chasis));
+
+      return $pdf->download('lista-chasis.pdf');
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,'error al descar pdf');
+    }
+
+  }
   public function cambiar_estado_chasis(int $id_chasis)
   {
     try {
