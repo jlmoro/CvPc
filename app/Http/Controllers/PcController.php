@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use DB,Validator;
-use Barryvdh\DomPDF\Facade as PDF;
+use DB,Validator,PDF;
 use Illuminate\Http\Request;
 use App\Models\{
   Pc,
@@ -29,10 +28,15 @@ class PcController extends Controller
       ->orderBy('pc.created_at','DESC')
       ->get();
 
-      $pdf = PDF::loadView('pdf.listaChasis',compact('chasis'));
-      // dd($pdf);
-      return $pdf->download('lista_chasis.pdf');
+      // $pdf = PDF::loadView('pdf.listaChasis',compact('chasis'));
+      // return $pdf->download('lista-chasis.pdf');
       // return $pdf->stream('lista_chasis.pdf');
+
+      return PDF::loadView('pdf.listaChasis',compact('chasis'))
+        ->setPaper('letter', 'landscape')
+        // ->setPaper('a4',)
+        ->download('lista-chasis.pdf');
+        // ->stream('lista-chasis.pdf');
 
     } catch (\Exception $e) {
       return $this->captura_error($e,'error al descar pdf');

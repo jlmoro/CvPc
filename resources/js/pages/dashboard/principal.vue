@@ -14,23 +14,9 @@
             <button @click="gotoPast">go to a date in the past</button>
             (also, click a date/time to add an event)
           </div> -->
-          <FullCalendar
-          class='demo-app-calendar'
-          ref="fullCalendar"
-          defaultView="dayGridMonth"
-          :header="{
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth'
-            }"
-            :plugins="calendarPlugins"
-            :weekends="calendarWeekends"
-            :events="calendarEvents"
-            @dateClick="handleDateClick"
-            @event-selected="eventselect($event)"
-            />
-            <!-- right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' -->
-          </div>
+          <FullCalendar :options="calendarOptions" />
+
+        </div>
         </div>
       </div>
     </section>
@@ -56,39 +42,34 @@
     data(){
       return {
         isLoading:false,
-        calendarPlugins: [ // plugins must be defined in the JS
-          dayGridPlugin,
-          timeGridPlugin,
-          interactionPlugin // needed for dateClick
-        ],
-
-        calendarWeekends: true,
-        calendarEvents: [ // initial event data
-          {
-            title  : 'event1',
-            start  : '2020-07-26',
-          },
-          {
-            title  : 'event2',
-            start  : '2020-07-25',
-            end    : '2020-07-27',
-          },
-          {
-            title  : 'event3',
-            start  : '2020-07-25',
-            allDay : true,
-          },
-        ]
+        calendarOptions:{
+          locale: esLocale,
+          plugins:[
+            dayGridPlugin,
+            interactionPlugin,
+            timeGridPlugin
+          ],
+          initialView: 'dayGridMonth',
+          calendarWeekends: true,
+          dateClick: this.handleDateClick,
+          // headerToolbar: {
+          //     left: 'dayGridMonth' // buttons for switching between views
+          // },
+          events: [ // initial event data
+            { title: 'event 1', date: '2020-08-01' },
+            { title: 'event 2', date: '2020-08-02' }
+          ]
+        },
       }
     },
     mounted() {
-      this.isLoading = true
-      Promise.all([
-        this.listarEventosChart(),
-        this.listarEventosCalendario()
-      ]).then(res=>{
-        this.isLoading = false
-      })
+      //this.isoading = true
+      // Promise.all([
+      //   this.listarEventosChart(),
+      //   this.listarEventosCalendario()
+      // ]).then(res=>{
+      //   this.isLoading = false
+      // })
     },
 
     methods: {
@@ -119,13 +100,13 @@
       handleDateClick(arg) {
         console.log(arg);
         // return
-        if (confirm('Would you like to add an event to ' + arg.dateStr + ' ?')) {
-          this.calendarEvents.push({ // add new event data
-            title: 'Nuevo Evento',
-            start: arg.date,
-            allDay: arg.allDay
-          })
-        }
+        // if (confirm('Would you like to add an event to ' + arg.dateStr + ' ?')) {
+        //   this.calendarEvents.push({ // add new event data
+        //     title: 'Nuevo Evento',
+        //     start: arg.date,
+        //     allDay: arg.allDay
+        //   })
+        // }
       },
       eventosResolver(){
 
@@ -184,9 +165,9 @@
   }
   </script>
   <style lang="scss" scoped>
-  @import '~@fullcalendar/core/main.css';
-  @import '~@fullcalendar/daygrid/main.css';
-  @import '~@fullcalendar/timegrid/main.css';
+  // @import '~@fullcalendar/core/main.css';
+  // @import '~@fullcalendar/daygrid/main.css';
+  // @import '~@fullcalendar/timegrid/main.css';
   .grafica-principal{
     .demo-app {
       font-family: Arial, Helvetica Neue, Helvetica, sans-serif;

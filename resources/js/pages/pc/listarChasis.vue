@@ -10,7 +10,7 @@
             <el-input v-model="search" placeholder="Buscar..." clearable></el-input>
           </div>
           <div class="col-md-2">
-            <i class="mdi mdi-adobe-acrobat icono-pdf" @click="descargaPdf"></i>
+            <i v-if="dataChasis.length > 0" class="mdi mdi-adobe-acrobat icono-pdf" @click="descargaPdf"></i>
           </div>
           <div class="col-md-4 text-right">
             <span>Filas: </span>
@@ -104,7 +104,6 @@ export default {
       perPage: 5,
       total:null,
       currentPage: 1,
-      listadoChasis:[],
       options: [{
           value: 5,
           label: '5'
@@ -142,11 +141,12 @@ export default {
     async descargaPdf(){
 
       try {
-        const {data} = await axios(`${this.ruta}/descarga-pdf`)
-        if (data.error) {
-          this.$Helper.notificacion('warning','Error al descargar',data.error)
-          return
-        }
+        window.open(`${this.ruta}/descarga-pdf`)
+        // const {data} = await axios(`${this.ruta}/descarga-pdf`)
+        // if (data.error) {
+        //   this.$Helper.notificacion('warning','Error al descargar',data.error)
+        //   return
+        // }
         console.log("lo del pdf");
 
       } catch (e) {
