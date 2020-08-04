@@ -37,6 +37,7 @@
         "primeicons": "^2.0.0",
         "primevue": "^1.3.2",
         "sweetalert2": "^8.10.0",
+        "vee-validate": "^3.3.8",
         "vform": "^1.0.0",
         "vue": "^2.6.10",
         "vue-croppa": "^1.3.8",

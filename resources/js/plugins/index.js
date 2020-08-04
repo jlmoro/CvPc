@@ -28,12 +28,9 @@ import VueFlatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 Vue.use(VueFlatPickr);
 
-// import Accordion from 'primevue/accordion';
-// import AccordionTab from 'primevue/accordiontab';
-// Vue.component('Accordion', Accordion);
-// Vue.component('AccordionTab', AccordionTab);
 
-// import FullCalendar from 'primevue/fullcalendar';
-// Vue.use(FullCalendar);
-// var moment = require('moment'); // require
-// moment().format();
+import { ValidationProvider, ValidationObserver, extend } from 'vee-validate'
+// import { ValidationProvider, extend } from 'vee-validate';
+import { required } from 'vee-validate/dist/rules'
+Vue.component('ValidationObserver', ValidationObserver);
+Vue.component('ValidationProvider', ValidationProvider);
