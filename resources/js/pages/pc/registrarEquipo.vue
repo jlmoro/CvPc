@@ -25,19 +25,19 @@
               <b-form-group label-cols-lg="3" label="Placa Base" label-size="lg" label-class="font-weight-bold pt-0" class="mb-0" >
 
                 <b-form-group label-cols-sm="3" label="Marca:" label-align-sm="right" label-for="marca-board" >
-                  <b-form-input id="marca-board" v-model="form.board_marca"></b-form-input>
+                  <b-form-input id="marca-board" v-model="form.board.marca"></b-form-input>
                 </b-form-group>
 
                 <b-form-group label-cols-sm="3" label="Modelo:" label-align-sm="right" label-for="modelo-board" >
-                  <b-form-input id="modelo-board" v-model="form.board_modelo"></b-form-input>
+                  <b-form-input id="modelo-board" v-model="form.board.modelo"></b-form-input>
                 </b-form-group>
 
                 <b-form-group label-cols-sm="3" label="PCI:" label-align-sm="right" label-for="pci-board" >
-                  <b-form-input id="pci-board" type="number" v-model="form.board_pci"></b-form-input>
+                  <b-form-input id="pci-board" type="number" v-model="form.board.pci"></b-form-input>
                 </b-form-group>
 
                 <b-form-group label-cols-sm="3" label="PCI-X:" label-align-sm="right" label-for="pcix-board" >
-                  <b-form-input id="pcix-board" type="number" v-model="form.board_pcix"></b-form-input>
+                  <b-form-input id="pcix-board" type="number" v-model="form.board.pcix"></b-form-input>
                 </b-form-group>
 
               </b-form-group>
@@ -49,19 +49,19 @@
               <b-form-group label-cols-lg="3" label="Procesador" label-size="lg" label-class="font-weight-bold pt-0" class="mb-0" >
 
                 <b-form-group label-cols-sm="3" label="Marca:" label-align-sm="right" label-for="marca-proc" >
-                  <b-form-input id="marca-proc"></b-form-input>
+                  <b-form-input id="marca-proc" v-model="form.procesador.marca"></b-form-input>
                 </b-form-group>
 
                 <b-form-group label-cols-sm="3" label="Modelo:" label-align-sm="right" label-for="modelo-proc" >
-                  <b-form-input id="modelo-proc"></b-form-input>
+                  <b-form-input id="modelo-proc" v-model="form.procesador.modelo"></b-form-input>
                 </b-form-group>
 
                 <b-form-group label-cols-sm="3" label="Núcleos:" label-align-sm="right" label-for="nuc-proc" >
-                  <b-form-input id="nuc-proc"></b-form-input>
+                  <b-form-input id="nuc-proc" v-model="form.procesador.nucleos"></b-form-input>
                 </b-form-group>
 
                 <b-form-group label-cols-sm="3" label="Velocidad:" label-align-sm="right" label-for="vel-proc" >
-                  <b-form-input id="vel-proc"></b-form-input>
+                  <b-form-input id="vel-proc" v-model="form.procesador.velocidad"></b-form-input>
                 </b-form-group>
 
               </b-form-group>
@@ -77,27 +77,36 @@
                     <div class="row">
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="4" label="Marca:" label-align-sm="right" :label-for="`marca-ram-${r}`" >
-                          <b-form-input :id="`marca-ram-${r}`"></b-form-input>
+                          <b-form-input :id="`marca-ram-${r}`" v-model="form.ram.marca"></b-form-input>
                         </b-form-group>
                       </div>
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="5" label="Tecnología:" label-align-sm="right" :label-for="`tec-ram-${r}`" >
-                          <b-form-input :id="`tec-ram-${r}`"></b-form-input>
+                          <b-form-input :id="`tec-ram-${r}`" v-model="form.ram.tecnologia"></b-form-input>
                         </b-form-group>
                       </div>
                     </div>
 
                     <div class="row">
                       <div class="col-md-6">
-                        <b-form-group label-cols-sm="4" label="Modelo:" label-align-sm="right" :label-for="`modelo-ram-${r}`" >
-                          <b-form-input :id="`modelo-ram-${r}`"></b-form-input>
+                        <b-form-group label-cols-sm="4" label="Capacidad:" label-align-sm="right" :label-for="`capacidad-ram-${r}`" >
+                          <b-form-input :id="`capacidad-ram-${r}`" v-model="form.ram.capacidad"></b-form-input>
                         </b-form-group>
                       </div>
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="5" label="Velocidad:" label-align-sm="right" :label-for="`velocidad-ram-${r}`" >
-                          <b-form-input :id="`velocidad-ram-${r}`" type="number"></b-form-input>
+                          <b-form-input :id="`velocidad-ram-${r}`" type="number" v-model="form.ram.velocidad"></b-form-input>
                         </b-form-group>
                       </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <b-form-group label-cols-sm="5" label="Serial:" label-align-sm="right" :label-for="`serial-ram-${r}`" >
+                          <b-form-input :id="`serial-ram-${r}`" v-model="form.ram.serial"></b-form-input>
+                        </b-form-group>
+                      </div>
+
                     </div>
 
                     <hr>
@@ -128,12 +137,12 @@
                     <div class="row">
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="4" label="Marca:" label-align-sm="right" :label-for="`marca-disco-${d}`" >
-                          <b-form-input :id="`marca-disco-${d}`"></b-form-input>
+                          <b-form-input :id="`marca-disco-${d}`" v-model="form.disco.marca"></b-form-input>
                         </b-form-group>
                       </div>
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="5" label="Capacidad:" label-align-sm="right" :label-for="`cap-disco-${d}`" >
-                          <b-form-input :id="`cap-disco-${d}`"></b-form-input>
+                          <b-form-input :id="`cap-disco-${d}`" v-model="form.disco.capacidad"></b-form-input>
                         </b-form-group>
                       </div>
                     </div>
@@ -141,12 +150,12 @@
                     <div class="row">
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="4" label="Modelo:" label-align-sm="right" :label-for="`modelo-disco-${d}`" >
-                          <b-form-input :id="`modelo-disco-${d}`"></b-form-input>
+                          <b-form-input :id="`modelo-disco-${d}`" v-model="form.disco.modelo"></b-form-input>
                         </b-form-group>
                       </div>
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="5" label="Tecnología:" label-align-sm="right" :label-for="`tecno-disco-${d}`" >
-                          <b-form-input :id="`tecno-disco-${d}`" type="number"></b-form-input>
+                          <b-form-input :id="`tecno-disco-${d}`" v-model="form.disco.tecnologia"></b-form-input>
                         </b-form-group>
                       </div>
                     </div>
@@ -154,16 +163,24 @@
                     <div class="row">
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="4" label="RPM:" label-align-sm="right" :label-for="`rpm-disco-${d}`" >
-                          <b-form-input :id="`rpm-disco-${d}`"></b-form-input>
+                          <b-form-input :id="`rpm-disco-${d}`" type="number" v-model="form.disco.rpm"></b-form-input>
                         </b-form-group>
                       </div>
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="5" label="Tipo:" label-align-sm="right" :label-for="`tipo-disco-${d}`" >
                           <b-form-radio-group class="mt-2"
-                          v-model="form.disco.tipo[d]"
-                          :options="form.opcionesDisco"
+                          v-model="form.disco.tipo"
+                          :options="opcionesDisco"
                           name="radio-inline"
                           ></b-form-radio-group>
+                        </b-form-group>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <b-form-group label-cols-sm="4" label="Serial:" label-align-sm="right" :label-for="`serial-disco-${d}`" >
+                          <b-form-input :id="`serial-disco-${d}`" v-model="form.disco.serial"></b-form-input>
                         </b-form-group>
                       </div>
                     </div>
@@ -191,26 +208,26 @@
               <b-form-group label-cols-lg="3" label="Fuente de Poder" label-size="lg" label-class="font-weight-bold pt-0" class="mb-0" >
 
                 <b-form-group label-cols-sm="3" label="Marca:" label-align-sm="right" label-for="marca-fuente" >
-                  <b-form-input id="marca-fuente"></b-form-input>
+                  <b-form-input id="marca-fuente" v-model="form.fuente.marca"></b-form-input>
                 </b-form-group>
 
                 <b-form-group label-cols-sm="3" label="Modelo:" label-align-sm="right" label-for="modelo-fuente" >
-                  <b-form-input id="modelo-fuente"></b-form-input>
+                  <b-form-input id="modelo-fuente" v-model="form.fuente.modelo"></b-form-input>
                 </b-form-group>
 
                 <b-form-group label-cols-sm="3" label="Potencia(w):" label-align-sm="right" label-for="pot-fuente" >
-                  <b-form-input id="pot-fuente"></b-form-input>
+                  <b-form-input id="pot-fuente" v-model="form.fuente.potencia"></b-form-input>
                 </b-form-group>
 
                 <div class="row">
                   <div class="col-md-6">
                     <b-form-group label-cols-sm="3" label="Factor Forma:" label-align-sm="right" label-for="ff-fuente" >
-                      <b-form-input id="ff-fuente"></b-form-input>
+                      <b-form-input id="ff-fuente" v-model="form.fuente.factor_forma"></b-form-input>
                     </b-form-group>
                   </div>
                   <div class="col-md-6">
                     <b-form-group label-cols-sm="3" label="Alimentador:" label-align-sm="right" label-for="al-fuente" >
-                      <b-form-input id="al-fuente"></b-form-input>
+                      <b-form-input id="al-fuente" v-model="form.fuente.alimentador_energia"></b-form-input>
                     </b-form-group>
                   </div>
                 </div>
@@ -257,7 +274,7 @@
                 </b-form-group>
 
                 <b-form-group label-cols-sm="3" label="Observación:" label-align-sm="right" label-for="observacion" >
-                  <b-form-textarea id="observacion" size="lg" placeholder="Escribe las observaciones aquí..." rows="3" no-resize ></b-form-textarea>
+                  <b-form-textarea id="observacion" v-model="form.observaciones" size="lg" placeholder="Escribe las observaciones aquí..." rows="3" no-resize ></b-form-textarea>
                 </b-form-group>
 
               </b-form-group>
@@ -285,21 +302,23 @@
 export default {
   data(){
     return{
-      ruta:'/api/pc/procesador',
+      ruta:'/api/pc/equipo',
       search: '',
       isLoading:false,
       active: 1,
       form:{
-        chasis:null,
+        board:{},
+        procesador:{},
+        ram:{},
+        disco:{},
+        fuente:{},
         perifericos:[],
-        disco:{
-          tipo:[]
-        },
-        opcionesDisco: [
-          { text: 'HDD', value: '1' },
-          { text: 'SSD', value: '2' },
-        ],
+        chasis:null,
       },
+      opcionesDisco: [
+        { text: 'HDD', value: '1' },
+        { text: 'SSD', value: '2' },
+      ],
       dataPerifericos:[],
       dataChasis:[],
       formRam:[1],
@@ -320,6 +339,24 @@ export default {
   // },
 
   methods: {
+    async guardarEquipo(){
+      try {
+        const {data} = await axios.post(`${this.ruta}/registrar-equipo`,this.form)
+        if (data.error) {
+          this.$Helper.notificacion('warning','Imposible registrar equipo',data.error)
+          return
+        }
+
+        this.form = {}
+        this.active = 1
+        this.$Helper.notificacion('success','Equipo registrado',data.mensaje)
+
+        // console.log(data,"la data de equipo");
+
+      } catch (e) {
+        console.warn(e,"No es posible registrar equipo");
+      }
+    },
     menosDisco(dato){
       _.forEach(this.formDisco, (val, key)=> {
         if ( key == dato ) {
@@ -341,9 +378,6 @@ export default {
     agregarRam(dato){
       this.formRam.push(dato)
       // this.formRam++
-    },
-    guardarEquipo(){
-      console.log("Guarda aquiiii");
     },
     prev() {
       this.active--

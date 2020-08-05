@@ -10,14 +10,6 @@ Route::group(['middleware' =>'auth:api'], function (){
 
     Route::get("descarga-pdf","$controlador@descarga_pdf"); //ruta para registro de chasís
 
-    Route::prefix('disco')->group( function(){
-      $controlador = "PcController";
-      Route::post("registrar-board","$controlador@registrar_board");
-      Route::get("listar-discos","$controlador@listar_disco");
-      Route::put("editar-fuente","$controlador@editar_fuente");
-      Route::delete("{id_fuente}/eliminar-fuente","$controlador@eliminar_fuente");
-    });
-
     Route::prefix('equipo')->group( function(){
       $controlador = "PcController";
       Route::post("registrar-equipo","$controlador@registrar_equipo");

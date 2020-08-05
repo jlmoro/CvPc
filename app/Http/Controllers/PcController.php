@@ -6,17 +6,106 @@ use DB,Validator,PDF;
 use Illuminate\Http\Request;
 use App\Models\{
   Pc,
-  FuentePoder,
+  Equipo,
+  PlacaBase,
   Procesador,
   MemoriaRam,
-  PlacaBase,
+  PcRam,
   DiscoDuro,
-  Equipo,
+  PcDiscoDuro,
+  FuentePoder,
+  PcPerifericos,
 };
 
 class PcController extends Controller
 {
+  /**
+   * Registro de equipo con el chasís asignado
+   */
+  public function registrar_equipo(Request $request)
+  {
+    try {
 
+      // dd($request->all());
+
+      $placa_base = PlacaBase::create([
+        'marca_placa_base'=> $request->board['marca'],
+        'modelo_placa'=> $request->board['modelo'],
+        'cantidad_pci'=> $request->board['pci'],
+        'cantidad_pci_x'=> $request->board['pcix'],
+      ]);
+
+      $procesador = Procesador::create([
+        'marca'=>$request->procesador['marca'],
+        'modelo_tecnologia'=>$request->procesador['modelo'],
+        'nucleos'=>$request->procesador['nucleos'],
+        'frecuencia'=>$request->procesador['velocidad']
+      ]);
+
+      $ram = MemoriaRam::create([
+        'marca'=>$request->ram['marca'],
+        'modelo_tecnologia'=>$request->ram['tecnologia'],
+        'serial'=>$request->ram['serial'],
+        'capacidad'=>$request->ram['capacidad'],
+        'frecuencia'=>$request->ram['velocidad'],
+      ]);
+
+      $disco = DiscoDuro::create($request->disco);
+
+      $fuente = FuentePoder::create($request->fuente);
+
+      $equipo = Equipo::create([
+        'id_chasis'=>$request['chasis'],
+        'observaciones'=>$request['observaciones'],
+        'id_placa_base'=>$placa_base->id,
+        'id_procesador'=>$procesador->id,
+        'id_fuente_poder'=>$fuente->id,
+        'created_by'=>auth()->user()->id,
+        'updated_by'=>auth()->user()->id,
+      ]);
+
+      $pc_ram = PcRam::create([
+        'id_equipo'=>$equipo['id'],
+        'id_memoria_ram'=>$ram['id']
+      ]);
+
+      $pc_disco = PcDiscoDuro::create([
+        'id_equipo'=>$equipo['id'],
+        'id_disco'=>$disco['id']
+      ]);
+
+      /**
+       * registro de perifericos
+       * Array de id's
+       */
+      $cant = count($request->perifericos);
+      $data_perifericos = [];
+
+      for($i=0;$i < $cant;$i++){
+
+        $per = [];
+        $per = new PcPerifericos;
+        $per['id_equipo']     = $equipo['id'];
+        $per['id_periferico'] = $request->perifericos[$i];
+
+        $data_perifericos[$i] = $per;
+
+        $per->save();
+      }
+
+      return[
+        'mensaje'=>config('domains.mensajes.creado')
+      ];
+      //Hasta aquí registro de perifericos
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,'error al registrar equipo');
+    }
+  }
+
+  /**
+   * descargar pdf's para el listado de chasís
+   */
   public function descarga_pdf()
   {
     try {
@@ -28,20 +117,19 @@ class PcController extends Controller
       ->orderBy('pc.created_at','DESC')
       ->get();
 
-      // $pdf = PDF::loadView('pdf.listaChasis',compact('chasis'));
-      // return $pdf->download('lista-chasis.pdf');
-      // return $pdf->stream('lista_chasis.pdf');
-
       return PDF::loadView('pdf.listaChasis',compact('chasis'))
         ->setPaper('letter', 'landscape')
-        // ->setPaper('a4',)
         ->download('lista-chasis.pdf');
-        // ->stream('lista-chasis.pdf');
 
     } catch (\Exception $e) {
       return $this->captura_error($e,'error al descar pdf');
     }
   }
+
+  /**
+   * cambia el estado del chasis así mismo el estado del equipo
+   * sin importar si dicho chasís está asignado o no
+   */
   public function cambiar_estado_chasis(int $id_chasis)
   {
     try {
@@ -74,115 +162,18 @@ class PcController extends Controller
     }
 
   }
-  public function registrar_equipo(Request $request)
-  {
-    try {
-      return DB::transaction(function() use($request){
 
-        $placa = Equipo::where('id_chasis',$request->id_chasis)->count();
-
-        if ($placa > 0) {
-          return[
-            'mensaje2'=>'No es posible asignar ese chasis, pues ya está siendo usado'
-          ];
-        }else {
-
-          $request['created_by'] = auth()->user()->id;
-          $request['updated_by'] = auth()->user()->id;
-          Equipo::create($request->all());
-
-          return[
-            'mensaje'=>config('domains.mensajes.creado')
-          ];
-        }
-
-      },5);
-    } catch (\Exception $e) {
-      return $this->captura_error($e,"error al registrar equipo");
-    }
-  }
-
+  /**
+   * Listado de los equipos con el chasís asignado
+   */
   public function listar_equipo()
   {
     try {
 
-      return DB::select($this->ejecutar_sql("pc/listar_equipo"));
+      return Equipo::all();
 
     } catch (\Exception $e) {
       return $this->captura_error($e,"error al listar equipo");
-    }
-  }
-
-  public function listar_procesadores()
-  {
-    try {
-
-        return Procesador::select('*')
-        ->orderBy('created_at','DESC')
-        ->get();
-
-    } catch (\Exception $e) {
-      return $this->captura_error($e,"error al listar procesador");
-    }
-  }
-
-  public function registrar_fuente(Request $request)
-  {
-    try {
-      return DB::transaction(function() use($request){
-        FuentePoder::create($request->all());
-        return[
-          'mensaje'=>config('domains.mensajes.creado')
-        ];
-      },5);
-    } catch (\Exception $e) {
-      return $this->captura_error($e,"error en el controller pc");
-    }
-  }
-  public function editar_fuente(Request $request)
-  {
-    try {
-      return DB::transaction(function() use($request){
-
-      $fuente = FuentePoder::find($request->id);
-      $fuente->fill($request->all());
-      $fuente->update();
-
-      return[
-        'mensaje'=>config('domains.mensajes.actualizado')
-      ];
-
-      },5);
-    } catch (\Exception $e) {
-      return $this->captura_error($e,"error en el controller pc");
-    }
-  }
-  public function eliminar_fuente($id_fuente)
-  {
-    try {
-      return DB::transaction(function() use($id_fuente){
-
-        $fuente = FuentePoder::find($id_fuente);
-        $fuente->delete();
-
-        return[
-          'mensaje'=>config('domains.mensajes.eliminado')
-        ];
-
-      },5);
-    } catch (\Exception $e) {
-      return $this->captura_error($e,"error en el controller pc");
-    }
-  }
-  public function listar_fuentes()
-  {
-    try {
-        return FuentePoder::select('*')
-        ->orderBy('created_at','DESC')
-        ->get();
-
-    } catch (\Exception $e) {
-      return $this->captura_error($e,"error en el controller pc");
     }
   }
 
@@ -190,10 +181,8 @@ class PcController extends Controller
   {
     try {
       return DB::transaction(function() use($id_pc){
-
         $pc = Pc::find($id_pc);
         $pc->delete();
-
         return[
           'mensaje'=>config('domains.mensajes.eliminado')
         ];
@@ -203,51 +192,38 @@ class PcController extends Controller
       return $this->captura_error($e,"error al eliminar chasis");
     }
   }
+
   public function registrar_pc(Request $request)
   {
     try {
       return DB::transaction(function() use($request){
-
         $request['id_encargado'] = $request->encargado;
         $request['id_proveedor'] = $request->proveedor;
-
         Pc::create($request->all());
-
         return[
           'mensaje'=>config('domains.mensajes.creado')
         ];
-
       },5);
     } catch (\Exception $e) {
       return $this->captura_error($e,"Error al registrar chasís");
     }
   }
-  public function cambiar_estado($id_pc)
-  {
-    try {
-      return DB::transaction(function() use($id_pc){
-        $pc = Pc::find($id_pc);
-        ($pc->estado == 1) ? $pc->estado = 0 : $pc->estado = 1;
-        $pc->update();
-        return[
-          'mensaje'=>config('domains.mensajes.actualizado')
-        ];
-      },5);
-    } catch (\Exception $e) {
-      return $this->captura_error($e,"error al cambiar estado de la impresora");
-    }
-  }
+
+  /**
+   * listado de chasis
+   * recibe parámetros en el request
+   * la página y cantidad de datos por página
+   */
   public function listar_pc(Request $request)
   {
     try {
-      // return DB::select($this->ejecutar_sql("pc/listar_chasis"));
+
       $chasis = DB::table('pc')
       ->join('encargados', 'pc.id_encargado', '=', 'encargados.id')
       ->join('proveedores', 'pc.id_proveedor', '=', 'proveedores.id')
       ->select('pc.*', 'encargados.nombre_completo as nombre_ecnargado', 'proveedores.nombre_proveedor')
       ->orderBy('pc.created_at','DESC')
       ->paginate($request->perPage);
-      // $chasis->withPath('pc/listar/');
 
       return [
         'paginate'=>[
@@ -263,6 +239,5 @@ class PcController extends Controller
     } catch (\Exception $e) {
       return $this->captura_error($e,"Error al listar PC's");
     }
-
   }
 }

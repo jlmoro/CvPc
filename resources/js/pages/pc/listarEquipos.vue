@@ -27,21 +27,35 @@ export default {
   },
   data(){
     return{
-      ruta:'/api/pc/fuente',
+      ruta:'/api/pc/equipo',
       search: '',
       isLoading:false,
+      dataEquipos:[],
     }
   },
   mounted(){
     this.isLoading = true
     Promise.all([
-      // this.listar_fuente(),
+      this.listar_equipos(),
     ]).then(res => {
       this.isLoading = false
     })
   },
   methods: {
-    
+    async listar_equipos(){
+      try {
+        const {data} = await axios(`${this.ruta}/listar-equipo`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','Problemas al listar equipos',data.error)
+          return
+        }
+
+        this.dataEquipos = data
+
+      } catch (e) {
+        console.warn(e);
+      }
+    }
   }
 
 }
