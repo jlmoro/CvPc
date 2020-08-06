@@ -31,9 +31,10 @@
                 </div>
                 <div class="col-3">
                   <div class="mensajes">
-                    <span class="mdi mdi-message f-18 icon-comentarios">
+                    <span class="mdi mdi-message-text f-20 icon-comentarios" @click="abrirModalComentarios">
                       <span class="cant-mensajes">2</span>
                     </span>
+                    <!-- <span class="mdi mdi-message-plus f-20 icon-comentarios"></span> -->
                   </div>
                 </div>
                 <div class="col-4 text-right">
@@ -108,7 +109,7 @@
             <b-card-footer>
               <div class="row">
                 <div class="col-md-12 text-center">
-                  <i class="mdi mdi-plus detalles-equipo" @click="abrirModalDetalles"></i>
+                  <i class="mdi mdi-plus detalles-equipo" @click="abrirModalComentarios"></i>
                 </div>
               </div>
             </b-card-footer>
@@ -130,6 +131,8 @@
 
     <modal-detalles ref="modalDetallesEquipos" />
 
+    <modal-comentarios ref="modalComentarios"/>
+
   </section>
 
 </template>
@@ -138,6 +141,7 @@
 export default {
   components:{
     ModalDetalles:()=> import('./componentes/modalVerDetalles'),
+    ModalComentarios:()=> import('./componentes/modalComentarios'),
   },
   data(){
     return{
@@ -149,6 +153,7 @@ export default {
       perPage: 3,
       total:null,
       currentPage: 1,
+
     }
   },
   mounted(){
@@ -162,8 +167,12 @@ export default {
   methods: {
 
     async listar_equipos(){
+      let params = {
+        page: this.currentPage,
+        perPage: this.perPage
+      }
       try {
-        const {data} = await axios(`${this.ruta}/listar-equipo`)
+        const {data} = await axios(`${this.ruta}/listar-equipo`,params)
         if (data.error) {
           this.$Helper.notificacion('warning','Problemas al listar equipos',data.error)
           return
@@ -172,6 +181,9 @@ export default {
       } catch (e) {
         console.warn(e);
       }
+    },
+    abrirModalComentarios(){
+      this.$refs.modalComentarios.toggle()
     },
     cambioPagina(dato){
       console.log(dato);
@@ -226,14 +238,14 @@ export default {
         position: relative;
         background-color: gray;
         color: darkblue;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 500;
         z-index: 100;
-        right: 7px;
-        bottom: 9px;
+        right: 8px;
+        bottom: 12px;
         border-radius: 6px;
-        padding-left: 6px;
-        padding-right: 6px;
+        padding-left: 5px;
+        padding-right: 5px;
       }
     }
     &:hover{

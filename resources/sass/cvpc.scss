@@ -2,6 +2,12 @@
 //   background: url('/img/fondo_login.png') no-repeat center fixed;
 // }
 
+.b-sidebar{
+  .b-sidebar-body{
+    overflow-y: hidden !important;
+  }
+}
+
 .el-upload-dragger {
   background-color: #fff;
   border: 1px dashed #d9d9d9;

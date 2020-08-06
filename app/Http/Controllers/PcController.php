@@ -166,17 +166,45 @@ class PcController extends Controller
   /**
    * Listado de los equipos con el chasís asignado
    */
-  public function listar_equipo()
+  public function listar_equipo(Request $request)
   {
     try {
 
-      return Equipo::all();
+      // return Equipo::all();
+      $equipo = DB::table('equipo')
+      ->join('pc','equipo.id_chasis', '=', 'pc.id')
+      ->join('proveedores', 'pc.id_proveedor', '=', 'proveedores.id')
+      ->select(
+        'equipo.id',
+        'pc.placa as chasis_placa',
+        'pc.marca as chasis_marca',
+        'pc.serial as chasis_serial',
+        'proveedores.nombre_proveedor'
+        )
+      ->orderBy('equipo.created_at','DESC')
+      ->paginate($request->perPage);
+
+      return [
+        'paginate'=>[
+          'total'=>$equipo->total(),
+          'currentPage'=>$equipo->currentPage(),
+          'perPage'=>$equipo->perPage(),
+          'last_page'=>$equipo->lastPage(),
+          'from'=>$equipo->firstItem(),
+          'to'=>$equipo->lastPage(),
+        ],
+        'equipo'=>$equipo
+      ];
+
 
     } catch (\Exception $e) {
       return $this->captura_error($e,"error al listar equipo");
     }
   }
 
+  /**
+   * Eliminar chasis
+   */
   public function eliminar_pc($id_pc)
   {
     try {
