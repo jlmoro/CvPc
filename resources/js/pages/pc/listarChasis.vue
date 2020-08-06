@@ -64,8 +64,6 @@
           </tbody>
         </table>
 
-        <!-- <b-table id="my-table" :items="dataChasis" :per-page="perPage" :current-page="currentPage" small ></b-table> -->
-
         <div class="overflow-auto">
           <b-pagination pills align="center"
           v-model="currentPage"
@@ -74,8 +72,8 @@
           aria-controls="my-table"
           @change="cambioPagina($event)"
           ></b-pagination>
-
         </div>
+
       </div>
     </div>
 
@@ -91,7 +89,6 @@
 export default {
   components:{
     ModalCrear:()=> import('./componentes/modalRegistrarChasis'),
-    ModalEditar:()=> import('./componentes/modalEditarFuentePoder')
   },
   data(){
     return{
@@ -142,12 +139,6 @@ export default {
 
       try {
         window.open(`${this.ruta}/descarga-pdf`)
-        // const {data} = await axios(`${this.ruta}/descarga-pdf`)
-        // if (data.error) {
-        //   this.$Helper.notificacion('warning','Error al descargar',data.error)
-        //   return
-        // }
-        console.log("lo del pdf");
 
       } catch (e) {
         console.warn(e);

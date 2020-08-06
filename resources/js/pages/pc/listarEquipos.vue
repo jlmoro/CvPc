@@ -1,13 +1,12 @@
 <template>
-  <section class="listar-fuentes" v-loading="isLoading">
-
+  <section class="listar-equipos" v-loading="isLoading">
     <div class="mb-4 text-center">
       <h5 class="mt-4">Listado de Equipos</h5>
     </div>
 
     <div class="row w-100 mt-4">
       <div class="col-md-12">
-        <div class="row mb-3">
+        <div class="row mb-3 justify-content-center">
           <div class="col-md-4">
             <el-input v-model="search" placeholder="Buscar..." clearable></el-input>
           </div>
@@ -15,15 +14,130 @@
       </div>
     </div>
 
-    <modal-crear ref="modalRegistroChasis" />
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mt-2 mb-4" v-for="(data,e) in 3" :key="e">
+
+          <b-card no-body style="max-width: 20rem;" >
+            <template v-slot:header>
+              <div class="row">
+                <div class="col-3">
+                  <el-switch
+                    style="display: block"
+                    v-model="value"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949" >
+                  </el-switch>
+                </div>
+                <div class="col-3">
+                  <div class="mensajes">
+                    <span class="mdi mdi-message f-18 icon-comentarios">
+                      <span class="cant-mensajes">2</span>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-4 text-right">
+                  <i class="mdi mdi-pencil editar-equipo"></i>
+                  <i class="mdi mdi-delete eliminar-equipo"></i>
+                </div>
+                <div class="col-2">
+                  <i class="mdi mdi-calendar cal-eventos"></i>
+                </div>
+              </div>
+            </template>
+
+            <b-list-group flush>
+
+              <b-list-group-item>
+                <div class="row">
+                  <div class="col-md-6">
+                    Chasis
+                  </div>
+                  <div class="col-md-6">
+                    <span>PLAKAA</span>
+                  </div>
+                </div>
+              </b-list-group-item>
+
+              <b-list-group-item>
+                <div class="row">
+                  <div class="col-md-6">
+                    Board
+                  </div>
+                  <div class="col-md-6">
+                    <span>Asus</span>
+                  </div>
+                </div>
+              </b-list-group-item>
+
+              <b-list-group-item>
+                <div class="row">
+                  <div class="col-md-6">
+                    Procesador
+                  </div>
+                  <div class="col-md-6">
+                    <span>Intel i3</span>
+                  </div>
+                </div>
+              </b-list-group-item>
+
+              <b-list-group-item>
+                <div class="row">
+                  <div class="col-md-6">
+                    RAM
+                  </div>
+                  <div class="col-md-6">
+                    <span>16 GB</span>
+                  </div>
+                </div>
+              </b-list-group-item>
+
+              <b-list-group-item>
+                <div class="row">
+                  <div class="col-md-6">
+                    SSD/HDD
+                  </div>
+                  <div class="col-md-6">
+                    <span>1500 GB</span>
+                  </div>
+                </div>
+              </b-list-group-item>
+
+            </b-list-group>
+
+            <b-card-footer>
+              <div class="row">
+                <div class="col-md-12 text-center">
+                  <i class="mdi mdi-plus detalles-equipo" @click="abrirModalDetalles"></i>
+                </div>
+              </div>
+            </b-card-footer>
+
+          </b-card>
+        </div>
+      </div>
+    </div>
+
+    <div class="overflow-auto">
+      <b-pagination pills align="center"
+      v-model="currentPage"
+      :total-rows="total"
+      :per-page="perPage"
+      aria-controls="my-table"
+      @change="cambioPagina($event)"
+      ></b-pagination>
+    </div>
+
+    <modal-detalles ref="modalDetallesEquipos" />
+
   </section>
+
 </template>
 
 <script>
 export default {
   components:{
-    ModalCrear:()=> import('./componentes/modalRegistrarChasis'),
-    ModalEditar:()=> import('./componentes/modalEditarFuentePoder')
+    ModalDetalles:()=> import('./componentes/modalVerDetalles'),
   },
   data(){
     return{
@@ -31,6 +145,10 @@ export default {
       search: '',
       isLoading:false,
       dataEquipos:[],
+      value:true,
+      perPage: 3,
+      total:null,
+      currentPage: 1,
     }
   },
   mounted(){
@@ -42,6 +160,7 @@ export default {
     })
   },
   methods: {
+
     async listar_equipos(){
       try {
         const {data} = await axios(`${this.ruta}/listar-equipo`)
@@ -49,12 +168,16 @@ export default {
           this.$Helper.notificacion('warning','Problemas al listar equipos',data.error)
           return
         }
-
         this.dataEquipos = data
-
       } catch (e) {
         console.warn(e);
       }
+    },
+    cambioPagina(dato){
+      console.log(dato);
+    },
+    abrirModalDetalles(){
+      this.$refs.modalDetallesEquipos.toggle()
     }
   }
 
@@ -62,7 +185,74 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.listar-fuentes{
-
+.listar-equipos{
+  .card{
+    border: 1px solid #c0c4cc !important;
+    transition-duration: .85s;
+    &:hover{
+      box-shadow: 0px 2px 3px 1px #909399bd !important;
+      transition-duration: .4s;
+    }
+  }
+  .editar-equipo{
+    border: 1px solid #b96806;
+    color: #b96806;
+    border-radius: 3px;
+    transition-duration: .85s;
+    &:hover{
+      background-color: #b96806;
+      color: white;
+      transition-duration: .4s;
+      cursor: pointer;
+    }
+  }
+  .eliminar-equipo{
+    border: 1px solid #710808;
+    color: #710808;
+    border-radius: 3px;
+    transition-duration: .85s;
+    &:hover{
+      background-color: #710808;
+      color: white;
+      transition-duration: .4s;
+      cursor: pointer;
+    }
+  }
+  .mensajes{
+    .icon-comentarios{
+      color: darkblue;
+      position: absolute;
+      .cant-mensajes{
+        position: relative;
+        background-color: gray;
+        color: darkblue;
+        font-size: 12px;
+        font-weight: 500;
+        z-index: 100;
+        right: 7px;
+        bottom: 9px;
+        border-radius: 6px;
+        padding-left: 6px;
+        padding-right: 6px;
+      }
+    }
+    &:hover{
+      cursor:pointer;
+    }
+  }
+  .detalles-equipo, .cal-eventos{
+    border: 1px solid midnightblue;
+    border-radius: 3px;
+    padding: 0px 1px 0px 1px;
+    color: midnightblue;
+    font-size: 15px;
+    transition-duration: .85s;
+    &:hover{
+      color: white;
+      background-color: midnightblue;
+      cursor: pointer;
+      transition-duration: .4s;
+    }
+  }
 }
 </style>
