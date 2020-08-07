@@ -170,19 +170,49 @@ class PcController extends Controller
   {
     try {
 
-      // return Equipo::all();
       $equipo = DB::table('equipo')
       ->join('pc','equipo.id_chasis', '=', 'pc.id')
       ->join('proveedores', 'pc.id_proveedor', '=', 'proveedores.id')
+      ->join('placa_base','equipo.id_placa_base', '=','placa_base.id')
+      ->join('procesador','equipo.id_procesador','=','procesador.id')
+      ->join('fuente_poder','equipo.id_fuente_poder','=','fuente_poder.id')
       ->select(
         'equipo.id',
         'pc.placa as chasis_placa',
         'pc.marca as chasis_marca',
         'pc.serial as chasis_serial',
-        'proveedores.nombre_proveedor'
+        'pc.estado as chasis_estado',
+        'proveedores.nombre_proveedor',
+        'placa_base.marca_placa_base as board_marca',
+        'placa_base.modelo_placa as board_modelo',
+        'placa_base.cantidad_pci as board_pci',
+        'placa_base.cantidad_pci_x as board_pcix',
+        'procesador.marca as cpu_marca',
+        'procesador.modelo_tecnologia as cpu_modelo',
+        'procesador.nucleos as cpu_nucleos',
+        'procesador.frecuencia as cpu_frecuencia',
+        'fuente_poder.marca as fuente_marca',
+        'fuente_poder.potencia as fuente_potencia',
+        'fuente_poder.alimentador_energia as fuente_alimentador',
+        'fuente_poder.modelo as fuente_modelo',
+        'fuente_poder.factor_forma as fuente_factor_forma',
         )
       ->orderBy('equipo.created_at','DESC')
       ->paginate($request->perPage);
+
+      // foreach ($equipo as $key => $value) {
+      //   $value->disco_duro = DB::collect(select("SELECT e.id,
+      //     ram.marca AS ram_marca,
+      //     ram.modelo_tecnologia AS ram_tecnologia,
+      //     ram.serial AS ram_serial,
+      //     ram.capacidad AS ram_capacidad,
+      //     ram.frecuencia AS ram_frecuencia
+      //     FROM equipo e
+      //     LEFT JOIN pc_ram ON pc_ram.id_equipo = e.id
+      //     LEFT JOIN memoria_ram ram ON ram.id = pc_ram.id_memoria_ram
+      //     WHERE e.id = ?",$value->id))
+      //     ->get();
+      // }
 
       return [
         'paginate'=>[

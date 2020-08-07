@@ -11,28 +11,24 @@
         <div class="px-3 py-1">
           <div id="titulo" class="text-center">
             <h4>Comentarios</h4>
-            <h5>Equipo - PLAKAA</h5>
+            <h5>Equipo - {{placaEquipo}}</h5>
           </div>
           <div class="py-4 text-center">
-            <textarea name="name" rows="8" class="comentarios"></textarea>
-            <button type="button" class="btn-comentar mt-2">Comentar</button>
+            <textarea name="name" rows="8" class="comentarios" v-model="comentario"></textarea>
+            <button type="button" class="btn-comentar mt-2" @click="registrarComentario">Comentar</button>
           </div>
         </div>
         <div class="container">
-          <div class="row" v-for="(data,c) in 2" :key="c">
+          <div class="row" v-for="(data,c) in dataComentarios" :key="c">
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-2">
                   <img src="https://placekitten.com/300/300" class="img-user-comentario" alt="">
                 </div>
                 <div class="col-md-10">
-                  <p class="comentario pl-2">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                    pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.
-                  </p>
+                  <span class="comentario pl-2">
+                    {{data.comentario}}
+                  </span>
                 </div>
               </div>
               <div class="row">
@@ -53,12 +49,50 @@
 export default {
   data(){
     return{
+      ruta:'/api/comentarios/equipo',
       isVisible:false,
+      placaEquipo:'',
+      idEquipo:null,
+      comentario:'',
+      dataComentarios:[]
     }
   },
+  mounted() {
+    // this.listarComentarios()
+
+  },
   methods: {
-    toggle() {
-      (this.isVisible == false)?this.isVisible = true:this.isVisible = false
+    async listarComentarios(){
+      const {data} = await axios(`${this.ruta}/${this.idEquipo}/listar-comentarios-equipo`)
+      if (data.error) {
+        this.$Helper.notificacion('warning','No es posible mostrar comentarios',data.error)
+        return
+      }
+      this.dataComentarios = data
+    },
+    async registrarComentario(){
+      let datos = {
+        id_equipo: this.idEquipo,
+        comentario: this.comentario
+      }
+      try {
+        const {data} = await axios.post(`${this.ruta}/registrar-comentario-equipo`,{datos})
+        if (data.error) {
+          this.$Helper.notificacion('warning','No es posible registrar comentario',data.error)
+          return
+        }
+        this.$Helper.notificacion('success','Comentario Registrado',data.mensaje)
+        this.listarComentarios()
+
+      } catch (e) {
+        console.warn(e);
+      }
+    },
+    toggle(id,placa) {
+      this.placaEquipo = placa
+      this.idEquipo = id
+      this.isVisible == false?this.isVisible = true:this.isVisible = false
+      this.listarComentarios()
     }
   }
 }

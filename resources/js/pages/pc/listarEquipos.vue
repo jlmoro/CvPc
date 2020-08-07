@@ -16,12 +16,13 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-md-4 mt-2 mb-4" v-for="(data,e) in 3" :key="e">
+        <div class="col-md-4 mt-2 mb-4" v-for="(data,e) in dataEquipos" :key="e">
 
           <b-card no-body style="max-width: 20rem;" >
             <template v-slot:header>
               <div class="row">
                 <div class="col-3">
+                  <!-- v-model="{{data.chasis_estado}}" -->
                   <el-switch
                     style="display: block"
                     v-model="value"
@@ -31,7 +32,7 @@
                 </div>
                 <div class="col-3">
                   <div class="mensajes">
-                    <span class="mdi mdi-message-text f-20 icon-comentarios" @click="abrirModalComentarios">
+                    <span class="mdi mdi-message-text f-20 icon-comentarios" @click="abrirModalComentarios(data.id,data.chasis_placa)">
                       <span class="cant-mensajes">2</span>
                     </span>
                     <!-- <span class="mdi mdi-message-plus f-20 icon-comentarios"></span> -->
@@ -55,7 +56,7 @@
                     Chasis
                   </div>
                   <div class="col-md-6">
-                    <span>PLAKAA</span>
+                    <span>{{data.chasis_placa}}</span>
                   </div>
                 </div>
               </b-list-group-item>
@@ -66,7 +67,7 @@
                     Board
                   </div>
                   <div class="col-md-6">
-                    <span>Asus</span>
+                    <span class="letra-capital">{{data.board_marca}}</span>
                   </div>
                 </div>
               </b-list-group-item>
@@ -77,7 +78,7 @@
                     Procesador
                   </div>
                   <div class="col-md-6">
-                    <span>Intel i3</span>
+                    <span class="letra-capital">{{data.cpu_marca}} {{data.cpu_modelo}}</span>
                   </div>
                 </div>
               </b-list-group-item>
@@ -109,7 +110,7 @@
             <b-card-footer>
               <div class="row">
                 <div class="col-md-12 text-center">
-                  <i class="mdi mdi-plus detalles-equipo" @click="abrirModalComentarios"></i>
+                  <i class="mdi mdi-plus detalles-equipo" @click="abrirModalDetalles"></i>
                 </div>
               </div>
             </b-card-footer>
@@ -167,23 +168,32 @@ export default {
   methods: {
 
     async listar_equipos(){
-      let params = {
+      const params = {
         page: this.currentPage,
         perPage: this.perPage
       }
       try {
-        const {data} = await axios(`${this.ruta}/listar-equipo`,params)
+        const {data} = await axios(`${this.ruta}/listar-equipo`,{params})
         if (data.error) {
           this.$Helper.notificacion('warning','Problemas al listar equipos',data.error)
           return
         }
-        this.dataEquipos = data
+
+        data.equipo.data.forEach((ele, i)=>{
+          ele.chasis_estado == 1?ele.chasis_estado = true:ele.chasis_estado = false
+        })
+
+        this.dataEquipos = data.equipo.data
+        this.perPage = data.paginate.perPage
+        this.currentPage = data.paginate.currentPage
+        this.total = data.paginate.total
+
       } catch (e) {
         console.warn(e);
       }
     },
-    abrirModalComentarios(){
-      this.$refs.modalComentarios.toggle()
+    abrirModalComentarios(id,placa){
+      this.$refs.modalComentarios.toggle(id,placa)
     },
     cambioPagina(dato){
       console.log(dato);

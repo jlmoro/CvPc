@@ -16,7 +16,7 @@ Route::group(['middleware' =>'auth:api'], function (){
       Route::get("listar-equipo","$controlador@listar_equipo");
       Route::put("editar-fuente","$controlador@editar_fuente");
       Route::delete("{id_equipo}/eliminando-equipo","$controlador@eliminando_equipo");
-    });
 
+    });
   });
 });
