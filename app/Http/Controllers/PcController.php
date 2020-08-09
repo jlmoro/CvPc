@@ -15,6 +15,7 @@ use App\Models\{
   PcDiscoDuro,
   FuentePoder,
   PcPerifericos,
+  EquipoComentarios
 };
 
 class PcController extends Controller
@@ -27,71 +28,74 @@ class PcController extends Controller
     try {
 
       // dd($request->all());
+      return DB::transaction(function() use($request){
 
-      $placa_base = PlacaBase::create([
-        'marca_placa_base'=> $request->board['marca'],
-        'modelo_placa'=> $request->board['modelo'],
-        'cantidad_pci'=> $request->board['pci'],
-        'cantidad_pci_x'=> $request->board['pcix'],
-      ]);
+        $placa_base = PlacaBase::create([
+          'marca_placa_base'=> $request->board['marca'],
+          'modelo_placa'=> $request->board['modelo'],
+          'cantidad_pci'=> $request->board['pci'],
+          'cantidad_pci_x'=> $request->board['pcix'],
+        ]);
 
-      $procesador = Procesador::create([
-        'marca'=>$request->procesador['marca'],
-        'modelo_tecnologia'=>$request->procesador['modelo'],
-        'nucleos'=>$request->procesador['nucleos'],
-        'frecuencia'=>$request->procesador['velocidad']
-      ]);
+        $procesador = Procesador::create([
+          'marca'=>$request->procesador['marca'],
+          'modelo_tecnologia'=>$request->procesador['modelo'],
+          'nucleos'=>$request->procesador['nucleos'],
+          'frecuencia'=>$request->procesador['velocidad']
+        ]);
 
-      $ram = MemoriaRam::create([
-        'marca'=>$request->ram['marca'],
-        'modelo_tecnologia'=>$request->ram['tecnologia'],
-        'serial'=>$request->ram['serial'],
-        'capacidad'=>$request->ram['capacidad'],
-        'frecuencia'=>$request->ram['velocidad'],
-      ]);
+        $ram = MemoriaRam::create([
+          'marca'=>$request->ram['marca'],
+          'modelo_tecnologia'=>$request->ram['tecnologia'],
+          'serial'=>$request->ram['serial'],
+          'capacidad'=>$request->ram['capacidad'],
+          'frecuencia'=>$request->ram['velocidad'],
+        ]);
 
-      $disco = DiscoDuro::create($request->disco);
+        $disco = DiscoDuro::create($request->disco);
 
-      $fuente = FuentePoder::create($request->fuente);
+        $fuente = FuentePoder::create($request->fuente);
 
-      $equipo = Equipo::create([
-        'id_chasis'=>$request['chasis'],
-        'observaciones'=>$request['observaciones'],
-        'id_placa_base'=>$placa_base->id,
-        'id_procesador'=>$procesador->id,
-        'id_fuente_poder'=>$fuente->id,
-        'created_by'=>auth()->user()->id,
-        'updated_by'=>auth()->user()->id,
-      ]);
+        $equipo = Equipo::create([
+          'id_chasis'=>$request['chasis'],
+          'observaciones'=>$request['observaciones'],
+          'id_placa_base'=>$placa_base->id,
+          'id_procesador'=>$procesador->id,
+          'id_fuente_poder'=>$fuente->id,
+          'created_by'=>auth()->user()->id,
+          'updated_by'=>auth()->user()->id,
+        ]);
 
-      $pc_ram = PcRam::create([
-        'id_equipo'=>$equipo['id'],
-        'id_memoria_ram'=>$ram['id']
-      ]);
+        $pc_ram = PcRam::create([
+          'id_equipo'=>$equipo['id'],
+          'id_memoria_ram'=>$ram['id']
+        ]);
 
-      $pc_disco = PcDiscoDuro::create([
-        'id_equipo'=>$equipo['id'],
-        'id_disco'=>$disco['id']
-      ]);
+        $pc_disco = PcDiscoDuro::create([
+          'id_equipo'=>$equipo['id'],
+          'id_disco'=>$disco['id']
+        ]);
 
-      /**
-       * registro de perifericos
-       * Array de id's
-       */
-      $cant = count($request->perifericos);
-      $data_perifericos = [];
+        /**
+        * registro de perifericos
+        * Array de id's
+        */
+        $cant = count($request->perifericos);
+        $data_perifericos = [];
 
-      for($i=0;$i < $cant;$i++){
+        for($i=0;$i < $cant;$i++){
 
-        $per = [];
-        $per = new PcPerifericos;
-        $per['id_equipo']     = $equipo['id'];
-        $per['id_periferico'] = $request->perifericos[$i];
+          $per = [];
+          $per = new PcPerifericos;
+          $per['id_equipo']     = $equipo['id'];
+          $per['id_periferico'] = $request->perifericos[$i];
 
-        $data_perifericos[$i] = $per;
+          $data_perifericos[$i] = $per;
 
-        $per->save();
-      }
+          $per->save();
+        }
+
+      },5);
 
       return[
         'mensaje'=>config('domains.mensajes.creado')
@@ -199,6 +203,10 @@ class PcController extends Controller
         )
       ->orderBy('equipo.created_at','DESC')
       ->paginate($request->perPage);
+
+      foreach ($equipo as $key => $value) {
+        $value->cant_comentarios = EquipoComentarios::select('id')->where('id_equipo',$value->id)->count();
+      }
 
       // foreach ($equipo as $key => $value) {
       //   $value->disco_duro = DB::collect(select("SELECT e.id,

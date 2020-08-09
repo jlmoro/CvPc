@@ -23,9 +23,12 @@
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-2">
-                  <img src="https://placekitten.com/300/300" class="img-user-comentario" alt="">
+                  <img v-if="data.usuario_foto !== null" :src="`/storage/${data.usuario_foto}`" class="img-user-comentario" alt="">
+                  <img v-else src="/img/user_default.jpg" class="img-user-comentario" alt="">
                 </div>
                 <div class="col-md-10">
+                  <span class="usuario-comentario pl-2">{{data.usuario_nombre}} {{data.usuario_apellido}}</span>
+                  <br>
                   <span class="comentario pl-2">
                     {{data.comentario}}
                   </span>
@@ -33,7 +36,7 @@
               </div>
               <div class="row">
                 <div class="col-md-12 text-right">
-                  <span class="f-12">31-10-2020</span>
+                  <span class="f-12">{{data.fecha_comentario | formato_fecha('DD/MM/YYYY')}}</span>
                 </div>
               </div>
               <hr>
@@ -81,7 +84,9 @@ export default {
           this.$Helper.notificacion('warning','No es posible registrar comentario',data.error)
           return
         }
+        this.$emit('equipo')
         this.$Helper.notificacion('success','Comentario Registrado',data.mensaje)
+        this.comentario = ''
         this.listarComentarios()
 
       } catch (e) {
@@ -100,6 +105,7 @@ export default {
 <style lang="scss" scoped>
 
 .modal-comentarios{
+
 
   .container::-webkit-scrollbar {
     -webkit-appearance: none;
@@ -121,7 +127,10 @@ export default {
     height: -webkit-fill-available;
     position: relative;
     margin-bottom: 286px;
-
+    .usuario-comentario{
+      font-weight: 700;
+      font-size: 11px;
+    }
     .comentario{
       color: whitesmoke;
       font-size: 12px;
@@ -131,6 +140,7 @@ export default {
     .img-user-comentario{
       border-radius: 50%;
       width: 50px;
+      height: 50px;
     }
   }
   .btn-comentar{

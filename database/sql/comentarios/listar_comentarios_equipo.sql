@@ -15,4 +15,4 @@ SELECT ec.id,ec.comentario,ec.created_at,
     WHERE u.id = ec.created_by
 )AS usuario_foto
 FROM equipo_comentarios ec
-WHERE ec.id_equipo = 4
+WHERE ec.id_equipo = ?

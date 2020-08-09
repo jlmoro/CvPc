@@ -32,10 +32,10 @@
                 </div>
                 <div class="col-3">
                   <div class="mensajes">
-                    <span class="mdi mdi-message-text f-20 icon-comentarios" @click="abrirModalComentarios(data.id,data.chasis_placa)">
-                      <span class="cant-mensajes">2</span>
+                    <span v-if="data.cant_comentarios > 0" class="mdi mdi-message-text f-20 icon-comentarios" @click="abrirModalComentarios(data.id,data.chasis_placa)">
+                      <span class="cant-mensajes">{{data.cant_comentarios}}</span>
                     </span>
-                    <!-- <span class="mdi mdi-message-plus f-20 icon-comentarios"></span> -->
+                    <span v-else class="mdi mdi-message-plus f-20 sin-comentarios" @click="abrirModalComentarios(data.id,data.chasis_placa)"></span>
                   </div>
                 </div>
                 <div class="col-4 text-right">
@@ -110,7 +110,7 @@
             <b-card-footer>
               <div class="row">
                 <div class="col-md-12 text-center">
-                  <i class="mdi mdi-plus detalles-equipo" @click="abrirModalDetalles"></i>
+                  <i class="mdi mdi-plus detalles-equipo" @click="abrirModalDetalles(data)"></i>
                 </div>
               </div>
             </b-card-footer>
@@ -132,7 +132,7 @@
 
     <modal-detalles ref="modalDetallesEquipos" />
 
-    <modal-comentarios ref="modalComentarios"/>
+    <modal-comentarios ref="modalComentarios" @equipo="listar_equipos"/>
 
   </section>
 
@@ -198,8 +198,8 @@ export default {
     cambioPagina(dato){
       console.log(dato);
     },
-    abrirModalDetalles(){
-      this.$refs.modalDetallesEquipos.toggle()
+    abrirModalDetalles(dato){
+      this.$refs.modalDetallesEquipos.toggle(dato)
     }
   }
 
@@ -241,6 +241,9 @@ export default {
     }
   }
   .mensajes{
+    .sin-comentarios{
+
+    }
     .icon-comentarios{
       color: darkblue;
       position: absolute;
