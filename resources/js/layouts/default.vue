@@ -1,10 +1,15 @@
 <template>
   <div class="main-layout">
-    <div class="row" style="margin-right: auto;">
+    <!-- <div class="row" style="margin-right: auto;"> -->
+    <menu-cvpc />
+    <div class="container mt-4">
+      <child />
+    </div>
+    <!--<div class="row" >
       <div class="col seccion-menu">
         <menu-cvpc />
       </div>
-      <div class="col">
+       <div class="col">
         <navbar />
         <div class="row">
           <div class="col">
@@ -14,7 +19,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -37,8 +42,8 @@ export default {
 </script>
 <style lang="scss" scoped>
   .main-layout{
-    .seccion-menu{
-      flex-grow: initial;
-    }
+    // .seccion-menu{
+    //   flex-grow: initial;
+    // }
   }
 </style>

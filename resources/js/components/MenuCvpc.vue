@@ -1,31 +1,67 @@
 <template>
   <section class="menu-principal">
-    <div v-show="user" class="">
-
-    <div class="row">
-      <div class="col-md-12 text-center">
-        <img v-show="isCollapse !== true" src="/img/logo_dark2.png" class="logo-menu" />
-        <span v-if="isCollapse == true" class="mdi mdi-menu f-18 icono-menu1" @click="openClose"></span>
-
-        <span v-else class="mdi mdi-arrow-left f-18 icono-menu" @click="openClose"></span>
-      </div>
-    </div>
-
-    <el-menu class="el-menu-vertical-demo" :collapse="isCollapse">
-    <el-submenu v-for="(data,m) in dataMenu" :key="m" :index="`${m + 1}`" @click="loDelMenu(data)">
-      <template slot="title">
-        <i :class="`${data.icono}`" class="f-16"></i>
-        <span slot="title" class="letra-capital f-16">{{data.nombre}}</span>
+    <div v-show="user" class="hidden" >
+      <vs-sidebar background="#191970" textWhite absolute hover-expand reduce v-model="active" open>
+      <template #logo>
+        <!-- <img src="/img/logo_dark2.png" class="logo-menu" :class="menu" alt=""> -->
+        <img src="/img/logo_dark2.png" alt="">
       </template>
+      <!-- <div class=""> -->
 
-      <el-menu-item v-for="(data2,i) in data.items" :key="i" @click="loDelMenu(data2)">
-        <span :class="`${data2.icono} f-16`"></span>
-        <span class="letra-capital f-16">{{data2.nombre}}</span>
-      </el-menu-item>
-    </el-submenu>
+        <vs-sidebar-group v-for="(data,m) in dataMenu" :key="m">
+          <template #header>
 
-  </el-menu>
+            <vs-sidebar-item v-show="data.items.length == 0" :id="data.nombre" :to="data.ruta">
+              <template #icon>
+                <i :class='data.icono'></i>
+              </template>
+              <span class="letra-capital">{{data.nombre}}</span>
+            </vs-sidebar-item>
+
+            <vs-sidebar-item arrow v-show="data.items.length > 0">
+              <template #icon>
+                <i :class='data.icono'></i>
+              </template>
+              <span class="letra-capital">{{data.nombre}}</span>
+            </vs-sidebar-item>
+          </template>
+
+          <vs-sidebar-item v-for="(data2,i) in data.items" :key="i" :id="data2.nombre" :to="data2.ruta">
+            <template #icon>
+              <i :class='data2.icono'></i>
+            </template>
+            <span class="letra-capital">{{data2.nombre}}</span>
+          </vs-sidebar-item>
+        </vs-sidebar-group>
+
+        <template #footer>
+          <vs-row justify="space-between">
+            <vs-tooltip>
+              <vs-avatar badge-color="danger" badge-position="top-right" class="salir">
+                <i class='mdi mdi-logout' @click.prevent="logout" ></i>
+              </vs-avatar>
+              <template #tooltip>
+                Cerrar Sesión
+              </template>
+            </vs-tooltip>
+
+            <vs-tooltip>
+              <vs-avatar class="mt-1">
+                <img v-if="user.foto !== null" :src="`/storage/${user.foto}`" alt="">
+                <img v-else :src="user.photo_url" alt="">
+              </vs-avatar>
+              <template #tooltip>
+                {{user.name}}
+              </template>
+            </vs-tooltip>
+
+          </vs-row>
+        </template>
+
+      <!-- </div> -->
+    </vs-sidebar>
   </div>
+</div>
 
 </section>
 </template>
@@ -37,14 +73,22 @@ export default {
     return{
       //dataMenu:[],
       isCollapse: true,
-      listandoMenu:''
+      listandoMenu:'',
+      active: 'home',
+      activeSidebar: false,
     }
   },
+
   computed:{
     ...mapGetters({
       user: 'auth/user',
       dataMenu: 'menu/getMenu'
-    }),
+    })
+  },
+  mounted(){
+    if(this.$store.getters['auth/check']){
+      this.$store.dispatch('menu/fetchMenu')
+    }
   },
   methods: {
     loDelMenu(dato){
@@ -58,6 +102,14 @@ export default {
       }else {
         this.isCollapse = true
       }
+    },
+
+    async logout () {
+      // Log out the user.
+      await this.$store.dispatch('auth/logout')
+
+      // Redirect to login.
+      this.$router.push({ name: 'welcome' })
     },
 
     async listar_menu() {
@@ -77,6 +129,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .menu-principal{
+  .mdi-logout{
+    color: midnightblue !important;
+  }
+  .salir{
+    &:hover{
+      cursor: pointer;
+    }
+  }
   .icono-menu1{
     border: solid 1px midnightblue;
     border-radius: 50%;
@@ -92,13 +152,16 @@ export default {
     left: 52px;
   }
   .logo-menu{
-    width: 62px;
+    width: 50px;
     margin-top: 10px;
-
+  }
+  .logo-menu-expandido{
+    width: 260px;
   }
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
     min-height: 400px;
   }
+
 }
 </style>

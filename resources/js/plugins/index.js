@@ -34,3 +34,12 @@ import { ValidationProvider, ValidationObserver, extend } from 'vee-validate'
 import { required } from 'vee-validate/dist/rules'
 Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('ValidationProvider', ValidationProvider);
+
+import Vuesax from 'vuesax'
+// import { vsButton, vsNavbar } from 'vuesax'
+import 'vuesax/dist/vuesax.css'
+Vue.use(Vuesax)
+//
+// Vue.use(vsButton)
+// Vue.use(vsNavbar)
+// Vue.use(vsPopup)
