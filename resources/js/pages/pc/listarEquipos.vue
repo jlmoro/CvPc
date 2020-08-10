@@ -22,12 +22,13 @@
             <template v-slot:header>
               <div class="row">
                 <div class="col-3">
-                  <!-- v-model="{{data.chasis_estado}}" -->
                   <el-switch
                     style="display: block"
-                    v-model="value"
+                    v-model="data.estado"
                     active-color="#13ce66"
-                    inactive-color="#ff4949" >
+                    inactive-color="#d6c9c9"
+                    @change="cambio_estado(data.id)"
+                    >
                   </el-switch>
                 </div>
                 <div class="col-3">
@@ -35,7 +36,7 @@
                     <span v-if="data.cant_comentarios > 0" class="mdi mdi-message-text f-20 icon-comentarios" @click="abrirModalComentarios(data.id,data.chasis_placa)">
                       <span class="cant-mensajes">{{data.cant_comentarios}}</span>
                     </span>
-                    <span v-else class="mdi mdi-message-plus f-20 sin-comentarios" @click="abrirModalComentarios(data.id,data.chasis_placa)"></span>
+                    <span v-else class="mdi mdi-message-outline f-20 sin-comentarios" @click="abrirModalComentarios(data.id,data.chasis_placa)"></span>
                   </div>
                 </div>
                 <div class="col-4 text-right">
@@ -166,7 +167,20 @@ export default {
     })
   },
   methods: {
+    async cambio_estado(dato){
+      try {
+        const {data} = await axios.put(`${this.ruta}/${dato}/cambiar-estado-equipo`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','No es posible cambiar estado',data.error)
+          return
+        }
+        this.$Helper.notificacion('success','Estado Actualizado',data.mensaje)
+        this.listar_equipos()
 
+      } catch (e) {
+        console.warn(e);
+      }
+    },
     async listar_equipos(){
       const params = {
         page: this.currentPage,
@@ -180,7 +194,7 @@ export default {
         }
 
         data.equipo.data.forEach((ele, i)=>{
-          ele.chasis_estado == 1?ele.chasis_estado = true:ele.chasis_estado = false
+          ele.estado == 1?ele.estado = true:ele.estado = false
         })
 
         this.dataEquipos = data.equipo.data

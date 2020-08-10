@@ -88,6 +88,7 @@ export default {
   mounted(){
     if(this.$store.getters['auth/check']){
       this.$store.dispatch('menu/fetchMenu')
+      // this.listar_menu()
     }
   },
   methods: {

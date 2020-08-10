@@ -167,6 +167,26 @@ class PcController extends Controller
 
   }
 
+  public function cambiar_estado_equipo(int $id_equipo)
+  {
+    try {
+      return DB::transaction(function() use($id_equipo){
+
+        $equipo = Equipo::find($id_equipo);
+        ($equipo->estado == 1)?$equipo->estado = 0 : $equipo->estado = 1;
+        $equipo->update();
+        return[
+          'mensaje'=>config('domains.mensajes.actualizado')
+        ];
+
+      },5);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al cambiar estado equipo");
+    }
+
+  }
+
   /**
    * Listado de los equipos con el chasís asignado
    */
@@ -182,10 +202,11 @@ class PcController extends Controller
       ->join('fuente_poder','equipo.id_fuente_poder','=','fuente_poder.id')
       ->select(
         'equipo.id',
+        'equipo.observaciones',
+        'equipo.estado',
         'pc.placa as chasis_placa',
         'pc.marca as chasis_marca',
         'pc.serial as chasis_serial',
-        'pc.estado as chasis_estado',
         'proveedores.nombre_proveedor',
         'placa_base.marca_placa_base as board_marca',
         'placa_base.modelo_placa as board_modelo',
