@@ -12,10 +12,124 @@
       <div slot="body" class="row w-100">
         <div class="col-12">
           <div class="container">
-            <table>
+            <table class="table table-bordered tabla-info">
+              <thead>
+                <th>Chasis</th>
+                <th>Procesador</th>
+              </thead>
               <tbody>
                 <tr>
-                  <td>Chasis:</td>
+                  <td>
+                    <div class="row">
+                      <div class="col"> Placa: </div>
+                      <div class="col"> {{equipo.chasis_placa}} </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="row">
+                      <div class="col"> Marca: </div>
+                      <div class="col"> {{equipo.cpu_marca}} </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="row">
+                      <div class="col"> Marca: </div>
+                      <div class="col"> {{equipo.chasis_marca}} </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="row">
+                      <div class="col"> Modelo: </div>
+                      <div class="col"> {{equipo.cpu_modelo}} </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="row">
+                      <div class="col"> Serial: </div>
+                      <div class="col"> {{equipo.chasis_serial}} </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="row">
+                      <div class="col"> Núcleos: </div>
+                      <div class="col"> {{equipo.cpu_nucleos}} </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>
+                    <div class="row">
+                      <div class="col"> Frecuencia: </div>
+                      <div class="col"> {{equipo.cpu_frecuencia}} Ghz</div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <thead>
+                <th>Board</th>
+                <th>Fuente</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="row">
+                      <div class="col"> Marca: </div>
+                      <div class="col"> {{equipo.board_marca}} </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="row">
+                      <div class="col"> Marca: </div>
+                      <div class="col"> {{equipo.fuente_marca}} </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="row">
+                      <div class="col"> Modelo: </div>
+                      <div class="col"> {{equipo.board_modelo}} </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="row">
+                      <div class="col"> Modelo: </div>
+                      <div class="col"> {{equipo.fuente_modelo}} </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="row">
+                      <div class="col"> PCI: </div>
+                      <div class="col"> {{equipo.board_modelo}} </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="row">
+                      <div class="col"> Potencia: </div>
+                      <div class="col"> {{equipo.fuente_potencia}} W</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="row">
+                      <div class="col"> PCIX: </div>
+                      <div class="col"> {{equipo.board_modelo}} </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="row">
+                      <div class="col"> Alimentador: </div>
+                      <div class="col"> {{equipo.fuente_alimentador}} pines </div>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -45,9 +159,18 @@ export default {
     }
   },
   methods:{
+    async descargaPdf(){
 
+      try {
+        window.open(`${this.ruta}/descarga-pdf-detalles-equipo`)
+
+      } catch (e) {
+        console.warn(e);
+      }
+    },
     toggle(dato){
       this.equipo = _.cloneDeep(dato)
+      console.log(this.equipo);
       this.$refs.ModalDetallesEquipo.toggle()
     }
   }
@@ -56,6 +179,9 @@ export default {
 
 <style lang="scss" scoped>
 .modalDetalles-equipo{
+  .tabla-info{
+    width: 107%;
+  }
   .icono-pdf{
     border: 1px solid #710606e6;
     border-radius: 2px;

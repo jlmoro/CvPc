@@ -131,7 +131,7 @@
       ></b-pagination>
     </div>
 
-    <modal-detalles ref="modalDetallesEquipos" />
+    <modal-detalles ref="modalDetallesEquipos" :ruta="ruta"/>
 
     <modal-comentarios ref="modalComentarios" @equipo="listar_equipos"/>
 

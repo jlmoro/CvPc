@@ -187,6 +187,17 @@ class PcController extends Controller
 
   }
 
+  public function descarga_pdf_detalles_equipo()
+  {
+    try {
+
+      dd("descarga pdf detalles equipo");
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al descargar pdf");
+    }
+  }
+
   /**
    * Listado de los equipos con el chasís asignado
    */
