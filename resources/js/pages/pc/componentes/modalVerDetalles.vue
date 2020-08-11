@@ -107,7 +107,7 @@
                   <td>
                     <div class="row">
                       <div class="col"> PCI: </div>
-                      <div class="col"> {{equipo.board_modelo}} </div>
+                      <div class="col"> {{equipo.board_pci}} </div>
                     </div>
                   </td>
                   <td>
@@ -121,7 +121,7 @@
                   <td>
                     <div class="row">
                       <div class="col"> PCIX: </div>
-                      <div class="col"> {{equipo.board_modelo}} </div>
+                      <div class="col"> {{equipo.board_pcix}} </div>
                     </div>
                   </td>
                   <td>

@@ -9,4 +9,7 @@ class PcRam extends Model
   protected $table = 'pc_ram';
   protected $primaryKey = 'id';
   protected $guarded = [];
+
+
+  
 }

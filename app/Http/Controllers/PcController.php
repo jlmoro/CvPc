@@ -238,6 +238,11 @@ class PcController extends Controller
 
       foreach ($equipo as $key => $value) {
         $value->cant_comentarios = EquipoComentarios::select('id')->where('id_equipo',$value->id)->count();
+        $value->cant_ram = PcRam::select('id')->where('id_equipo',$value->id)->count();
+        $value->ram_id = PcRam::select('id_memoria_ram')->where('id_equipo',$value->id)->get();
+        // $value->ram_equipo = MemoriaRam::select('id','marca','modelo_tecnologia','serial','capacidad','frecuencia')
+        // ->where('id',--id ram--)->get();
+        $value->ram = MemoriaRam::with('pcram')->get();
       }
 
       // foreach ($equipo as $key => $value) {
