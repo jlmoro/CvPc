@@ -15,7 +15,7 @@
     </div>
 
     <div class="container">
-      <div class="row">
+      <div class="row justify-content-center">
         <div class="col-md-4 mt-2 mb-4" v-for="(data,e) in dataEquipos" :key="e">
 
           <b-card no-body style="max-width: 20rem;" >

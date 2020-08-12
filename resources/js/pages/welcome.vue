@@ -43,7 +43,7 @@
             </div>
 
             <div class="form-group row">
-              <div class="col-md-7 offset-md-3 d-flex">
+              <div class="col-md-7 offset-md-3">
                 <!-- Submit Button -->
                 <v-button :loading="form.busy">
                   {{ $t('login') }}

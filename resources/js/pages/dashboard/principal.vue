@@ -63,13 +63,13 @@
       }
     },
     mounted() {
-      //this.isoading = true
-      // Promise.all([
-      //   this.listarEventosChart(),
-      //   this.listarEventosCalendario()
-      // ]).then(res=>{
-      //   this.isLoading = false
-      // })
+      this.isoading = true
+      Promise.all([
+        this.listarEventosChart(),
+        // this.listarEventosCalendario()
+      ]).then(res=>{
+        this.isLoading = false
+      })
     },
 
     methods: {
@@ -118,6 +118,8 @@
             this.$Helper.notificacion('warning','error el listar eventos',data.error)
             return
           }
+          // console.log(data);
+          // return
           // Themes begin
           am4core.useTheme(am4themes_dataviz);
           am4core.useTheme(am4themes_animated);

@@ -34,9 +34,9 @@ export default {
     MenuCvpc:()=>import('~/components/MenuCvpc')
   },
   mounted(){
-    if(this.$store.getters['auth/check']){
-      this.$store.dispatch('menu/fetchMenu')
-    }
+    // if(this.$store.getters['auth/check']){
+    //   this.$store.dispatch('menu/fetchMenu')
+    // }
   }
 }
 </script>

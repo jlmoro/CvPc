@@ -4,38 +4,36 @@
     <encabezado-datos tituloEncabezado="Proveedores" tituloBoton="nuevo proveedor" @accionBonton="abrirCrearProveedor"/>
 
     <div class="row" v-loading="isLoading">
-      <div v-for="(data,e) in proveedores" :key="e" class="col-md-3">
-        <div class="card-padre">
-          <div class="row">
-            <div class="col-md-12 card-encabezado">
-              <span class="letra-capital f-16">{{data.telefono}}</span>
-              <div class="card-acciones">
-                <span class="mdi mdi-pencil editar-user" @click="editarProveedores(data)"></span>
-                <span class="mdi mdi-delete eliminar-user" @click="modalEliminar(data)"></span>
-              </div>
+
+      <div class="row justify-content-center">
+        <div class="col-md-4 text-center" v-for="(data,e) in proveedores" :key="e">
+
+          <div class="container">
+            <div class="card-acciones mb-1 text-right">
+              <span class="mdi mdi-pencil editar-user" @click="editarProveedores(data)"></span>
+              <span class="mdi mdi-delete eliminar-user" @click="modalEliminar(data)"></span>
             </div>
+            <b-card  no-body style="max-width: 20rem;" img-top >
+              <template v-slot:header>
+                <img v-if="data.logo != null" :src="`/storage/${data.logo}`" alt="" class="img-user">
+                <img v-else src="img/user_default.jpg" class="img-user" alt="">
+                <h5 class="mb-0 letra-capital mt-3 text-center">
+                  {{data.nombre_proveedor}}
+                </h5>
+              </template>
+              <b-list-group flush>
+                <b-list-group-item>{{data.telefono}}</b-list-group-item>
+                <b-list-group-item>{{data.direccion}}</b-list-group-item>
+              </b-list-group>
+              <b-card-footer>
+                <!-- <span class="mdi mdi-magnify ver-mas"></span> -->
+              </b-card-footer>
+            </b-card>
           </div>
-          <hr style="border-top-color: #0000003b;">
-          <div class="row">
-            <div class="col-md-12">
-              <img v-if="data.logo != null"  class="img-user" :src="`/storage/${data.logo}`"/>
-              <img v-else class="img-user" src="img/user_default.jpg"/>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <span class="letra-capital f-14">{{data.nombre_proveedor}}</span> -
-              <span class="f-12">{{data.direccion}}</span>
-            </div>
-          </div>
-          <hr style="width: 194px; border-top-color: #00000038;">
-          <div class="row">
-            <div class="col-md-12 card-pie">
-              <span class="mdi mdi-magnify ver-mas"></span>
-            </div>
+
           </div>
         </div>
-      </div>
+
     </div>
 
     <modal-crear ref="modalCrearProveedor" :ruta="ruta" @proveedor:creado="listar_proveedores"/>
@@ -113,74 +111,61 @@ export default {
 <style lang="scss" scoped>
 
 .listar-proveedores{
-  .card-padre{
-    width: 246px;
-    border: solid 1px #00000040;
-    border-radius: 3px;
-    text-align: center;
+  .container{
+
     transition-duration: .85s;
-    .img-user{
-      width: 150px;
-      height: 150px;
-      border-radius: 10px;
-      box-shadow: 0px 2px 3px 0px #00000091;
-      border: none;
-    }
-    .card-pie{
-      margin-bottom: 4px;
-      margin-top: -6px;
-      .ver-mas{
-        padding: 2px 5px 2px 6px;
-        border-radius: 2px;
-        font-size: 21px;
-        background-color: midnightblue;
-        color: white;
-        cursor: pointer;
-      }
-    }
-    .card-encabezado{
-      margin-top: 5px;
-      margin-bottom: -8px;
-    }
     .card-acciones{
-      width: 54px;
-      position: absolute;
-      right: 20px;
-      top: 2px;
-      font-size: 19px;
       visibility: hidden;
-      transition-duration: .2s;
+      // transition-duration: .5s;
       .editar-user{
-        cursor: pointer;
-        border: solid 1px midnightblue;
-        padding: 0px 2px 1px 1px;
+        border: 1px solid;
         border-radius: 3px;
-        color: midnightblue;
+        padding: 0px 1px 0px 1px;
+        color: #c77107;
+        transition-duration: .85s;
         &:hover{
-          background-color: midnightblue;
+          transition-duration: .4s;
+          background-color: #c77107;
           color: white;
+          cursor: pointer;
         }
       }
       .eliminar-user{
-        cursor: pointer;
-        border: solid 1px midnightblue;
-        padding: 0px 2px 1px 1px;
+        border: 1px solid #920b0b;
         border-radius: 3px;
-        color: midnightblue;
+        padding: 0px 1px 0px 1px;
+        color: #920b0b;
+        transition-duration: .85s;
         &:hover{
-          background-color: midnightblue;
+          transition-duration: .4s;
+          background-color: #920b0b;
           color: white;
+          cursor: pointer;
         }
       }
     }
+
     &:hover{
-      box-shadow: 0px 0 7px 1px #1919708a;
       transition-duration: .4s;
+      .card{
+        box-shadow: 0px 0 7px 1px #1919708a;
+        transition-duration: .10s;
+      }
       .card-acciones{
         visibility: visible;
-        transition-duration: .4s;
+        // transition-duration: .4s;
       }
     }
   }
+
+  .img-user{
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    box-shadow: 0px 1px 2px 0px #00000091;
+    border: none;
+  }
+
+
 }
 </style>
