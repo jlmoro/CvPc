@@ -7,14 +7,10 @@
         <div id="chartdiv" class="lista-cantidad-eventos" />
       </div>
       <div class="col-md-6">
-        <h5 class="mb-4 text-center">Próximos Eventos</h5>
+        <h5 class="mb-4 text-center">Eventos</h5>
         <div class='demo-app'>
-          <!-- <div class='demo-app-top'>
-            <button @click="toggleWeekends">toggle weekends</button>
-            <button @click="gotoPast">go to a date in the past</button>
-            (also, click a date/time to add an event)
-          </div> -->
-          <FullCalendar :options="calendarOptions" />
+
+          <FullCalendar :options="calendarOptions"/>
 
         </div>
         </div>
@@ -47,16 +43,15 @@
           plugins:[
             dayGridPlugin,
             interactionPlugin,
-            timeGridPlugin
+            timeGridPlugin,
           ],
+          // calendarWeekends: true,
           initialView: 'dayGridMonth',
-          calendarWeekends: true,
           dateClick: this.handleDateClick,
-          // headerToolbar: {
-          //     left: 'dayGridMonth' // buttons for switching between views
-          // },
+          // currentStart: this.clickEvento,
+
           events: [ // initial event data
-            { title: 'event 1', date: '2020-08-01' },
+            { title: 'event 1 event 1 event 1', date: '2020-08-01' },
             { title: 'event 2', date: '2020-08-02' }
           ]
         },
@@ -66,13 +61,17 @@
       this.isoading = true
       Promise.all([
         this.listarEventosChart(),
-        // this.listarEventosCalendario()
+        this.listarEventosCalendario()
       ]).then(res=>{
         this.isLoading = false
       })
     },
 
     methods: {
+
+      clickEvento(arg){
+        console.log(arg,"en clickEvento");
+      },
       async listarEventosCalendario(){
         try {
 
@@ -81,7 +80,9 @@
             this.$Helper.notificacion('warning','Error listados eventos calendario',data.error)
             return
           }
-          this.calendarEvents = data
+          console.log(data,"data eventos");
+          
+          this.calendarOptions.events = data
 
         } catch (e) {
           console.warn(e);
@@ -99,6 +100,7 @@
       },
       handleDateClick(arg) {
         console.log(arg);
+        alert('Date: ' + arg.dateStr);
         // return
         // if (confirm('Would you like to add an event to ' + arg.dateStr + ' ?')) {
         //   this.calendarEvents.push({ // add new event data
@@ -118,8 +120,7 @@
             this.$Helper.notificacion('warning','error el listar eventos',data.error)
             return
           }
-          // console.log(data);
-          // return
+
           // Themes begin
           am4core.useTheme(am4themes_dataviz);
           am4core.useTheme(am4themes_animated);
@@ -134,7 +135,7 @@
 
           // Create axes
           let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-          categoryAxis.dataFields.category = "sigla";
+          categoryAxis.dataFields.category = "evento_sigla";
           categoryAxis.renderer.grid.template.location = 0;
           categoryAxis.renderer.minGridDistance = 30;
 
@@ -151,7 +152,7 @@
           let series = chart.series.push(new am4charts.ColumnSeries());
           // console.log(series,"lo que hay en series");
           series.dataFields.valueY = "cantidad_eventos";
-          series.dataFields.categoryX = "sigla";
+          series.dataFields.categoryX = "evento_sigla";
           series.name = "cantidad_eventos";
           series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
           series.columns.template.fillOpacity = .8;

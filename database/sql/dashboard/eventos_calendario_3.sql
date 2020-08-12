@@ -30,6 +30,6 @@ SELECT ei.id, ei.id_detalle_evento, ei.id_impresora,
     SELECT rei.fecha_resolver
     FROM resolver_evento_impresora rei
     WHERE rei.id_evento = ei.id
-    AND rei.estado_evento BETWEEN 2 and 3
+    AND rei.estado_evento = 2
 )AS start
 FROM eventos_impresoras ei

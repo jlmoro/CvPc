@@ -17,6 +17,16 @@ class DashboardController extends Controller
     try {
 
       return DB::select($this->ejecutar_sql("dashboard/eventos_calendario"));
+      //$eventos_impresoras = DB::select($this->ejecutar_sql("dashboard/eventos_calendario"));
+      //$eventos_pantallas = DB::select($this->ejecutar_sql("dashboard/eventos_calendario_2"));
+      // $eventos_pc = DB::select($this->ejecutar_sql("dashboard/eventos_calendario_3"));
+
+      /*return[
+        'impresoras'=>$eventos_impresoras,
+        'pantallas'=>$eventos_pantallas,
+        'pc'=>$eventos_pc,
+      ];
+      */
 
 
     } catch (\Exception $e) {
@@ -28,16 +38,7 @@ class DashboardController extends Controller
     try {
 
       return DB::select($this->ejecutar_sql("dashboard/listar_eventos"));
-      
-      // $eventos_impresora = EventosImpresoras::select('id')->count();
-      // $eventos_pantallas = EventosPantallas::select('id')->count();
-      // $eventos_pc = EventosPc::select('id')->count();
-      //
-      // return[
-      //   'cant_even_imp' => $eventos_impresora,
-      //   'cant_even_pant' =>$eventos_pantallas,
-      //   'cant_even_pc' =>$eventos_pc
-      // ];
+
 
     } catch (\Exception $e) {
       return $this->captura_error($e,"error al listar eventos");

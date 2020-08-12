@@ -1,22 +1,32 @@
--- SELECT et.id,et.nombre_tipo,et.sigla,
--- (
---     SELECT COUNT(e.id)
---     FROM eventos e
---     WHERE e.id_tipo_evento = et.id
--- )AS cantidad_eventos
--- FROM eventos_tipos et
--- ORDER BY cantidad_eventos DESC
-
-SELECT
+SELECT etd.id,
+(
+    SELECT et.nombre_tipo
+    FROM eventos_tipos et
+    WHERE et.id = etd.id_evento_tipo
+)AS evento_nombre,
+(
+    SELECT et.sigla
+    FROM eventos_tipos et
+    WHERE et.id = etd.id_evento_tipo
+)AS evento_sigla,
 (
     SELECT COUNT(ei.id)
     FROM eventos_impresoras ei
-)AS eventos_impresora,
+    WHERE ei.id_detalle_evento = etd.id
+)AS cant_printer,
 (
     SELECT COUNT(ep.id)
     FROM eventos_pantalla ep
-)AS eventos_pantalla,
+    WHERE ep.id_detalle_evento = etd.id
+)AS cant_pantalla,
 (
-    SELECT COUNT(pc.id)
-    FROM eventos_pc pc
-)AS eventos_pc
+    SELECT COUNT(epc.id)
+    FROM eventos_pc epc
+    WHERE epc.id_tipo_evento = etd.id
+)AS cant_pc,
+(
+    SELECT SUM(cant_printer + cant_pantalla + cant_pc)
+
+)AS cantidad_eventos
+FROM eventos_tipos_descripcion etd
+-- GROUP BY evento_sigla
