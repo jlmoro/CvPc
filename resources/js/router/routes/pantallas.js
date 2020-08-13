@@ -2,7 +2,7 @@ import page from '../page'
 export default [
   {
     path: '/screen',
-    name: 'listado.printer',
+    name: 'listado.screen',
     component: page('pantallas/encabezadoPantallas'),
     children: [
       {

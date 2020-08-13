@@ -25,7 +25,7 @@
           <th>Fecha</th>
           <th>Estado</th>
           <th>Descripción</th>
-          <th colspan="3">Acciones</th>
+          <th colspan="3" class="text-center">Acciones</th>
         </thead>
         <tbody>
           <tr v-for="(data,e) in lista_eventos" :key="e">
@@ -41,17 +41,19 @@
               <span v-show="data.evento_estado == 2" class="f-13 texto-info estado-2" @click="eventoResuelto(data)">Asignado</span>
               <span v-show="data.evento_estado == 3" class="f-13 texto-info estado-3">Resuelto</span>
             </td>
-            <td>
-              <textarea class="descripcion-evento" readonly v-model="data.descripcion"></textarea>
+            <td class="text-center">
+              <el-tooltip :content="data.descripcion" placement="bottom">
+                <span class="mdi mdi-file-document-outline f-18"></span>
+              </el-tooltip>
               <!-- <span>{{data.descripcion}}</span> -->
             </td>
 
-            <td>
+            <td class="text-center">
               <el-tooltip content="Detalles estado evento" placement="bottom">
                 <i class="mdi mdi-magnify f-16" @click="abrirModalVerDetalle(data)"></i>
               </el-tooltip>
             </td>
-            <td>
+            <td class="text-center">
               <el-tooltip content="Ayuda" placement="bottom">
                 <i class="mdi mdi-help-circle-outline f-16" @click="abrirModalAyuda(data)"></i>
               </el-tooltip>

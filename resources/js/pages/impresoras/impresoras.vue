@@ -1,13 +1,33 @@
 <template>
-  <section class="listar-impresoras">
+  <section class="listar-impresoras" v-loading="estaCargando">
     <encabezado-datos tituloEncabezado="Impresoras" tituloBoton="registrar impresora" @accionBonton="crear_impresora"/>
-    <div class="row w-100 mt-4" v-loading="estaCargando" >
+
+    <div class="row w-100 mt-4">
       <div class="col-md-12">
         <div class="row mb-3">
-          <div class="col-md-4">
+          <div class="col-md-6">
             <el-input v-model="search" placeholder="Buscar..." clearable></el-input>
           </div>
+          <div class="col-md-2">
+            <i v-if="impresoras.length > 0" class="mdi mdi-adobe-acrobat icono-pdf" @click="descargaPdf"></i>
+          </div>
+          <div class="col-md-4 text-right">
+            <span>Filas: </span>
+            <el-select v-model="perPage" @change="cantidadFilas($event)">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <div class="row w-100 mt-4"  >
+      <div class="col-md-12">
         <table class="table table-hover f-12">
           <thead class="thead-light text-center">
             <tr>
@@ -53,6 +73,17 @@
           </tr>
         </tbody>
         </table>
+
+        <div class="overflow-auto">
+          <b-pagination pills align="center"
+          v-model="currentPage"
+          :total-rows="total"
+          :per-page="perPage"
+          aria-controls="my-table"
+          @change="cambioPagina($event)"
+          ></b-pagination>
+        </div>
+
       </div>
     </div>
 
@@ -92,6 +123,20 @@ export default {
       proveedores:[],
       eliminarImp:'',
       tiposEventos:[],
+      perPage: 5,
+      total:null,
+      currentPage: 1,
+      options: [{
+          value: 5,
+          label: '5'
+        }, {
+          value: 10,
+          label: '10'
+        }, {
+          value: 15,
+          label: '15'
+        }
+      ],
     }
   },
   mounted(){
@@ -111,7 +156,14 @@ export default {
     }
   },
   methods:{
+    descargaPdf(){
+      try {
+        window.open(`${this.ruta}/descarga-pdf-impresoras`)
 
+      } catch (e) {
+        console.warn(e);
+      }
+    },
     async eventosTipos(){
       try {
         const {data} = await axios(`/api/select/listar-tipos-eventos`)
@@ -160,15 +212,33 @@ export default {
     },
     async listar_impresoras(){
       try {
-        const {data} = await axios(`${this.ruta}/listar-impresoras`)
+        let params = {
+          page: this.currentPage,
+          perPage: this.perPage
+        }
+        const {data} = await axios(`${this.ruta}/listar-impresoras`,{params})
         if (data.error) {
           this.$Helper.notificacion('warning','Error al listar',data.error)
           return
         }
-        this.impresoras = data
+
+        this.impresoras = data.impresoras.data
+        this.perPage = data.paginate.perPage
+        this.currentPage = data.paginate.currentPage
+        this.total = data.paginate.total
+
       } catch (e){
         console.warn(e);
       }
+    },
+    cantidadFilas(filas){
+      this.perPage = filas
+      this.currentPage = 1
+      this.listar_impresoras()
+    },
+    cambioPagina(page){
+      this.currentPage = page
+      this.listar_impresoras()
     },
     async listarEncargados() {
       try {
@@ -206,6 +276,27 @@ export default {
 
 <style lang="scss" scoped>
 .listar-impresoras{
+  .icono-pdf{
+    border: 1px solid #710606e6;
+    border-radius: 2px;
+    padding: 3px;
+    font-size: 16px;
+    color: white;
+    background-color: #710606e6;
+    transition-duration: .85s;
+    &:hover{
+      color: #710606e6;
+      background-color: white;
+      transition-duration: .4s;
+      cursor: pointer;
+    }
+  }
+  .el-input{
+    width: 315px !important;
+  }
+  .el-select{
+    width: 68px !important;
+  }
   .table{
     tbody{
       tr{

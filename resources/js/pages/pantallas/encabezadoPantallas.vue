@@ -3,7 +3,7 @@
 
   <div class="mb-5">
     <b-tabs content-class="mt-3" align="center" >
-      <b-tab v-for="(data,a) in pantallas" :key="a" @click="cambioPagina(data)">
+      <b-tab v-for="(data,a) in pantallas" :active="active" :key="a" @click="cambioPagina(data)">
         <template v-slot:title>
           <i :class="data.icono"></i> <span>{{data.nombre}}</span>
         </template>
@@ -20,7 +20,7 @@
 export default {
   data(){
     return{
-      activeName: true,
+      active: false,
       pantallas:[
         {
           icono: "mdi mdi-television-guide",
@@ -40,11 +40,21 @@ export default {
     this.isLoading = true
     Promise.all([
       // this.primerTab()
+      this.isActive()
     ]).then(res => {
       this.isLoading = false
     })
   },
   methods: {
+    isActive(){
+      _.forEach(this.pantallas,(value, key)=> {
+        if (value.ruta == this.$route.name) {
+          this.active = true
+        }else {
+          this.active = false
+        }
+      });
+    },
     primerTab(){
       let dato = _.head(this.impresora)
       this.$router.push({

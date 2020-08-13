@@ -7,5 +7,7 @@ Route::group(['middleware' =>'auth:api'], function (){
     Route::put("{id_impresora}/cambiar-estado","$controlador@cambiar_estado");
     Route::get("listar-impresoras","$controlador@listar_impresoras");
     Route::delete("{id_impresora}/eliminar-impresora","$controlador@eliminar_impresora");
+
+    Route::get("descarga-pdf-impresoras","$controlador@descarga_pdf_impresoras");
   });
 });

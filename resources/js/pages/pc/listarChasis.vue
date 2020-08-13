@@ -110,7 +110,8 @@ export default {
         }, {
           value: 15,
           label: '15'
-        }],
+        }
+      ],
     }
   },
   computed: {
