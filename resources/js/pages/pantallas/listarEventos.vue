@@ -50,12 +50,12 @@
 
             <td>
               <el-tooltip content="Detalles estado evento" placement="bottom">
-                <i class="mdi mdi-magnify f-16" @click="abrirModalVerDetalle(data)"></i>
+                <i class="mdi mdi-magnify f-16 detalle-estado" @click="abrirModalVerDetalle(data)"></i>
               </el-tooltip>
             </td>
             <td>
               <el-tooltip content="Ayuda" placement="bottom">
-                <i class="mdi mdi-help-circle-outline f-16" @click="modalVerAyuda(data)"></i>
+                <i class="mdi mdi-help-circle-outline f-16 ayuda" @click="modalVerAyuda(data)"></i>
               </el-tooltip>
             </td>
             <td class="text-center">
@@ -236,6 +236,16 @@ export default {
 
 <style lang="scss" scoped>
 .lista-eventos{
+  .detalle-estado{
+    &:hover{
+      cursor: pointer;
+    }
+  }
+  .ayuda{
+    &:hover{
+      cursor: pointer;
+    }
+  }
   .table{
     tbody{
       tr{

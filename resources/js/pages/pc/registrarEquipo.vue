@@ -9,17 +9,17 @@
         <div class="col-md-12">
 
           <div class="mb-3">
-            <el-steps :active="active" finish-status="success">
-              <el-step title="Step 1"></el-step>
-              <el-step title="Step 2"></el-step>
-              <el-step title="Step 3"> </el-step>
-              <el-step title="Step 4"> </el-step>
-              <el-step title="Step 5"> </el-step>
-              <el-step title="Step 6"> </el-step>
-              <el-step title="Step 7"> </el-step>
+            <el-steps :active="active" align-center finish-status="success">
+              <el-step title="Placa Base"></el-step>
+              <el-step title="Procesador"></el-step>
+              <el-step title="RAM"> </el-step>
+              <el-step title="HDD/SSD"> </el-step>
+              <el-step title="Fuente Poder"> </el-step>
+              <el-step title="Perifericos"> </el-step>
+              <el-step title="Asignar"> </el-step>
             </el-steps>
           </div>
-
+          <!-- board -->
           <div v-show="active == 1">
             <b-card bg-variant="light">
               <b-form-group label-cols-lg="3" label="Placa Base" label-size="lg" label-class="font-weight-bold pt-0" class="mb-0" >
@@ -44,6 +44,7 @@
             </b-card>
           </div>
 
+          <!-- procesador -->
           <div v-show="active == 2">
             <b-card bg-variant="light">
               <b-form-group label-cols-lg="3" label="Procesador" label-size="lg" label-class="font-weight-bold pt-0" class="mb-0" >
@@ -56,33 +57,38 @@
                   <b-form-input id="modelo-proc" v-model="form.procesador.modelo"></b-form-input>
                 </b-form-group>
 
-                <b-form-group label-cols-sm="3" label="Núcleos:" label-align-sm="right" label-for="nuc-proc" >
-                  <b-form-input id="nuc-proc" v-model="form.procesador.nucleos"></b-form-input>
-                </b-form-group>
-
-                <b-form-group label-cols-sm="3" label="Velocidad:" label-align-sm="right" label-for="vel-proc" >
-                  <b-form-input id="vel-proc" v-model="form.procesador.velocidad"></b-form-input>
-                </b-form-group>
-
+                <div class="row justify-content-end">
+                  <div class="col-md-6">
+                    <b-form-group label-cols-sm="4" label="Núcleos:" label-align-sm="right" label-for="nuc-proc" >
+                      <b-form-input id="nuc-proc" type="number" v-model="form.procesador.nucleos"></b-form-input>
+                    </b-form-group>
+                  </div>
+                  <div class="col-md-5">
+                    <b-form-group label-cols-sm="4" label="Velocidad:" label-align-sm="right" label-for="vel-proc" >
+                      <b-form-input id="vel-proc" type="number" v-model="form.procesador.velocidad"></b-form-input>
+                    </b-form-group>
+                  </div>
+                </div>
               </b-form-group>
             </b-card>
           </div>
 
+          <!-- RAM -->
           <div v-show="active == 3">
             <b-card bg-variant="light">
               <b-form-group label-cols-lg="3" label="Memoria RAM" label-size="lg" label-class="font-weight-bold pt-0" class="mb-0" >
-                <div class="row" v-for="(ram,r) in formRam.length" :key="r">
+                <div class="row" v-for="(ram,r) in form.ram" :key="r">
                   <div class="col-md-11">
 
                     <div class="row">
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="4" label="Marca:" label-align-sm="right" :label-for="`marca-ram-${r}`" >
-                          <b-form-input :id="`marca-ram-${r}`" v-model="form.ram.marca"></b-form-input>
+                          <b-form-input :id="`marca-ram-${r}`" v-model="ram.marca"></b-form-input>
                         </b-form-group>
                       </div>
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="5" label="Tecnología:" label-align-sm="right" :label-for="`tec-ram-${r}`" >
-                          <b-form-input :id="`tec-ram-${r}`" v-model="form.ram.tecnologia"></b-form-input>
+                          <b-form-input :id="`tec-ram-${r}`" v-model="ram.tecnologia"></b-form-input>
                         </b-form-group>
                       </div>
                     </div>
@@ -90,37 +96,36 @@
                     <div class="row">
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="4" label="Capacidad:" label-align-sm="right" :label-for="`capacidad-ram-${r}`" >
-                          <b-form-input :id="`capacidad-ram-${r}`" v-model="form.ram.capacidad"></b-form-input>
+                          <b-form-input :id="`capacidad-ram-${r}`" v-model="ram.capacidad"></b-form-input>
                         </b-form-group>
                       </div>
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="5" label="Velocidad:" label-align-sm="right" :label-for="`velocidad-ram-${r}`" >
-                          <b-form-input :id="`velocidad-ram-${r}`" type="number" v-model="form.ram.velocidad"></b-form-input>
+                          <b-form-input :id="`velocidad-ram-${r}`" type="number" v-model="ram.velocidad"></b-form-input>
                         </b-form-group>
                       </div>
                     </div>
 
                     <div class="row">
                       <div class="col-md-12">
-                        <b-form-group label-cols-sm="5" label="Serial:" label-align-sm="right" :label-for="`serial-ram-${r}`" >
-                          <b-form-input :id="`serial-ram-${r}`" v-model="form.ram.serial"></b-form-input>
+                        <b-form-group label-cols-sm="2" label="Serial:" label-align-sm="right" :label-for="`serial-ram-${r}`" >
+                          <b-form-input :id="`serial-ram-${r}`" v-model="ram.serial"></b-form-input>
                         </b-form-group>
                       </div>
-
                     </div>
 
                     <hr>
 
                   </div>
                   <div class="col-md-1">
-                    <i v-show="formRam.length > 1" class="mdi mdi-delete menos-ram" @click="menosRam(r)"></i>
+                    <i class="mdi mdi-delete menos-ram" @click="menosRam(r)"></i>
                   </div>
 
                 </div>
 
                 <div class="row mb-2">
                   <div class="col-sm-12 text-right">
-                    <i class="mdi mdi-plus mas-ram" @click="agregarRam(formRam.length + 1)"></i>
+                    <i class="mdi mdi-plus mas-ram" @click="agregarRam"></i>
                   </div>
                 </div>
 
@@ -128,6 +133,7 @@
             </b-card>
           </div>
 
+          <!-- HDD/SSD -->
           <div v-show="active == 4">
             <b-card bg-variant="light">
               <b-form-group label-cols-lg="3" label="HDD/SSD" label-size="lg" label-class="font-weight-bold pt-0" class="mb-0" >
@@ -179,7 +185,7 @@
 
                     <div class="row">
                       <div class="col-md-12">
-                        <b-form-group label-cols-sm="4" label="Serial:" label-align-sm="right" :label-for="`serial-disco-${d}`" >
+                        <b-form-group label-cols-sm="2" label="Serial:" label-align-sm="right" :label-for="`serial-disco-${d}`" >
                           <b-form-input :id="`serial-disco-${d}`" v-model="form.disco.serial"></b-form-input>
                         </b-form-group>
                       </div>
@@ -203,6 +209,7 @@
             </b-card>
           </div>
 
+          <!-- Fuente poder -->
           <div v-show="active == 5">
             <b-card bg-variant="light">
               <b-form-group label-cols-lg="3" label="Fuente de Poder" label-size="lg" label-class="font-weight-bold pt-0" class="mb-0" >
@@ -219,14 +226,14 @@
                   <b-form-input id="pot-fuente" v-model="form.fuente.potencia"></b-form-input>
                 </b-form-group>
 
-                <div class="row">
-                  <div class="col-md-6">
-                    <b-form-group label-cols-sm="3" label="Factor Forma:" label-align-sm="right" label-for="ff-fuente" >
+                <div class="row justify-content-end">
+                  <div class="col-md-5">
+                    <b-form-group label-cols-sm="5" label="Factor Forma:" label-align-sm="right" label-for="ff-fuente" >
                       <b-form-input id="ff-fuente" v-model="form.fuente.factor_forma"></b-form-input>
                     </b-form-group>
                   </div>
                   <div class="col-md-6">
-                    <b-form-group label-cols-sm="3" label="Alimentador:" label-align-sm="right" label-for="al-fuente" >
+                    <b-form-group label-cols-sm="5" label="Alimentador:" label-align-sm="right" label-for="al-fuente" >
                       <b-form-input id="al-fuente" v-model="form.fuente.alimentador_energia"></b-form-input>
                     </b-form-group>
                   </div>
@@ -236,6 +243,7 @@
             </b-card>
           </div>
 
+          <!-- perifericos -->
           <div v-show="active == 6">
             <b-card bg-variant="light">
               <b-form-group label-cols-lg="3" label="Perifericos" label-size="lg" label-class="font-weight-bold pt-0" class="mb-0" >
@@ -256,6 +264,7 @@
             </b-card>
           </div>
 
+          <!-- asignar chasis y observaciones -->
           <div v-show="active == 7">
             <b-card bg-variant="light">
               <b-form-group label-cols-lg="3" label="Asignar Chasís" label-size="lg" label-class="font-weight-bold pt-0" class="mb-0" >
@@ -309,8 +318,8 @@ export default {
       form:{
         board:{},
         procesador:{},
-        ram:{},
-        disco:{},
+        ram: [],
+        disco:[],
         fuente:{},
         perifericos:[],
         chasis:null,
@@ -321,8 +330,8 @@ export default {
       ],
       dataPerifericos:[],
       dataChasis:[],
-      formRam:[1],
-      formDisco:[1],
+      formRam:{},
+      formDisco:{},
     }
   },
   mounted(){
@@ -368,15 +377,18 @@ export default {
       this.formDisco.push(dato)
       // this.formDisco++
     },
-    menosRam(dato){
-      _.forEach(this.formRam, (val, key)=> {
-        if ( key == dato ) {
-          this.formRam.splice( dato, 1 );
-        }
-      });
+    menosRam(key=null){
+      // _.forEach(this.formRam, (val, key)=> {
+      //   if ( key == dato ) {
+      //     this.formRam.splice( dato, 1 );
+      //   }
+      // });
+      this.form.ram.splice(key,1)
     },
-    agregarRam(dato){
-      this.formRam.push(dato)
+    agregarRam(){
+      this.form.ram.unshift({...this.formRam})
+      this.formRam = {}
+      //this.formRam.push(dato)
       // this.formRam++
     },
     prev() {
