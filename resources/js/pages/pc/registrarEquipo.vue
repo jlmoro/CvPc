@@ -77,6 +77,13 @@
           <div v-show="active == 3">
             <b-card bg-variant="light">
               <b-form-group label-cols-lg="3" label="Memoria RAM" label-size="lg" label-class="font-weight-bold pt-0" class="mb-0" >
+
+                <div class="row mb-2">
+                  <div class="col-sm-12 text-right mb-2">
+                    <i class="mdi mdi-plus mas-ram" @click="agregarRam"></i>
+                  </div>
+                </div>
+
                 <div class="row" v-for="(ram,r) in form.ram" :key="r">
                   <div class="col-md-11">
 
@@ -123,11 +130,7 @@
 
                 </div>
 
-                <div class="row mb-2">
-                  <div class="col-sm-12 text-right">
-                    <i class="mdi mdi-plus mas-ram" @click="agregarRam"></i>
-                  </div>
-                </div>
+
 
               </b-form-group>
             </b-card>
@@ -137,18 +140,23 @@
           <div v-show="active == 4">
             <b-card bg-variant="light">
               <b-form-group label-cols-lg="3" label="HDD/SSD" label-size="lg" label-class="font-weight-bold pt-0" class="mb-0" >
-                <div class="row" v-for="(disco,d) in formDisco.length" :key="d">
+                <div class="row mb-2">
+                  <div class="col-sm-12 text-right mb-2">
+                    <i class="mdi mdi-plus mas-ram" @click="agregarDisco"></i>
+                  </div>
+                </div>
+                <div class="row" v-for="(disco,d) in form.disco" :key="d">
                   <div class="col-md-11">
 
                     <div class="row">
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="4" label="Marca:" label-align-sm="right" :label-for="`marca-disco-${d}`" >
-                          <b-form-input :id="`marca-disco-${d}`" v-model="form.disco.marca"></b-form-input>
+                          <b-form-input :id="`marca-disco-${d}`" v-model="disco.marca"></b-form-input>
                         </b-form-group>
                       </div>
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="5" label="Capacidad:" label-align-sm="right" :label-for="`cap-disco-${d}`" >
-                          <b-form-input :id="`cap-disco-${d}`" v-model="form.disco.capacidad"></b-form-input>
+                          <b-form-input :id="`cap-disco-${d}`" v-model="disco.capacidad"></b-form-input>
                         </b-form-group>
                       </div>
                     </div>
@@ -156,12 +164,12 @@
                     <div class="row">
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="4" label="Modelo:" label-align-sm="right" :label-for="`modelo-disco-${d}`" >
-                          <b-form-input :id="`modelo-disco-${d}`" v-model="form.disco.modelo"></b-form-input>
+                          <b-form-input :id="`modelo-disco-${d}`" v-model="disco.modelo"></b-form-input>
                         </b-form-group>
                       </div>
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="5" label="Tecnología:" label-align-sm="right" :label-for="`tecno-disco-${d}`" >
-                          <b-form-input :id="`tecno-disco-${d}`" v-model="form.disco.tecnologia"></b-form-input>
+                          <b-form-input :id="`tecno-disco-${d}`" v-model="disco.tecnologia"></b-form-input>
                         </b-form-group>
                       </div>
                     </div>
@@ -169,24 +177,36 @@
                     <div class="row">
                       <div class="col-md-6">
                         <b-form-group label-cols-sm="4" label="RPM:" label-align-sm="right" :label-for="`rpm-disco-${d}`" >
-                          <b-form-input :id="`rpm-disco-${d}`" type="number" v-model="form.disco.rpm"></b-form-input>
+                          <b-form-input :id="`rpm-disco-${d}`" type="number" v-model="disco.rpm"></b-form-input>
                         </b-form-group>
                       </div>
+
                       <div class="col-md-6">
-                        <b-form-group label-cols-sm="5" label="Tipo:" label-align-sm="right" :label-for="`tipo-disco-${d}`" >
+                        <b-form-group label-cols-sm="5" label="Tipo:" label-align-sm="right" :label-for="`tipo-disco-${d}`">
+                          <b-form-radio-group
+                          :id="`tipo-disco-${d}`"
+                          v-model="disco.tipo"
+                          :options="opcionesDisco"
+                          buttons
+                          button-variant="outline-primary"
+                          name="radios-btn-default"
+                          ></b-form-radio-group>
+                        </b-form-group>
+                        <!-- <b-form-group label-cols-sm="5" label="Tipo:" label-align-sm="right" :label-for="`tipo-disco-${d}`" >
                           <b-form-radio-group class="mt-2"
-                          v-model="form.disco.tipo"
+                          :id="`tipo-disco-${d}`"
+                          v-model="disco.tipo"
                           :options="opcionesDisco"
                           name="radio-inline"
                           ></b-form-radio-group>
-                        </b-form-group>
+                        </b-form-group> -->
                       </div>
                     </div>
 
                     <div class="row">
                       <div class="col-md-12">
                         <b-form-group label-cols-sm="2" label="Serial:" label-align-sm="right" :label-for="`serial-disco-${d}`" >
-                          <b-form-input :id="`serial-disco-${d}`" v-model="form.disco.serial"></b-form-input>
+                          <b-form-input :id="`serial-disco-${d}`" v-model="disco.serial"></b-form-input>
                         </b-form-group>
                       </div>
                     </div>
@@ -195,16 +215,12 @@
 
                   </div>
                   <div class="col-md-1">
-                    <i v-show="formDisco.length > 1" class="mdi mdi-delete menos-ram" @click="menosDisco(d)"></i>
+                    <i class="mdi mdi-delete menos-ram" @click="menosDisco(d)"></i>
                   </div>
 
                 </div>
 
-                <div class="row mb-2">
-                  <div class="col-sm-12 text-right">
-                    <i class="mdi mdi-plus mas-ram" @click="agregarDisco(formDisco.length + 1)"></i>
-                  </div>
-                </div>
+
               </b-form-group>
             </b-card>
           </div>
@@ -366,15 +382,19 @@ export default {
         console.warn(e,"No es posible registrar equipo");
       }
     },
-    menosDisco(dato){
-      _.forEach(this.formDisco, (val, key)=> {
-        if ( key == dato ) {
-          this.formDisco.splice( dato, 1 );
-        }
-      });
+    menosDisco(key=null){
+      this.form.disco.splice(key,1)
+
+      // _.forEach(this.formDisco, (val, key)=> {
+      //   if ( key == dato ) {
+      //     this.formDisco.splice( dato, 1 );
+      //   }
+      // });
     },
     agregarDisco(dato){
-      this.formDisco.push(dato)
+      this.form.disco.unshift({...this.formDisco})
+      this.formDisco = {}
+      // this.formDisco.push(dato)
       // this.formDisco++
     },
     menosRam(key=null){
