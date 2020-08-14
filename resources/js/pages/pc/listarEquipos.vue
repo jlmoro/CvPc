@@ -155,7 +155,8 @@ export default {
       perPage: 3,
       total:null,
       currentPage: 1,
-
+      sumaRam:0,
+      sumaDisco:0,
     }
   },
   mounted(){

@@ -289,6 +289,7 @@ class PcController extends Controller
         foreach ($value->pcram as $key => $value2) {
           $value2->ram_equipo = MemoriaRam::select('id','marca','modelo_tecnologia','serial','capacidad','frecuencia')
           ->where('id',$value2->id_memoria_ram)->get();
+          // $value2->suma_ram = 
         }
         foreach ($value->pcdisco as $key => $value3) {
           $value3->disco_equipo = DiscoDuro::select('id','tipo','marca','modelo','serial','capacidad','rpm','tecnologia')
