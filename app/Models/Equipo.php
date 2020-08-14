@@ -16,4 +16,20 @@ class Equipo extends Model
   //   return $this->belongsTo('App\Models\PlacaBase','id_placa_base');
   // }
 
+  public function pcram()
+  {
+    // return $this->hasOne(PcRam::class,'id_equipo','id');
+    // return $this->belongsToMany(PcRam::class,'id','id_equipo');
+    // return $this->belongsTo(PcRam::class,'id_equipo','id');
+    return $this->hasMany(PcRam::class,'id_equipo','id');
+  }
+
+  public function pcdisco()
+  {
+    // return $this->hasOne(PcRam::class,'id_equipo','id');
+    // return $this->belongsToMany(PcRam::class,'id','id_equipo');
+    // return $this->belongsTo(PcRam::class,'id_equipo','id');
+    return $this->hasMany(PcDiscoDuro::class,'id_equipo','id');
+  }
+
 }

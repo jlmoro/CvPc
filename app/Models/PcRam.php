@@ -11,5 +11,5 @@ class PcRam extends Model
   protected $guarded = [];
 
 
-  
+
 }

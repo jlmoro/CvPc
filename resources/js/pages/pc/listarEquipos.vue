@@ -209,8 +209,9 @@ export default {
     abrirModalComentarios(id,placa){
       this.$refs.modalComentarios.toggle(id,placa)
     },
-    cambioPagina(dato){
-      console.log(dato);
+    cambioPagina(page){
+      this.currentPage = page
+      this.listar_equipos()
     },
     abrirModalDetalles(dato){
       this.$refs.modalDetallesEquipos.toggle(dato)

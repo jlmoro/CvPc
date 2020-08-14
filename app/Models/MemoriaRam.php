@@ -11,8 +11,9 @@ class MemoriaRam extends Model
     protected $guarded = [];
 
 
-    public function pcram()
-    {
-      return $this->hasOne(PcRam::class,'id_memoria_ram','id');
-    }
+    // public function pcram()
+    // {
+    //   return $this->hasOne(PcRam::class,'id_memoria_ram','id');
+    //   // return $this->belongsToMany(PcRam::class,'id');
+    // }
 }

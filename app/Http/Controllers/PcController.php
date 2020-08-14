@@ -27,7 +27,6 @@ class PcController extends Controller
   {
     try {
 
-      // dd($request->all());
       return DB::transaction(function() use($request){
 
         $placa_base = PlacaBase::create([
@@ -44,16 +43,6 @@ class PcController extends Controller
           'frecuencia'=>$request->procesador['velocidad']
         ]);
 
-        $ram = MemoriaRam::create([
-          'marca'=>$request->ram['marca'],
-          'modelo_tecnologia'=>$request->ram['tecnologia'],
-          'serial'=>$request->ram['serial'],
-          'capacidad'=>$request->ram['capacidad'],
-          'frecuencia'=>$request->ram['velocidad'],
-        ]);
-
-        $disco = DiscoDuro::create($request->disco);
-
         $fuente = FuentePoder::create($request->fuente);
 
         $equipo = Equipo::create([
@@ -62,19 +51,78 @@ class PcController extends Controller
           'id_placa_base'=>$placa_base->id,
           'id_procesador'=>$procesador->id,
           'id_fuente_poder'=>$fuente->id,
+          'estado'=>$request->estado,
           'created_by'=>auth()->user()->id,
           'updated_by'=>auth()->user()->id,
         ]);
 
-        $pc_ram = PcRam::create([
-          'id_equipo'=>$equipo['id'],
-          'id_memoria_ram'=>$ram['id']
-        ]);
+        /**
+         * registro de discos en la tabla discoduro y pcdisco
+         */
+        $cant_disco = count($request->disco);
+        $data_discos = [];
 
-        $pc_disco = PcDiscoDuro::create([
-          'id_equipo'=>$equipo['id'],
-          'id_disco'=>$disco['id']
-        ]);
+        for ($i=0; $i < $cant_disco; $i++) {
+          $disco = [];
+          $disco = new DiscoDuro;
+          $disco['tipo']        =$request->disco[$i]['tipo'];
+          $disco['marca']       =$request->disco[$i]['marca'];
+          $disco['modelo']      =$request->disco[$i]['modelo'];
+          $disco['serial']      =$request->disco[$i]['serial'];
+          $disco['rpm']         =$request->disco[$i]['rpm'];
+          $disco['capacidad']   =$request->disco[$i]['capacidad'];
+          $disco['tecnologia']  =$request->disco[$i]['tecnologia'];
+
+          $data_discos[$i] = $disco;
+
+          $disco->save();
+        }
+
+        $data_disco_pc = [];
+        for ($i=0; $i < $cant_disco; $i++) {
+          $pc_disco = [];
+          $pc_disco = new PcDiscoDuro;
+          $pc_disco['id_equipo']     = $equipo['id'];
+          $pc_disco['id_disco'] = $data_discos[$i]->id;
+
+          $data_disco_pc[$i] = $pc_disco;
+
+          $pc_disco->save();
+        }
+
+        /**
+         * registro de ram en la tabla memoriaram y pcram
+        */
+
+        $cant_ram = count($request->ram);
+        $data_ram = [];
+
+        for ($i=0; $i < $cant_ram; $i++) {
+          $ram = [];
+          $ram = new MemoriaRam;
+          $ram['marca']              =$request->ram[$i]['marca'];
+          $ram['modelo_tecnologia']  =$request->ram[$i]['tecnologia'];
+          $ram['serial']             =$request->ram[$i]['serial'];
+          $ram['capacidad']          =$request->ram[$i]['capacidad'];
+          $ram['frecuencia']         =$request->ram[$i]['velocidad'];
+
+          $data_ram[$i] = $ram;
+
+          $ram->save();
+        }
+
+        $data_ram_pc = [];
+        for ($i=0; $i < $cant_ram; $i++) {
+
+          $pc_disco = [];
+          $pc_disco = new PcRam;
+          $pc_disco['id_equipo']     = $equipo['id'];
+          $pc_disco['id_memoria_ram'] = $data_ram[$i]->id;
+
+          $data_ram_pc[$i] = $pc_disco;
+
+          $pc_disco->save();
+        }
 
         /**
         * registro de perifericos
@@ -95,12 +143,11 @@ class PcController extends Controller
           $per->save();
         }
 
-      },5);
+        return[
+          'mensaje'=>config('domains.mensajes.creado')
+        ];
 
-      return[
-        'mensaje'=>config('domains.mensajes.creado')
-      ];
-      //Hasta aquí registro de perifericos
+      },5);
 
     } catch (\Exception $e) {
       return $this->captura_error($e,'error al registrar equipo');
@@ -205,13 +252,8 @@ class PcController extends Controller
   {
     try {
 
-      $equipo = DB::table('equipo')
-      ->join('pc','equipo.id_chasis', '=', 'pc.id')
-      ->join('proveedores', 'pc.id_proveedor', '=', 'proveedores.id')
-      ->join('placa_base','equipo.id_placa_base', '=','placa_base.id')
-      ->join('procesador','equipo.id_procesador','=','procesador.id')
-      ->join('fuente_poder','equipo.id_fuente_poder','=','fuente_poder.id')
-      ->select(
+      // $equipo = DB::table('equipo')
+      $equipo = Equipo::select(
         'equipo.id',
         'equipo.observaciones',
         'equipo.estado',
@@ -233,16 +275,27 @@ class PcController extends Controller
         'fuente_poder.modelo as fuente_modelo',
         'fuente_poder.factor_forma as fuente_factor_forma',
         )
+      ->join('pc','equipo.id_chasis', '=', 'pc.id')
+      ->join('proveedores', 'pc.id_proveedor', '=', 'proveedores.id')
+      ->join('placa_base','equipo.id_placa_base', '=','placa_base.id')
+      ->join('procesador','equipo.id_procesador','=','procesador.id')
+      ->join('fuente_poder','equipo.id_fuente_poder','=','fuente_poder.id')
+
+      ->with('pcram','pcdisco')
       ->orderBy('equipo.created_at','DESC')
       ->paginate($request->perPage);
 
       foreach ($equipo as $key => $value) {
+        foreach ($value->pcram as $key => $value2) {
+          $value2->ram_equipo = MemoriaRam::select('id','marca','modelo_tecnologia','serial','capacidad','frecuencia')
+          ->where('id',$value2->id_memoria_ram)->get();
+        }
+        foreach ($value->pcdisco as $key => $value3) {
+          $value3->disco_equipo = DiscoDuro::select('id','tipo','marca','modelo','serial','capacidad','rpm','tecnologia')
+          ->where('id',$value3->id_disco)->get();
+        }
         $value->cant_comentarios = EquipoComentarios::select('id')->where('id_equipo',$value->id)->count();
-        $value->cant_ram = PcRam::select('id')->where('id_equipo',$value->id)->count();
-        $value->ram_id = PcRam::select('id_memoria_ram')->where('id_equipo',$value->id)->get();
-        // $value->ram_equipo = MemoriaRam::select('id','marca','modelo_tecnologia','serial','capacidad','frecuencia')
-        // ->where('id',--id ram--)->get();
-        $value->ram = MemoriaRam::with('pcram')->get();
+        // $value->ram = MemoriaRam::select()->get();
       }
 
       // foreach ($equipo as $key => $value) {

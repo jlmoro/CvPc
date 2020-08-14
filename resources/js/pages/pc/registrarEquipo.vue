@@ -182,6 +182,7 @@
                       </div>
 
                       <div class="col-md-6">
+
                         <b-form-group label-cols-sm="5" label="Tipo:" label-align-sm="right" :label-for="`tipo-disco-${d}`">
                           <b-form-radio-group
                           :id="`tipo-disco-${d}`"
@@ -192,6 +193,7 @@
                           name="radios-btn-default"
                           ></b-form-radio-group>
                         </b-form-group>
+
                         <!-- <b-form-group label-cols-sm="5" label="Tipo:" label-align-sm="right" :label-for="`tipo-disco-${d}`" >
                           <b-form-radio-group class="mt-2"
                           :id="`tipo-disco-${d}`"
@@ -298,6 +300,18 @@
                   </el-select>
                 </b-form-group>
 
+                <b-form-group label-cols-sm="3" label="Chasís:" label-align-sm="right" label-for="nested-street" >
+                  <el-switch
+                    class="mt-2"
+                    style="display: block"
+                    v-model="form.estado"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949"
+                    active-text="Activo"
+                    inactive-text="Inactivo">
+                  </el-switch>
+                </b-form-group>
+
                 <b-form-group label-cols-sm="3" label="Observación:" label-align-sm="right" label-for="observacion" >
                   <b-form-textarea id="observacion" v-model="form.observaciones" size="lg" placeholder="Escribe las observaciones aquí..." rows="3" no-resize ></b-form-textarea>
                 </b-form-group>
@@ -332,6 +346,7 @@ export default {
       isLoading:false,
       active: 1,
       form:{
+        estado:true,
         board:{},
         procesador:{},
         ram: [],
@@ -366,14 +381,14 @@ export default {
   methods: {
     async guardarEquipo(){
       try {
+        this.form.estado = (this.form.estado === true)?1:0
         const {data} = await axios.post(`${this.ruta}/registrar-equipo`,this.form)
         if (data.error) {
           this.$Helper.notificacion('warning','Imposible registrar equipo',data.error)
           return
         }
-
         this.form = {}
-        this.active = 1
+        this.$router.push({ name:'equipos.listar' })
         this.$Helper.notificacion('success','Equipo registrado',data.mensaje)
 
         // console.log(data,"la data de equipo");
