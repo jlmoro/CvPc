@@ -132,6 +132,20 @@
                   </td>
                 </tr>
               </tbody>
+              <thead>
+                <th>SSD/HDD {{equipo.sumaDisco}} GB</th>
+                <th>Memoria RAM {{equipo.sumaRam}} GB</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="row" v-for="(data,d) in equipo.disco" :key="d">
+                      <div class="col"> Capacidad: </div>
+                      <div class="col"> {{data.disco_capacidad}} GB</div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>

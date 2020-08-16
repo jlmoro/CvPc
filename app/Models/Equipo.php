@@ -10,12 +10,6 @@ class Equipo extends Model
   protected $primary_key = 'id';
   protected $guarded = [];
 
-
-  // public function placabase()
-  // {
-  //   return $this->belongsTo('App\Models\PlacaBase','id_placa_base');
-  // }
-
   public function pcram()
   {
     // return $this->hasOne(PcRam::class,'id_equipo','id');

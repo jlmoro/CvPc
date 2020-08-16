@@ -356,8 +356,8 @@ export default {
         chasis:null,
       },
       opcionesDisco: [
-        { text: 'HDD', value: '1' },
-        { text: 'SSD', value: '2' },
+        { text: 'HDD', value: '2' },
+        { text: 'SSD', value: '1' },
       ],
       dataPerifericos:[],
       dataChasis:[],

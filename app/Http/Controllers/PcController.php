@@ -280,59 +280,32 @@ class PcController extends Controller
       ->join('placa_base','equipo.id_placa_base', '=','placa_base.id')
       ->join('procesador','equipo.id_procesador','=','procesador.id')
       ->join('fuente_poder','equipo.id_fuente_poder','=','fuente_poder.id')
-
-      ->with('pcram','pcdisco')
+      // ->with('pcram','pcdisco')
       ->orderBy('equipo.created_at','DESC')
       ->paginate($request->perPage);
 
       foreach ($equipo as $key => $value) {
 
-        // $value->sumaRam = DB::select($this->ejecutar_sql("equipo/suma_ram_equipo",$value->id))->first();
+        $value->sumaRam = DB::select(DB::raw("SELECT SUM(mr.capacidad) AS suma_ram
+        FROM memoria_ram mr
+        WHERE mr.id IN ( SELECT pr.id_memoria_ram FROM pc_ram pr WHERE pr.id_equipo = ? )"),[$value->id]);
 
-        // $value->sumaRam = DB::table('memoria_ram')
-        // // ->select('id', DB::raw('SUM(price) as total_sales'))
-        // ->select(DB::raw('SUM(capacidad) as total_ram'))
-        // ->whereRaw('id')
-        // ->get();
+        $value->sumaDisco = DB::select(DB::raw("SELECT SUM(dd.capacidad) AS suma_disco
+        FROM disco_duro dd
+        WHERE dd.id IN ( SELECT pdd.id_disco FROM pc_disco_duro pdd WHERE pdd.id_equipo = ? )"),[$value->id]);
 
-        // $value->sumaRam = DB::table('memoria_ram')
-        //     ->select(DB::raw('SUM(capacidad) as total_ram'))
-        //     ->whereExists(function ($query) {
-        //        $query->select('pc_ram.id_memoria_ram')
-        //              ->from('pc_ram')
-        //              ->where('pc_ram.id_equipo', 6);
-        //              // ->where('pc_ram.id_equipo',5);
-        //    })
-        //    ->first()->total_ram;
+        $value->pefifericos = DB::select("SELECT pp.id, pp.id_periferico,
+          ( SELECT pt.nombre FROM perifericos_tipos pt WHERE pt.id = pp.id_periferico )AS periferico_nombre
+          FROM pc_perifericos pp
+          WHERE pp.id_equipo = ?",[$value->id]);
 
+        $value->disco = DB::select($this->ejecutar_sql("equipo/lista_disco"),[$value->id]);
 
-        foreach ($value->pcram as $key => $value2) {
-          $value2->ram_equipo = MemoriaRam::select('id','marca','modelo_tecnologia','serial','capacidad','frecuencia')
-          ->where('id',$value2->id_memoria_ram)->get();
-        }
-
-        foreach ($value->pcdisco as $key => $value3) {
-          $value3->disco_equipo = DiscoDuro::select('id','tipo','marca','modelo','serial','capacidad','rpm','tecnologia')
-          ->where('id',$value3->id_disco)->get();
-        }
+        $value->ram = DB::select($this->ejecutar_sql("equipo/lista_ram"),[$value->id]);
 
         $value->cant_comentarios = EquipoComentarios::select('id')->where('id_equipo',$value->id)->count();
-        // $value->ram = MemoriaRam::select()->get();
-      }
 
-      // foreach ($equipo as $key => $value) {
-      //   $value->disco_duro = DB::collect(select("SELECT e.id,
-      //     ram.marca AS ram_marca,
-      //     ram.modelo_tecnologia AS ram_tecnologia,
-      //     ram.serial AS ram_serial,
-      //     ram.capacidad AS ram_capacidad,
-      //     ram.frecuencia AS ram_frecuencia
-      //     FROM equipo e
-      //     LEFT JOIN pc_ram ON pc_ram.id_equipo = e.id
-      //     LEFT JOIN memoria_ram ram ON ram.id = pc_ram.id_memoria_ram
-      //     WHERE e.id = ?",$value->id))
-      //     ->get();
-      // }
+      }
 
       return [
         'paginate'=>[

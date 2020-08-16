@@ -90,7 +90,7 @@
                     RAM
                   </div>
                   <div class="col-md-6">
-                    <span>16 GB</span>
+                    <span>{{data.sumaRam}} GB</span>
                   </div>
                 </div>
               </b-list-group-item>
@@ -101,7 +101,7 @@
                     SSD/HDD
                   </div>
                   <div class="col-md-6">
-                    <span>1500 GB</span>
+                    <span>{{data.sumaDisco}} GB</span>
                   </div>
                 </div>
               </b-list-group-item>
@@ -197,9 +197,10 @@ export default {
 
         data.equipo.data.forEach((ele, i)=>{
           ele.estado == 1?ele.estado = true:ele.estado = false
-        })
 
-        // console.log(data.equipo.data,"la data de equipos");
+          ele.sumaDisco = ele.sumaDisco[0].suma_disco
+          ele.sumaRam = ele.sumaRam[0].suma_ram
+        })
 
         this.dataEquipos = data.equipo.data
         this.perPage = data.paginate.perPage
