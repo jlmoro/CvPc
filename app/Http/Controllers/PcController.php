@@ -286,15 +286,36 @@ class PcController extends Controller
       ->paginate($request->perPage);
 
       foreach ($equipo as $key => $value) {
+
+        // $value->sumaRam = DB::select($this->ejecutar_sql("equipo/suma_ram_equipo",$value->id))->first();
+
+        // $value->sumaRam = DB::table('memoria_ram')
+        // // ->select('id', DB::raw('SUM(price) as total_sales'))
+        // ->select(DB::raw('SUM(capacidad) as total_ram'))
+        // ->whereRaw('id')
+        // ->get();
+
+        // $value->sumaRam = DB::table('memoria_ram')
+        //     ->select(DB::raw('SUM(capacidad) as total_ram'))
+        //     ->whereExists(function ($query) {
+        //        $query->select('pc_ram.id_memoria_ram')
+        //              ->from('pc_ram')
+        //              ->where('pc_ram.id_equipo', 6);
+        //              // ->where('pc_ram.id_equipo',5);
+        //    })
+        //    ->first()->total_ram;
+
+
         foreach ($value->pcram as $key => $value2) {
           $value2->ram_equipo = MemoriaRam::select('id','marca','modelo_tecnologia','serial','capacidad','frecuencia')
           ->where('id',$value2->id_memoria_ram)->get();
-          // $value2->suma_ram = 
         }
+
         foreach ($value->pcdisco as $key => $value3) {
           $value3->disco_equipo = DiscoDuro::select('id','tipo','marca','modelo','serial','capacidad','rpm','tecnologia')
           ->where('id',$value3->id_disco)->get();
         }
+
         $value->cant_comentarios = EquipoComentarios::select('id')->where('id_equipo',$value->id)->count();
         // $value->ram = MemoriaRam::select()->get();
       }

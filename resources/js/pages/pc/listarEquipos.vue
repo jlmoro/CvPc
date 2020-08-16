@@ -182,6 +182,7 @@ export default {
         console.warn(e);
       }
     },
+
     async listar_equipos(){
       const params = {
         page: this.currentPage,
@@ -198,6 +199,8 @@ export default {
           ele.estado == 1?ele.estado = true:ele.estado = false
         })
 
+        // console.log(data.equipo.data,"la data de equipos");
+
         this.dataEquipos = data.equipo.data
         this.perPage = data.paginate.perPage
         this.currentPage = data.paginate.currentPage
@@ -207,6 +210,7 @@ export default {
         console.warn(e);
       }
     },
+
     abrirModalComentarios(id,placa){
       this.$refs.modalComentarios.toggle(id,placa)
     },
