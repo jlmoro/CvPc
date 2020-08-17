@@ -21,41 +21,134 @@
         </div>
       </div>
       <hr>
-      <div class="row">
+      <div class="row mb-3">
         <div class="col-md-12 text-center">
-          <h3>Listado de Chasís</h3>
+          <h3>Detalles Equipo - {{$equipo->chasis_placa}}</h3>
         </div>
       </div>
-      <table class="table table-striped">
+      <table class="table table-striped table-bordered">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Marca</th>
-            <th scope="col">Placa</th>
-            <th scope="col">Serial</th>
-            <th scope="col">Encargado</th>
-            <th scope="col">Proveedor</th>
-            <th scope="col">Estado</th>
+            <th scope="col">Chasis</th>
+            <th scope="col">Procesador</th>
           </tr>
         </thead>
         <tbody>
-          @foreach ($chasis as $key => $cha)
           <tr>
-            <th scope="row">{{++$key}}</th>
-            <td>{{$cha->marca}}</td>
-            <td>{{$cha->placa}}</td>
-            <td>{{$cha->serial}}</td>
-            <td>{{$cha->nombre_ecnargado}}</td>
-            <td>{{$cha->nombre_proveedor}}</td>
             <td>
-              @if ($cha->estado == 1)
-              <span>Activo</span>
-              @else
-              <span>Inactivo</span>
-              @endif
+              <div class="row">
+                <div class="col-sm-6"> Placa: </div>
+                <div class="col-sm-6"> {{$equipo->chasis_placa}} </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-sm-6"> Marca: </div>
+                <div class="col-sm-6"> {{$equipo->cpu_marca}} </div>
+              </div>
             </td>
           </tr>
-          @endforeach
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-sm-6"> Marca: </div>
+                <div class="col-sm-6"> {{$equipo->chasis_marca}} </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-sm-6"> Modelo: </div>
+                <div class="col-sm-6"> {{$equipo->cpu_modelo}} </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-sm-6"> Serial: </div>
+                <div class="col-sm-6"> {{$equipo->chasis_serial}} </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-sm-6"> Núcleos: </div>
+                <div class="col-sm-6"> {{$equipo->cpu_nucleos}} </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <div class="row">
+                <div class="col-sm-6"> Frecuencia: </div>
+                <div class="col-sm-6"> {{$equipo->cpu_frecuencia}} Ghz</div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col-sm-6">Board</th>
+            <th scope="col-sm-6">Fuente</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-sm-6"> Marca: </div>
+                <div class="col-sm-6"> {{$equipo->board_marca}} </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-sm-6"> Marca: </div>
+                <div class="col-sm-6"> {{$equipo->fuente_marca}} </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-sm-6"> Modelo: </div>
+                <div class="col-sm-6"> {{$equipo->board_modelo}} </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-sm-6"> Modelo: </div>
+                <div class="col-sm-6"> {{$equipo->fuente_modelo}} </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-sm-6"> PCI: </div>
+                <div class="col-sm-6"> {{$equipo->board_pci}} </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-sm-6"> Potencia: </div>
+                <div class="col-sm-6"> {{$equipo->fuente_potencia}} W</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-sm-6"> PCIX: </div>
+                <div class="col-sm-6"> {{$equipo->board_pcix}} </div>
+              </div>
+            </td>
+            <td>
+              <div class="row">
+                <div class="col-sm-6"> Alimentador: </div>
+                <div class="col-sm-6"> {{$equipo->fuente_alimentador}} pines </div>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

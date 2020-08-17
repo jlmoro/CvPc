@@ -234,11 +234,82 @@ class PcController extends Controller
 
   }
 
-  public function descarga_pdf_detalles_equipo()
+  public function descarga_pdf_detalles_equipo(int $id_equipo)
   {
     try {
 
-      dd("descarga pdf detalles equipo");
+      $equipo = Equipo::select(
+        'equipo.id',
+        'equipo.observaciones',
+        'equipo.estado',
+        'pc.placa as chasis_placa',
+        'pc.marca as chasis_marca',
+        'pc.serial as chasis_serial',
+        'proveedores.nombre_proveedor',
+        'placa_base.marca_placa_base as board_marca',
+        'placa_base.modelo_placa as board_modelo',
+        'placa_base.cantidad_pci as board_pci',
+        'placa_base.cantidad_pci_x as board_pcix',
+        'procesador.marca as cpu_marca',
+        'procesador.modelo_tecnologia as cpu_modelo',
+        'procesador.nucleos as cpu_nucleos',
+        'procesador.frecuencia as cpu_frecuencia',
+        'fuente_poder.marca as fuente_marca',
+        'fuente_poder.potencia as fuente_potencia',
+        'fuente_poder.alimentador_energia as fuente_alimentador',
+        'fuente_poder.modelo as fuente_modelo',
+        'fuente_poder.factor_forma as fuente_factor_forma',
+        'encargados.nombre_completo as encargado_nombre',
+        'encargados.foto as encargado_foto',
+        'encargados.documento as encargado_documento',
+        'areas.nombre as area_nombre',
+        )
+      /*
+      ->addSelect(DB::select(DB::raw("SELECT SUM(mr.capacidad) AS suma_ram
+      FROM memoria_ram mr
+      WHERE mr.id IN ( SELECT pr.id_memoria_ram FROM pc_ram pr WHERE pr.id_equipo = ? )"),[$id_equipo]))
+      */
+
+      // ->addSelect(DB::select($this->ejecutar_sql("equipo/lista_ram"),[$id_equipo])->get())
+      ->join('pc','equipo.id_chasis', '=', 'pc.id')
+      ->join('encargados', 'pc.id_encargado', '=', 'encargados.id')
+      ->join('roles','encargados.id_rol','=','roles.id')
+      ->join('areas','roles.id_area','=','areas.id')
+      ->join('proveedores', 'pc.id_proveedor', '=', 'proveedores.id')
+      ->join('placa_base','equipo.id_placa_base', '=','placa_base.id')
+      ->join('procesador','equipo.id_procesador','=','procesador.id')
+      ->join('fuente_poder','equipo.id_fuente_poder','=','fuente_poder.id')
+      ->where('equipo.id',$id_equipo)
+      ->first();
+
+      // foreach ($equipo as $key => $value) {
+      //
+      //   $value->sumaRam = DB::select(DB::raw("SELECT SUM(mr.capacidad) AS suma_ram
+      //   FROM memoria_ram mr
+      //   WHERE mr.id IN ( SELECT pr.id_memoria_ram FROM pc_ram pr WHERE pr.id_equipo = ? )"),[$value->id]);
+      //
+      //   $value->sumaDisco = DB::select(DB::raw("SELECT SUM(dd.capacidad) AS suma_disco
+      //   FROM disco_duro dd
+      //   WHERE dd.id IN ( SELECT pdd.id_disco FROM pc_disco_duro pdd WHERE pdd.id_equipo = ? )"),[$value->id]);
+      //
+      //   $value->perifericos = DB::select("SELECT pp.id, pp.id_periferico,
+      //     ( SELECT pt.nombre FROM perifericos_tipos pt WHERE pt.id = pp.id_periferico )AS periferico_nombre
+      //     FROM pc_perifericos pp
+      //     WHERE pp.id_equipo = ?",[$value->id]);
+      //
+      //   $value->disco = DB::select($this->ejecutar_sql("equipo/lista_disco"),[$value->id]);
+      //
+      //   $value->ram = DB::select($this->ejecutar_sql("equipo/lista_ram"),[$value->id]);
+      //
+      // }
+
+      // return $equipo;
+
+      // return view('pdf.detallesEquipo',compact('equipo'));
+
+      return PDF::loadView('pdf.detallesEquipo',compact('equipo'))
+        // ->setPaper('letter', 'landscape')
+        ->download('detalles-equipo.pdf');
 
     } catch (\Exception $e) {
       return $this->captura_error($e,"error al descargar pdf");
@@ -274,13 +345,19 @@ class PcController extends Controller
         'fuente_poder.alimentador_energia as fuente_alimentador',
         'fuente_poder.modelo as fuente_modelo',
         'fuente_poder.factor_forma as fuente_factor_forma',
+        'encargados.nombre_completo as encargado_nombre',
+        'encargados.foto as encargado_foto',
+        'encargados.documento as encargado_documento',
+        'areas.nombre as area_nombre',
         )
       ->join('pc','equipo.id_chasis', '=', 'pc.id')
+      ->join('encargados', 'pc.id_encargado', '=', 'encargados.id')
+      ->join('roles','encargados.id_rol','=','roles.id')
+      ->join('areas','roles.id_area','=','areas.id')
       ->join('proveedores', 'pc.id_proveedor', '=', 'proveedores.id')
       ->join('placa_base','equipo.id_placa_base', '=','placa_base.id')
       ->join('procesador','equipo.id_procesador','=','procesador.id')
       ->join('fuente_poder','equipo.id_fuente_poder','=','fuente_poder.id')
-      // ->with('pcram','pcdisco')
       ->orderBy('equipo.created_at','DESC')
       ->paginate($request->perPage);
 
@@ -294,7 +371,7 @@ class PcController extends Controller
         FROM disco_duro dd
         WHERE dd.id IN ( SELECT pdd.id_disco FROM pc_disco_duro pdd WHERE pdd.id_equipo = ? )"),[$value->id]);
 
-        $value->pefifericos = DB::select("SELECT pp.id, pp.id_periferico,
+        $value->perifericos = DB::select("SELECT pp.id, pp.id_periferico,
           ( SELECT pt.nombre FROM perifericos_tipos pt WHERE pt.id = pp.id_periferico )AS periferico_nombre
           FROM pc_perifericos pp
           WHERE pp.id_equipo = ?",[$value->id]);

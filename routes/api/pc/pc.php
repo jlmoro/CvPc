@@ -18,7 +18,7 @@ Route::group(['middleware' =>'auth:api'], function (){
       Route::delete("{id_equipo}/eliminando-equipo","$controlador@eliminando_equipo");
       Route::put("{id_equipo}/cambiar-estado-equipo","$controlador@cambiar_estado_equipo");
 
-      Route::get("descarga-pdf-detalles-equipo","$controlador@descarga_pdf_detalles_equipo");
+      Route::get("{id_equipo}/descarga-pdf-detalles-equipo","$controlador@descarga_pdf_detalles_equipo");
     });
   });
 });
