@@ -21,8 +21,11 @@ class EventosController extends Controller
 
       $torre = DB::table('eventos_pc')
       ->select('eventos_pc.id',
+      'eventos_pc.created_at',
       'eventos_pc.descripcion',
-      'eventos_tipos_descripcion.nombre as descripcion_nombre',
+      'pc.placa as chasis_placa',
+      'pc.marca as chasis_marca',
+      'eventos_tipos_descripcion.nombre as evento_descripcion',
       'encargados.nombre_completo as encargado_nombre',
       'proveedores.nombre_proveedor as proveedor_nombre',
       )

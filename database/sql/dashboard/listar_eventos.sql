@@ -22,7 +22,7 @@ SELECT etd.id,
 (
     SELECT COUNT(epc.id)
     FROM eventos_pc epc
-    WHERE epc.id_tipo_evento = etd.id
+    WHERE epc.id_detalle_evento = etd.id
 )AS cant_pc,
 (
     SELECT SUM(cant_printer + cant_pantalla + cant_pc)
