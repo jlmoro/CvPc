@@ -6,7 +6,7 @@
 
     <div class="mb-5">
       <b-tabs content-class="mt-3" justified >
-        <b-tab v-for="(data,a) in torre" :active="active" :key="a" @click="cambioPagina(data)">
+        <b-tab v-for="(data,a) in torre" :key="a" :active="active" @click="cambioPagina(data)">
           <template v-slot:title>
             <i :class="data.icono"></i> <span>{{data.nombre}}</span>
           </template>
@@ -60,13 +60,18 @@ export default {
   },
   methods: {
     isActive(){
-      _.forEach(this.torre,(value, key)=> {
-        if (value.ruta === this.$route.name) {
-          this.active = true
-        }else {
-          this.active = false
-        }
+      // _.forEach(this.torre,(value, key)=> {
+      //   if (value.ruta === this.$route.name) {
+      //     this.active = true
+      //   }else {
+      //     this.active = false
+      //   }
+      // })
+
+      this.torre.forEach((item, i) => {
+        (item.ruta == this.$route.name)?this.active = true:this.active = false
       });
+
     },
     cambioPagina(data) {
       this.$router.push({

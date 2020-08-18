@@ -19,6 +19,17 @@ Route::group(['middleware' =>'auth:api'], function (){
       Route::put("{id_equipo}/cambiar-estado-equipo","$controlador@cambiar_estado_equipo");
 
       Route::get("{id_equipo}/descarga-pdf-detalles-equipo","$controlador@descarga_pdf_detalles_equipo");
+
+      Route::prefix('eventos')->group( function(){
+        $controlador="EventosController";
+        Route::post("{id_torre}/registrar-evento-torre","$controlador@registrar_evento_torre");
+        Route::get("listar-eventos-torres","$controlador@listar_eventos_torres");
+        Route::post("{id_evento}/fecha-solucion-evento-pantalla","$controlador@fecha_solucion_evento_pantalla");
+        Route::put("{id_evento}/evento-pantalla-resuelto","$controlador@evento_pantalla_resuelto");
+
+        Route::delete("{id_evento}/eliminar-evento-pantalla","$controlador@eliminar_evento_pantalla");
+      });
+
     });
   });
 });

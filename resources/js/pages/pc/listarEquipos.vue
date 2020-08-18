@@ -5,12 +5,16 @@
     </div>
 
     <div class="row w-100 mt-4">
-      <div class="col-md-12">
-        <div class="row mb-3 justify-content-center">
-          <div class="col-md-4">
-            <el-input v-model="search" placeholder="Buscar..." clearable></el-input>
-          </div>
-        </div>
+      <div class="col-md-12 text-right">
+        Filas:
+        <el-select v-model="perPage" @change="cantidadFilas($event)">
+          <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+        </el-select>
       </div>
     </div>
 
@@ -44,7 +48,7 @@
                   <i class="mdi mdi-delete eliminar-equipo"></i>
                 </div>
                 <div class="col-2">
-                  <i class="mdi mdi-calendar cal-eventos"></i>
+                  <i class="mdi mdi-calendar cal-eventos" @click="abriModalEventos(data.id)"></i>
                 </div>
               </div>
             </template>
@@ -135,6 +139,8 @@
 
     <modal-comentarios ref="modalComentarios" @equipo="listar_equipos"/>
 
+    <modal-crear-evento ref="modalEvento" :tiposEventos="tiposEventos" :ruta="ruta"/>
+
   </section>
 
 </template>
@@ -144,6 +150,7 @@ export default {
   components:{
     ModalDetalles:()=> import('./componentes/modalVerDetalles'),
     ModalComentarios:()=> import('./componentes/modalComentarios'),
+    ModalCrearEvento:()=> import('./componentes/modalCrearEvento'),
   },
   data(){
     return{
@@ -157,17 +164,45 @@ export default {
       currentPage: 1,
       sumaRam:0,
       sumaDisco:0,
+      tiposEventos:[],
+      options: [{
+          value: 3,
+          label: '3'
+        }, {
+          value: 6,
+          label: '6'
+        }, {
+          value: 9,
+          label: '9'
+        }
+      ],
     }
   },
   mounted(){
     this.isLoading = true
     Promise.all([
       this.listar_equipos(),
+      this.eventosTipos(),
     ]).then(res => {
       this.isLoading = false
     })
   },
   methods: {
+    abriModalEventos(dato){
+      this.$refs.modalEvento.toggle(dato)
+    },
+    async eventosTipos(){
+      try {
+        const {data} = await axios(`/api/select/listar-tipos-eventos`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','Error al listar',data.error)
+          return
+        }
+        this.tiposEventos = data
+      } catch (e) {
+        console.warn(e);
+      }
+    },
     async cambio_estado(dato){
       try {
         const {data} = await axios.put(`${this.ruta}/${dato}/cambiar-estado-equipo`)
@@ -181,6 +216,12 @@ export default {
       } catch (e) {
         console.warn(e);
       }
+    },
+
+    cantidadFilas(filas){
+      this.perPage = filas
+      this.currentPage = 1
+      this.listar_equipos()
     },
 
     async listar_equipos(){
@@ -229,6 +270,9 @@ export default {
 
 <style lang="scss" scoped>
 .listar-equipos{
+  .el-select{
+    width: 68px !important;
+  }
   .card{
     border: 1px solid #c0c4cc !important;
     transition-duration: .85s;

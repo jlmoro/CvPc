@@ -15,6 +15,62 @@ use App\Models\{
 
 class EventosController extends Controller
 {
+  public function listar_eventos_torres(Request $request)
+  {
+    try {
+
+      $torre = DB::table('eventos_pc')
+      ->select('eventos_pc.id',
+      'eventos_pc.descripcion',
+      'eventos_tipos_descripcion.nombre as descripcion_nombre',
+      'encargados.nombre_completo as encargado_nombre',
+      'proveedores.nombre_proveedor as proveedor_nombre',
+      )
+      ->join('eventos_tipos_descripcion','eventos_pc.id_detalle_evento','=','eventos_tipos_descripcion.id')
+      ->join('pc','eventos_pc.id_pc','=','pc.id')
+      ->join('encargados', 'pc.id_encargado', '=', 'encargados.id')
+      ->join('proveedores', 'pc.id_proveedor', '=', 'proveedores.id')
+      ->orderBy('eventos_pc.created_at','DESC')
+      ->paginate($request->perPage);
+
+      return [
+        'paginate'=>[
+          'total'=>$torre->total(),
+          'currentPage'=>$torre->currentPage(),
+          'perPage'=>$torre->perPage(),
+          'last_page'=>$torre->lastPage(),
+          'from'=>$torre->firstItem(),
+          'to'=>$torre->lastPage(),
+        ],
+        'equipo'=>$torre
+      ];
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al listar eventos torre");
+    }
+
+  }
+  public function registrar_evento_torre($id_torre, Request $request)
+  {
+    try {
+      return DB::transaction(function() use($id_torre, $request){
+
+        $request['id_pc'] = $id_torre;
+        $request['created_by'] = auth()->user()->id;
+        $request['updated_by'] = auth()->user()->id;
+
+        EventosPc::create($request->all());
+
+        return[
+          'mensaje'=>config('domains.mensajes.creado')
+        ];
+      },5);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al registrar evento torre");
+    }
+
+  }
   public function eliminar_evento_pantalla($id_evento)
   {
     try {
@@ -72,7 +128,7 @@ class EventosController extends Controller
       return $this->captura_error($e,"error al intentar resolver");
     }
   }
-  
+
   public function evento_pantalla_resuelto($id_evento)
   {
     try {
@@ -182,42 +238,6 @@ class EventosController extends Controller
     }
   }
 
-  public function editar_evento_pantalla(Request $request)
-  {
-    try {
-
-      return DB::transaction(function() use($request){
-
-
-
-        return[
-          'mensaje'=>config('domains.mensajes.actualizado')
-        ];
-      },5);
-
-    } catch (\Exception $e) {
-      return $this->captura_error($e,"error al registrar evento");
-    }
-  }
-
-  public function registrar_evento_pc(Request $request)
-  {
-    try {
-
-      return DB::transaction(function() use($request){
-
-
-
-        return[
-          'mensaje'=>config('domains.mensajes.creado')
-        ];
-      },5);
-
-    } catch (\Exception $e) {
-      return $this->captura_error($e,"error al registrar evento");
-    }
-  }
-
   public function registrar_evento_pantalla(int $id_pantalla, Request $request)
   {
     try {
@@ -270,40 +290,6 @@ class EventosController extends Controller
     }
   }
 
-  public function registrar_evento(Request $request)
-  {
-    try {
-      return DB::transaction(function() use($request){
-
-        $request['id_tipo_evento'] = $request->tipo_evento;
-        switch ($request->tipo_dispositivo) {
-          case '1':
-          $request['id_pc'] = $request->dipositivo;
-          break;
-          case '2':
-          $request['id_pantalla'] = $request->dipositivo;
-          break;
-          case '3':
-          $request['id_impresora'] = $request->dipositivo;
-          break;
-          default:
-          dd('error, revisar');
-          break;
-        }
-        $request['created_by'] = auth()->user()->id;
-        $request['updated_by'] = auth()->user()->id;
-
-        Eventos::create($request->all());
-
-        return[
-          'mensaje'=>config('domains.mensajes.creado')
-        ];
-
-      },5);
-    } catch (\Exception $e) {
-      return $this->captura_error($e,"error al registrar evento");
-    }
-  }
 
   public function datos_solucion_evento(int $id_evento)
   {

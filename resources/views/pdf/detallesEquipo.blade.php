@@ -173,8 +173,8 @@
         </thead>
         <tbody>
           <tr>
-            <td></td>
-            <td></td>
+            <td>{{$equipo->encargado_documento}}</td>
+            <td>{{$equipo->encargado_nombre}}</td>
           </tr>
         </tbody>
       </table>
