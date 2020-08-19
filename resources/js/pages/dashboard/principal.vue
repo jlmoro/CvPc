@@ -81,15 +81,16 @@
             return
           }
           console.log(data,"data eventos");
-          
+
           this.calendarOptions.events = data
+
 
         } catch (e) {
           console.warn(e);
         }
       },
       eventselect(event){
-        console.log(event,"dato seleccionado");
+        // console.log(event,"dato seleccionado");
       },
       toggleWeekends() {
         this.calendarWeekends = !this.calendarWeekends // update a property
@@ -99,7 +100,7 @@
         calendarApi.gotoDate('2000-01-01') // call a method on the Calendar object
       },
       handleDateClick(arg) {
-        console.log(arg);
+        // console.log(arg);
         alert('Date: ' + arg.dateStr);
         // return
         // if (confirm('Would you like to add an event to ' + arg.dateStr + ' ?')) {

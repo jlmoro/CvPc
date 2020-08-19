@@ -11,6 +11,7 @@ use App\Models\{
   EventosPc,
   ResolverEventoPantalla,
   ResolverEventoImpresora,
+  ResolverEventoPc,
 };
 
 class EventosController extends Controller
@@ -27,12 +28,23 @@ class EventosController extends Controller
       'pc.marca as chasis_marca',
       'eventos_tipos_descripcion.nombre as evento_descripcion',
       'encargados.nombre_completo as encargado_nombre',
-      'proveedores.nombre_proveedor as proveedor_nombre',
+      'users.name as usuario_nombre_actualiza',
+      'users.lastname as usuario_apellido_actualiza',
+      'resolver_evento_pc.estado_evento as evento_estado',
+      'resolver_evento_pc.fecha_resolver as evento_fecha_resolver',
+      // 'u2.name as persona_nombre_asignado',
+      // 'u2.lastname as persona_apellido_asignado',
+      'soluciones_posibles.solucion_posible as solucion_ayuda'
       )
       ->join('eventos_tipos_descripcion','eventos_pc.id_detalle_evento','=','eventos_tipos_descripcion.id')
       ->join('pc','eventos_pc.id_pc','=','pc.id')
       ->join('encargados', 'pc.id_encargado', '=', 'encargados.id')
-      ->join('proveedores', 'pc.id_proveedor', '=', 'proveedores.id')
+      ->join('roles','encargados.id_rol','=','roles.id')
+      ->join('areas','roles.id_area','=','areas.id')
+      ->join('users','eventos_pc.updated_by','=','users.id')
+      ->join('resolver_evento_pc','resolver_evento_pc.id_evento','=','eventos_pc.id')
+      // ->join('users as u2','resolver_evento_pc.id_usuario_resolver','=','u2.id')
+      ->join('soluciones_posibles','eventos_pc.id_detalle_evento','=','soluciones_posibles.id_descripcion_evento')
       ->orderBy('eventos_pc.created_at','DESC')
       ->paginate($request->perPage);
 
@@ -62,7 +74,12 @@ class EventosController extends Controller
         $request['created_by'] = auth()->user()->id;
         $request['updated_by'] = auth()->user()->id;
 
-        EventosPc::create($request->all());
+        $evento = EventosPc::create($request->all());
+
+        ResolverEventoPc::create([
+          'id_evento'=>$evento->id,
+          'estado_evento'=> 1 ,
+        ]);
 
         return[
           'mensaje'=>config('domains.mensajes.creado')
