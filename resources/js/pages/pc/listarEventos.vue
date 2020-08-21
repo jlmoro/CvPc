@@ -112,6 +112,12 @@
     @confirmarE="eventualidadResuelta"
     />
 
+    <modal-eliminar ref="eliminarEventoTorre"
+    titulo="Eliminar Evento Torre"
+    :cuerpo="`¿Desea eliminar evento de la torre ${eliminarEvento.chasis_placa}?`"
+    @eliminar="eliminandoEvento"
+    />
+
     <modal-ver-detalle ref="modalVerDetalles"/>
 
     <modal-ver-ayuda ref="modalVerAyuda"/>
@@ -137,6 +143,7 @@ export default {
       pruebaEvent:'',
       listaUsuarios:[],
       search:'',
+      eliminarEvento:'',
       options: [{
         value: 5,
         label: '5'
@@ -161,6 +168,24 @@ mounted() {
   })
 },
 methods: {
+  async eliminandoEvento(){
+    try {
+      const {data} = await axios.delete(`${this.ruta}/${this.eliminarEvento.id}/eliminar-evento-torre`)
+      if (data.error) {
+        this.$Helper.notificacion('warning','No es posible eliminar evento',data.error)
+        return
+      }
+      this.$Helper.notificacion('success','Evento Eliminado',data.mensaje)
+      this.$refs.eliminarEventoTorre.toggle()
+      this.listar_eventos_torre()
+    } catch (e) {
+      console.warn(e);
+    }
+  },
+  modalEliminarEvento(dato){
+    this.eliminarEvento = dato
+    this.$refs.eliminarEventoTorre.toggle()
+  },
   cantidadFilas(filas){
     this.perPage = filas
     this.currentPage = 1
@@ -202,14 +227,14 @@ methods: {
   },
   async eventualidadResuelta(){
     try {
-      const {data} = await axios.put(`${this.ruta}/${this.idEvento}/evento-pantalla-resuelto`)
+      const {data} = await axios.put(`${this.ruta}/${this.idEvento}/evento-torre-resuelto`)
       if (data.error) {
         this.$Helper.notificacion('warning','Error al confirmar',data.error)
         return
       }
+      this.$Helper.notificacion('success','Evento Actualizado',data.mensaje)
       this.$refs.modalEventoResuelto.toggle()
-      this.listar_eventos_pantalla()
-
+      this.listar_eventos_torre()
     } catch (e) {
       console.warn(e);
     }

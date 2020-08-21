@@ -196,10 +196,11 @@ class PcController extends Controller
     }
   }
 
-  public function eliminando_equipo($id_equipo)
+  public function eliminando_equipo(int $id_equipo)
   {
     try {
       return DB::transaction(function() use($id_equipo){
+
         $equipo = Equipo::find($id_equipo);
         $equipo->delete();
 

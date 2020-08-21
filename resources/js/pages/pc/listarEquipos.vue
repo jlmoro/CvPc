@@ -44,7 +44,7 @@
                   </div>
                 </div>
                 <div class="col-4 text-right">
-                  <i class="mdi mdi-pencil editar-equipo"></i>
+                  <!-- <i class="mdi mdi-pencil editar-equipo"></i> -->
                   <i class="mdi mdi-delete eliminar-equipo"></i>
                 </div>
                 <div class="col-2">

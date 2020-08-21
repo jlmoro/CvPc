@@ -62,7 +62,7 @@ export default {
   methods:{
     async asignarFecha(){
       try {
-        const {data} = await axios.post(`${this.ruta}/${this.infoEvento.id}/fecha-solucion-evento-pantalla`,this.form)
+        const {data} = await axios.post(`${this.ruta}/${this.infoEvento.id}/fecha-solucion-evento-torre`,this.form)
         if (data.error) {
           this.$Helper.notificacion('warning','Error al registrar',data.error)
           return

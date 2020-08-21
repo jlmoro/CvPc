@@ -13,7 +13,7 @@
             <span class="f-18 texto-info">{{verDetalle.evento_fecha_resolver}}</span>
           </div>
           <div class="col-md-6">
-            <label for="">Pesona Asignada:</label><br>
+            <label for="">Persona Asignada:</label><br>
             <span class="f-18 texto-info">{{verDetalle.persona_nombre_asignado}} {{verDetalle.persona_apellido_asignado}}</span>
           </div>
         </div>
@@ -24,7 +24,7 @@
             <span v-show="verDetalle.evento_estado == 2" class="f-18 texto-info">Asignado</span>
             <span v-show="verDetalle.evento_estado == 3" class="f-18 texto-info">Resuelto</span>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 pl-0">
             <label for="">Area:</label><br>
             <span class="f-18 texto-info letra-capital">{{verDetalle.evento_area}}</span>
           </div>

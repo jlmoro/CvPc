@@ -7,8 +7,10 @@
         </div>
       </div>
       <div slot="body" class="text-center">
-        <span class="text-center" v-if="verAyuda.solucion_ayuda == null">{{verAyuda.solucion_ayuda}}</span>
-        <span class="text-center" else> No se ha registrado comentario de ayuda</span>
+        <span class="text-center" v-if="verAyuda.solucion_ayuda == null"> No se ha registrado comentario de ayuda </span>
+        <span else>
+          {{verAyuda.solucion_ayuda}}
+         </span>
       </div>
       <div slot="footer" class="">
         <!-- <button type="button" class="btn-crear" @click="registrarEvento">Registrar</button> -->
@@ -27,7 +29,7 @@ export default {
   },
   methods: {
     toggle(dato){
-      // console.log(dato,"desde el modal detalle");
+      console.log(dato,"desde el modal detalle");
       this.verAyuda = _.cloneDeep(dato)
       this.$refs.modalVerAyuda.toggle()
     }

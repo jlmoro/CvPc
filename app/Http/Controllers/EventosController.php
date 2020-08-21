@@ -20,31 +20,35 @@ class EventosController extends Controller
   {
     try {
 
-      $torre = DB::table('eventos_pc')
-      ->select('eventos_pc.id',
+      // $torre = DB::table('eventos_pc')
+      $torre = EventosPc::select('eventos_pc.id',
       'eventos_pc.created_at',
       'eventos_pc.descripcion',
       'pc.placa as chasis_placa',
       'pc.marca as chasis_marca',
       'eventos_tipos_descripcion.nombre as evento_descripcion',
+      'u1.name as usuario_nombre_actualiza',
+      'u1.lastname as usuario_apellido_actualiza',
       'encargados.nombre_completo as encargado_nombre',
-      'users.name as usuario_nombre_actualiza',
-      'users.lastname as usuario_apellido_actualiza',
       'resolver_evento_pc.estado_evento as evento_estado',
       'resolver_evento_pc.fecha_resolver as evento_fecha_resolver',
-      // 'u2.name as persona_nombre_asignado',
-      // 'u2.lastname as persona_apellido_asignado',
-      'soluciones_posibles.solucion_posible as solucion_ayuda'
+      'areas.nombre as evento_area',
+      // 'u2.name as persona_nombre_asignado', //por sub consulta
+      // 'u2.lastname as persona_apellido_asignado',  //por sub consulta
+      // 'soluciones_posibles.solucion_posible as solucion_ayuda',  //por sub consulta
       )
+      ->join('equipo','eventos_pc.id_pc','=','equipo.id')
+      ->join('pc','equipo.id_chasis','=','pc.id')
       ->join('eventos_tipos_descripcion','eventos_pc.id_detalle_evento','=','eventos_tipos_descripcion.id')
-      ->join('pc','eventos_pc.id_pc','=','pc.id')
-      ->join('encargados', 'pc.id_encargado', '=', 'encargados.id')
+      ->join('users as u1','eventos_pc.created_by','=','u1.id')
+      ->join('encargados','pc.id_encargado','=','encargados.id')
       ->join('roles','encargados.id_rol','=','roles.id')
       ->join('areas','roles.id_area','=','areas.id')
-      ->join('users','eventos_pc.updated_by','=','users.id')
-      ->join('resolver_evento_pc','resolver_evento_pc.id_evento','=','eventos_pc.id')
+      ->join('resolver_evento_pc','eventos_pc.id','=','resolver_evento_pc.id_evento')
       // ->join('users as u2','resolver_evento_pc.id_usuario_resolver','=','u2.id')
-      ->join('soluciones_posibles','eventos_pc.id_detalle_evento','=','soluciones_posibles.id_descripcion_evento')
+      // ->join('soluciones_posibles','eventos_tipos_descripcion.id','=','soluciones_posibles.id_descripcion_evento')
+      // ->join('','','=','')
+
       ->orderBy('eventos_pc.created_at','DESC')
       ->paginate($request->perPage);
 
@@ -65,7 +69,68 @@ class EventosController extends Controller
     }
 
   }
-  public function registrar_evento_torre($id_torre, Request $request)
+
+  public function eliminar_evento_torre(int $id_evento)
+  {
+    try {
+
+      $e_t = ResolverEventoPc::where('id_evento',$id_evento)->first();
+      $e_t->delete();
+
+      $even_torre = EventosPc::find($id_evento);
+      $even_torre->delete();
+
+      return[
+        'mensaje'=>config('domains.mensajes.eliminado')
+      ];
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al eliminar evento");
+    }
+  }
+
+  public function evento_torre_resuelto(int $id_evento)
+  {
+    try {
+      return DB::transaction(function() use($id_evento){
+        $evento = ResolverEventoPc::where('id_evento',$id_evento)->first();
+        ($evento->estado_evento == 2) ? $evento->estado_evento = 3 : $evento->estado_evento = 2;
+        $evento->update();
+
+        return [
+          'mensaje'=>config('domains.mensajes.actualizado')
+        ];
+
+      },5);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al resolver evento");
+    }
+  }
+
+  public function fecha_solucion_evento_torre($id_evento, Request $request)
+  {
+    try {
+
+      return DB::transaction(function() use($id_evento, $request){
+
+        $str = ResolverEventoPc::where('id_evento',$id_evento)->first();
+        $request['estado_evento'] = 2;
+        $str->fill($request->all());
+        $str->update();
+
+        return[
+          'mensaje'=>config('domains.mensajes.actualizado')
+        ];
+
+      },5);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al asignar ");
+    }
+
+  }
+  public function registrar_evento_torre(int $id_torre, Request $request)
   {
     try {
       return DB::transaction(function() use($id_torre, $request){
