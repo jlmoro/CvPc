@@ -202,6 +202,27 @@ class PcController extends Controller
       return DB::transaction(function() use($id_equipo){
 
         $equipo = Equipo::find($id_equipo);
+
+        DB::table('placa_base')->where('id',$equipo->id_placa_base)->first()->delete();
+        // PlacaBase::where('id',$equipo->id_placa_base)->first();
+
+        Procesador::where('id',$equipo->id_procesador)->first()->delete();
+
+        $pcram = PcRam::where('id_equipo',$equipo->id)->get();
+        foreach ($pcram as $key => $value) {
+          $ram = MemoriaRam::where('id',$value->id_memoria_ram)->get();
+          $ram->delete();
+        }
+        // revisar eliminar equipo con sus foráneas
+        $pcram->delete();
+        dd($pcdisco);
+        $pcdisco = PcDiscoDuro::where('id_equipo',$equipo->id)->get();
+        $disco = DiscoDuro::where('id',$pcdisco->id_disco)->get()->delete();
+        $pcdisco->delete();
+        $fuente = FuentePoder::where('id',$equipo->id_fuente_poder)->first()->delete();
+        $peri = PcPerifericos::where('id_equipo',$equipo->id)->get()->delete();
+        $comen = EquipoComentarios::where('id_equipo',$equipo->id)->get()->delete();
+
         $equipo->delete();
 
         return[
@@ -212,7 +233,6 @@ class PcController extends Controller
     } catch (\Exception $e) {
       return $this->captura_error($e,'error al eliminar equipo');
     }
-
   }
 
   public function cambiar_estado_equipo(int $id_equipo)

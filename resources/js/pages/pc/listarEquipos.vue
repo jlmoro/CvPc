@@ -45,7 +45,7 @@
                 </div>
                 <div class="col-4 text-right">
                   <!-- <i class="mdi mdi-pencil editar-equipo"></i> -->
-                  <i class="mdi mdi-delete eliminar-equipo"></i>
+                  <i class="mdi mdi-delete eliminar-equipo" @click="eliminarEquipo(data)"></i>
                 </div>
                 <div class="col-2">
                   <i class="mdi mdi-calendar cal-eventos" @click="abriModalEventos(data.id)"></i>
@@ -141,6 +141,12 @@
 
     <modal-crear-evento ref="modalEvento" :tiposEventos="tiposEventos" :ruta="ruta"/>
 
+    <modal-eliminar ref="eliminandoEquipo"
+    titulo="Eliminar Equipo"
+    :cuerpo="`¿Desea eliminar el equipo con la placa ${eliminaEquipo.chasis_placa}?`"
+    @eliminar="eliminandoEquipo"
+    />
+
   </section>
 
 </template>
@@ -176,6 +182,7 @@ export default {
           label: '9'
         }
       ],
+      eliminaEquipo:{},
     }
   },
   mounted(){
@@ -188,6 +195,26 @@ export default {
     })
   },
   methods: {
+    async eliminandoEquipo(){
+      try {
+
+        const {data} = await axios.delete(`${this.ruta}/${this.eliminaEquipo.id}/eliminando-equipo`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','No es posible eliminar',data.error)
+          return
+        }
+        this.$Helper.notificacion('success','Equipo Eliminado',data.mensaje)
+        this.$refs.eliminandoEquipo.toggle()
+        thia.listar_equipos()
+
+      } catch (e) {
+        console.warn(e);
+      }
+    },
+    eliminarEquipo(dato){
+      this.eliminaEquipo = dato
+      this.$refs.eliminandoEquipo.toggle()
+    },
     abriModalEventos(dato){
       this.$refs.modalEvento.toggle(dato)
     },

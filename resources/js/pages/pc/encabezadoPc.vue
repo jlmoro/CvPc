@@ -33,12 +33,12 @@ export default {
         },
         {
           icono: "mdi mdi-desktop-classic",
-          nombre: "Registrar Torre",
+          nombre: "Registrar Equipo",
           ruta: "equipo.registrar"
         },
         {
           icono: "mdi mdi-ballot",
-          nombre: "Listar Torres",
+          nombre: "Equipos",
           ruta: "equipos.listar"
         },
         {
