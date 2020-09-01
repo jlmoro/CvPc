@@ -2,7 +2,7 @@
     <section class="listar-areas" v-loading="isLoading">
         <div class="row mb-4">
             <div class="col-12 text-center">
-                <h5 class="mt-3">Listado de áreas y roles</h5>
+                <h5 class="mt-3">Áreas y Roles</h5>
             </div>
         </div>
         <div class="row">
@@ -140,7 +140,7 @@ export default {
             this.$Helper.notificacion('warning','Error al eliminar',data.error)
             return
           }
-          this.$Helper.notificacion('success','Área Guardada',data.mensaje)
+          this.$Helper.notificacion('success','Área Eliminada',data.mensaje)
           this.listar_areas_roles()
           this.$refs.modalEliminar.toggle()
         } catch (e) {

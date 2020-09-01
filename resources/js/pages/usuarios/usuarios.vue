@@ -61,8 +61,8 @@
     <modal-editar ref="modalEditarProveedor" :ruta="ruta" :areas="areas"/>
 
     <modal-eliminar ref="ModalEliminar"
-    titulo="eliminar proveedor"
-    :cuerpo="`¿Desea eliminar el proveedor ${eliminarProv.nombre_proveedor}?`"
+    titulo="eliminar usuario"
+    :cuerpo="`¿Desea eliminar el usuario ${eliminarUsu.name} ${eliminarUsu.lastname}?`"
     @eliminar="eliminandoUsuarios"
     />
   </section>
@@ -80,7 +80,7 @@ export default {
       ruta:'/api/usuarios',
       usuarios:[],
       areas:[],
-      eliminarProv:'',
+      eliminarUsu:'',
       isLoading:false,
       estado:null,
     }
@@ -124,7 +124,7 @@ export default {
     },
     async eliminandoUsuarios(){
       try {
-        const {data} = await axios.delete(`${this.ruta}/${this.eliminarProv.id}/eliminar-proveedor`)
+        const {data} = await axios.delete(`${this.ruta}/${this.eliminarUsu.id}/eliminar-proveedor`)
         if (data.error) {
           this.$Helper.notificacion('warning','Error al eliminar',data.error)
           return
@@ -137,7 +137,7 @@ export default {
       }
     },
     modalEliminar(dato){
-      this.eliminarProv = dato
+      this.eliminarUsu = dato
       this.$refs.ModalEliminar.toggle()
     },
     async listar_areas(){
