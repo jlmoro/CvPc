@@ -2,51 +2,66 @@
   <modal-b ref="modalDetalles">
     <div slot="header" class="row">
       <div class="col-12">
-        <h5>Crear Proveedor</h5>
+        <h5>Detalles Usuario - {{detalles.name}} {{detalles.lastname}}</h5>
       </div>
     </div>
 
-    <div  slot="body" class="">
-      <div class="row w-100 mb-5 mt-2">
-        <div class="col-12 text-center">
-          <croppa
-          placeholder="Seleccione una imagen"
-          :placeholder-font-size="14"
-          :width="200"
-          :height="191"
-          :show-remove-button="true"
-          :prevent-white-space="true"
-          ref="CroppaProveedor"
-          >
-        </croppa>
+    <div  slot="body" class="row w-100">
+      <div class="col-md-12">
+        <div class="row mb-3">
+          <div class="col text-center">
+            <img v-if="detalles.foto != null" class="img-user" :src="`/storage/${detalles.foto}`" alt="">
+            <img v-else class="img-user" src="img/user_default.jpg"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <table class="table table-striped" width="100" align="center">
+              <tr>
+                <td class="text-right">Nombre(s):</td>
+                <td><span class="letra-capital">{{detalles.name}}</span></td>
+              </tr>
+              <tr>
+                <td class="text-right">Apellido(s):</td>
+                <td><span class="letra-capital">{{detalles.lastname}}</span></td>
+              </tr>
+              <tr>
+                <td class="text-right">Documento:</td>
+                <td>{{detalles.documento}}</td>
+              </tr>
+              <tr>
+                <td class="text-right">Correo:</td>
+                <td>{{detalles.email}}</td>
+              </tr>
+              <tr>
+                <td class="text-right">Teléfono:</td>
+                <td>{{detalles.telefono}}</td>
+              </tr>
+              <tr>
+                <td class="text-right">Área:</td>
+                <td><span class="letra-capital">{{detalles.nombre_area}}</span></td>
+              </tr>
+              <tr>
+                <td class="text-right">Rol:</td>
+                <td><span class="letra-capital">{{detalles.nombre_rol}}</span></td>
+              </tr>
+              <tr>
+                <td class="text-right">Estado:</td>
+                <td>
+                  <span v-show="detalles.estado == 1">Activo</span>
+                  <span v-show="detalles.estado !== 1">Inactivo</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row w-100 mb-1">
-      <div class="col-12">
-        <label for="nombre-prov">Nombre Proveedor</label>
-        <el-input type="text" placeholder="Nombre proveedor" v-model="form.nombre_proveedor" maxlength="60" show-word-limit >
-        </el-input>
-      </div>
-    </div>
-    <div class="row w-100 mt-1">
-      <div class="col-6">
-        <label for="telefono">Teléfono</label>
-        <el-input type="text" placeholder="Teléfono" v-model="form.telefono" maxlength="30" show-word-limit >
-        </el-input>
-      </div>
-      <div class="col-6">
-        <label for="direccion">Dirección</label>
-        <el-input type="text" placeholder="Please input" v-model="form.direccion" maxlength="30" show-word-limit >
-        </el-input>
-      </div>
-    </div>
-  </div>
 
-  <div slot="footer" class="">
-    <button type="button" class="btn-crear" @click="crear_proveedor">Guardar</button>
-    <button type="button" class="btn-cancelar" @click="toggle">Cancelar</button>
-  </div>
-</modal-b>
+    <div slot="footer" class="">
+      <button type="button" class="btn-crear" data-dismiss="modal" >Aceptar</button>
+    </div>
+  </modal-b>
 </template>
 
 <script>
@@ -56,26 +71,14 @@ export default {
   ],
   data(){
     return{
-      form:{
-        logo:'',
-      },
+      detalles:{},
     }
   },
   methods:{
-    async crear_proveedor(){
-      try {
-        this.form.logo = this.$refs.CroppaProveedor.img.src
-        const {data} = await axios.post(`${this.ruta}/crear-proveedor`,this.form)
-        this.form = {}
-        this.$emit('proveedor:creado')
-        this.$Helper.notificacion('success','Guardado',data.mensaje)
-        this.$refs.CroppaProveedor.img.src = ""
-        this.$refs.modalDetalles.toggle()
-      } catch (e) {
-        console.warn(e);
-      }
-    },
-    toggle(){
+
+    toggle(dato){
+      this.detalles = _.cloneDeep(dato);
+      console.log(this.detalles);
       this.$refs.modalDetalles.toggle()
     }
   }
@@ -86,9 +89,11 @@ export default {
 .croppa-container{
   border-radius: 26px;
 }
-.img-proveedor{
-  max-width: 98px;
-  max-height: 332px;
-  border-radius: 50%;
+.img-user{
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 3px 0px #00000091;
+  border: none;
 }
 </style>

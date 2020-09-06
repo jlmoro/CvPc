@@ -49,7 +49,7 @@
             <hr style="width: 194px; border-top-color: #00000038;">
             <div class="row">
               <div class="col-md-12 card-pie">
-                <span class="mdi mdi-magnify ver-mas"></span>
+                <span class="mdi mdi-magnify ver-mas" @click="verDetalle(data)"></span>
               </div>
             </div>
           </div>
@@ -59,6 +59,7 @@
 
     <modal-crear ref="modalCrearProveedor" :ruta="ruta" @usuario:creado="listar_usuarios" :areas="areas"/>
     <modal-editar ref="modalEditarProveedor" :ruta="ruta" :areas="areas"/>
+    <modal-detalle ref="modalVerDetalles"/>
 
     <modal-eliminar ref="ModalEliminar"
     titulo="eliminar usuario"
@@ -73,7 +74,8 @@ import { mapGetters } from 'vuex'
 export default {
   components: {
     ModalCrear:()=> import('./componentes/modalCrearUsuarios'),
-    ModalEditar:()=> import('./componentes/modalEditarUsuarios')
+    ModalEditar:()=> import('./componentes/modalEditarUsuarios'),
+    ModalDetalle:()=> import('./componentes/modalDetalles'),
   },
   data(){
     return{
@@ -171,6 +173,9 @@ export default {
       } catch (e){
         console.warn(e);
       }
+    },
+    verDetalle(dato){
+      this.$refs.modalVerDetalles.toggle(dato);
     },
     abrirCrearUsuario(){
       this.$refs.modalCrearProveedor.toggle();

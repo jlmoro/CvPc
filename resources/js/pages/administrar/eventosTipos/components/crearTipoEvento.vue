@@ -7,10 +7,15 @@
         </div>
       </div>
       <div class="row justify-content-center" slot="body">
-        <div class="col-md-12 text-center">
-          <label for="crearTipoE" class="letra-capital">tipo evento: </label>
-          <input type="text" v-model="form.nombre_tipo" name="" value="">
+        <div class="col-md-8 text-center">
+          <label for="crearTipoE" class="letra-capital">Tipo evento: </label>
+          <b-form-input v-model="form.nombre_tipo"></b-form-input>
           <!-- <input type="text" v-model="form.nombre_tipo" id="crearTipoE" class="input-general"/> -->
+        </div>
+        <div class="col-md-4 text-center">
+          <label for="sigla" class="letra-capital">Sigla: </label>
+          <b-form-input id="sigla" v-model="form.sigla"></b-form-input>
+          <!-- <input type="text"  v-model="form.sigla"> -->
         </div>
       </div>
       <div class="row" slot="footer">

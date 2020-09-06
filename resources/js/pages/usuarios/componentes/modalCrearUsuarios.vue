@@ -144,8 +144,6 @@ export default {
   },
 
   methods:{
-
-
     async crear_usuario(){
 
       try {

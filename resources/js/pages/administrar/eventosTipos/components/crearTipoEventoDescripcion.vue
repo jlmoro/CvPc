@@ -7,10 +7,10 @@
         </div>
       </div>
       <div class="row justify-content-center" slot="body">
-        <div class="col-md-12 text-center">
-          <label for="crearTipoE" class="letra-capital">Descripción: </label>
-          <input type="text" v-model="form.nombre" name="" value="">
-          <!-- <input type="text" v-model="form.nombre_tipo" id="crearTipoE" class="input-general"/> -->
+        <div class="col-md-8 text-center">
+          <label for="desEven" class="letra-capital">Descripción: </label>
+          <b-form-input id="desEven" v-model="form.nombre"></b-form-input>
+          <!-- <input type="text" v-model="form.nombre" name="" value=""> -->
         </div>
       </div>
       <div class="row" slot="footer">
