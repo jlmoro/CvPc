@@ -36,7 +36,7 @@
       </div>
       <div class="col-6">
         <label for="direccion">Dirección</label>
-        <el-input type="text" placeholder="Please input" v-model="form.direccion" maxlength="30" show-word-limit >
+        <el-input type="text" placeholder="Dirección" v-model="form.direccion" maxlength="30" show-word-limit >
         </el-input>
       </div>
     </div>
@@ -69,7 +69,7 @@ export default {
         this.form = {}
         this.$emit('proveedor:creado')
         this.$Helper.notificacion('success','Guardado',data.mensaje)
-        this.$refs.CroppaProveedor.img.src = ""
+        this.form.logo = ''
         this.$refs.modalProveedor.toggle()
       } catch (e) {
         console.warn(e);

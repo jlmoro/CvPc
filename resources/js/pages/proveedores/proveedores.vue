@@ -1,9 +1,7 @@
 <template>
-  <section class="listar-proveedores mb-5">
+  <section class="listar-proveedores mb-5" v-loading="isLoading">
 
     <encabezado-datos tituloEncabezado="Proveedores" tituloBoton="nuevo proveedor" @accionBonton="abrirCrearProveedor"/>
-
-    <div class="row" v-loading="isLoading">
 
       <div class="row justify-content-center">
         <div class="col-md-4 text-center" v-for="(data,e) in proveedores" :key="e">
@@ -33,8 +31,6 @@
 
           </div>
         </div>
-
-    </div>
 
     <modal-crear ref="modalCrearProveedor" :ruta="ruta" @proveedor:creado="listar_proveedores"/>
     <modal-editar ref="modalEditarProveedor" :ruta="ruta" @proveedor:actualizado="listar_proveedores"/>

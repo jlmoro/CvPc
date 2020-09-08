@@ -82,10 +82,10 @@
         <label>Rol:</label>
         <el-select v-model="form.id_rol" filterable clearable placeholder="Seleccione Rol">
           <el-option
-            v-for="(item,r) in roles"
+            v-for="(rol,r) in roles"
             :key="r"
-            :label="item.rol"
-            :value="item.id">
+            :label="rol.rol"
+            :value="rol.id">
           </el-option>
         </el-select>
       </div>
@@ -126,6 +126,7 @@ export default {
 
       form:{
         foto:null,
+        id_rol:null,
         // id_area:null,
         // tipo_doc:null,
       },
@@ -168,6 +169,7 @@ export default {
           this.$Helper.notificacion('warning','Problemas al listar roles',data.error)
           return
         }
+        console.log(data,"lista de roles");
         this.roles = data
       } catch (e) {
         return console.warn(e);

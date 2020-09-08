@@ -32,7 +32,6 @@ class ImpresoraController extends Controller
     } catch (\Exception $e) {
       return $this->captura_error($e,"error al crear pdf");
     }
-
   }
 
   public function cambiar_estado($id_impresora)

@@ -8,6 +8,25 @@ use App\Models\Pantalla;
 
 class PantallaController extends Controller
 {
+  public function descarga_pdf_pantallas($value='')
+  {
+    try {
+      $pantallas = DB::table('impresora')
+      ->join('encargados', 'impresora.id_encargado', '=', 'encargados.id')
+      ->join('proveedores', 'impresora.id_proveedor', '=', 'proveedores.id')
+      ->select('impresora.*','encargados.nombre_completo as nombre_ecnargado','proveedores.nombre_proveedor')
+      ->orderBy('impresora.created_at','DESC')
+      ->get();
+
+      return PDF::loadView('pdf.listaImpresoras',compact('pantallas'))
+      ->setPaper('letter', 'landscape')
+      ->download('lista-pantallas.pdf');
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al crear pdf");
+    }
+  }
+
   public function editar_pantalla(Request $request)
   {
     try {
@@ -91,8 +110,26 @@ class PantallaController extends Controller
   {
     try {
 
-      // return Pantalla::all();
       return DB::select($this->ejecutar_sql("listado_pantallas"));
+
+      $pantallas = DB::table('pantalla')
+      ->join('encargados', 'pantalla.id_encargado', '=', 'encargados.id')
+      ->join('proveedores', 'pantalla.id_proveedor', '=', 'proveedores.id')
+      ->select('pantalla.*','encargados.nombre_completo as nombre_encargado','proveedores.nombre_proveedor as proveedor')
+      ->orderBy('pantalla.created_at','DESC')
+      ->paginate($request->perPage);
+
+      return [
+        'paginate'=>[
+          'total'=>$pantallas->total(),
+          'currentPage'=>$pantallas->currentPage(),
+          'perPage'=>$pantallas->perPage(),
+          'last_page'=>$pantallas->lastPage(),
+          'from'=>$pantallas->firstItem(),
+          'to'=>$pantallas->lastPage(),
+        ],
+        'pantallas'=>$pantallas
+      ];
 
     } catch (\Exception $e) {
       return $this->captura_error($e,"error al listar pantallas");

@@ -8,8 +8,13 @@
           <div class="col-md-6">
             <el-input v-model="search" placeholder="Buscar..." clearable></el-input>
           </div>
-          <div class="col-md-2">
-            <i v-if="impresoras.length > 0" class="mdi mdi-adobe-acrobat icono-pdf" @click="descargaPdf"></i>
+          <div class="col-md-2 text-center">
+            <vs-tooltip>
+              <i v-if="impresoras.length > 0" class="mdi mdi-adobe-acrobat icono-pdf" @click="descargaPdf"></i>
+              <template #tooltip>
+                Generar PDF
+              </template>
+            </vs-tooltip>
           </div>
           <div class="col-md-4 text-right">
             <span>Filas: </span>
@@ -74,7 +79,7 @@
         </tbody>
         </table>
 
-        <div class="overflow-auto">
+        <div class="overflow-auto" v-if="impresoras.length">
           <b-pagination pills align="center"
           v-model="currentPage"
           :total-rows="total"

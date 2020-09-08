@@ -1,30 +1,49 @@
 <template>
-  <section class="lista-pantallas">
+  <section class="lista-pantallas" v-loading="isLoading">
     <encabezado-datos tituloEncabezado="Listado de Pantallas" tituloBoton="registrar pantalla" @accionBonton="modalRegistrarPantalla"/>
 
-    <div class="row w-100 mt-4" v-loading="isLoading">
+    <div class="row w-100 mt-4" >
       <div class="col-md-12">
         <div class="row mb-3">
-          <div class="col-md-4">
+          <div class="col-md-6">
             <el-input v-model="search" placeholder="Buscar..." clearable></el-input>
           </div>
+          <div class="col-md-2 text-center">
+            <vs-tooltip>
+              <i v-if="pantallas.length" class="mdi mdi-adobe-acrobat icono-pdf" @click="descargaPdf"></i>
+              <template #tooltip>
+                Generar PDF
+              </template>
+            </vs-tooltip>
+          </div>
+          <div class="col-md-4 text-right">
+            <span>Filas: </span>
+            <el-select v-model="perPage" @change="cantidadFilas($event)">
+              <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </div>
-        <table class="table table-hover f-12">
-          <thead class="thead-light text-center">
-            <tr>
-              <th>#</th>
-              <th>Marca</th>
-              <th>Modelo</th>
-              <th>Placa</th>
-              <th>Serial</th>
-              <th>Encargado</th>
-              <th>Proveedor</th>
-              <th>Fecha Registro</th>
-              <th>Estado</th>
-              <th colspan="4">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
+      </div>
+      <table class="table table-hover f-12">
+        <thead class="thead-light text-center">
+          <tr>
+            <th>#</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Placa</th>
+            <th>Serial</th>
+            <th>Encargado</th>
+            <th>Proveedor</th>
+            <th>Fecha Registro</th>
+            <th>Estado</th>
+            <th colspan="4">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
           <tr v-for="(data,i) in listadoPantallas" :key="i">
             <td>{{i + 1}}</td>
             <td><span class="letra-capital">{{data.marca}}</span></td>
@@ -55,25 +74,36 @@
           </td>
         </tr>
       </tbody>
-      </table>
+    </table>
+
+    <div class="overflow-auto" v-if="pantallas.length">
+      <b-pagination pills align="center"
+      v-model="currentPage"
+      :total-rows="total"
+      :per-page="perPage"
+      aria-controls="my-table"
+      @change="cambioPagina($event)"
+      ></b-pagination>
     </div>
+
   </div>
+</div>
 
-  <modal-eliminar ref="modalEliminar"
-  titulo="eliminar impresora"
-  :cuerpo="`¿Seguro desea eliminar pantalla con la placa ${eliminarPant.placa}?`"
-  @eliminar="eliminandoImpresora"
-  />
+<modal-eliminar ref="modalEliminar"
+titulo="eliminar impresora"
+:cuerpo="`¿Seguro desea eliminar pantalla con la placa ${eliminarPant.placa}?`"
+@eliminar="eliminandoImpresora"
+/>
 
-  <modal-crear ref="modalRegistrarPantalla" :ruta="ruta"
-  @impresora:creada="listar_pantallas"
-  :encargados="encargados" :proveedores="proveedores"/>
+<modal-crear ref="modalRegistrarPantalla" :ruta="ruta"
+@impresora:creada="listar_pantallas"
+:encargados="encargados" :proveedores="proveedores"/>
 
-  <modal-editar ref="modalEditarPantalla" :ruta="ruta"
-  @pantalla:actualizada="listar_pantallas"
-  :encargados="encargados" :proveedores="proveedores"/>
+<modal-editar ref="modalEditarPantalla" :ruta="ruta"
+@pantalla:actualizada="listar_pantallas"
+:encargados="encargados" :proveedores="proveedores"/>
 
-  <modal-crear-evento ref="modalRegistrarEvento" :ruta="ruta" :tiposEventos="tiposEventos"/>
+<modal-crear-evento ref="modalRegistrarEvento" :ruta="ruta" :tiposEventos="tiposEventos"/>
 
 </section>
 </template>
@@ -94,122 +124,173 @@ export default {
       proveedores:[],
       eliminarPant:'',
       tiposEventos:[],
-      isLoading:false
-    }
-  },
-  mounted(){
-    this.isLoading = true;
-    Promise.all([
-      this.listar_pantallas(),
-      this.listarEncargados(),
-      this.listarProveedores(),
-      this.eventosTipos(),
-    ]).then(res=>{
-      this.isLoading = false
-    })
-  },
-  computed:{
-    listadoPantallas(){
-      return this.pantallas.filter(data => !this.search || data.placa.toLowerCase().includes(this.search.toLowerCase()))
-    }
-  },
-  methods: {
-    async eventosTipos(){
-      try {
-        const {data} = await axios(`/api/select/listar-tipos-eventos`)
-        if (data.error) {
-          this.$Helper.notificacion('warning','Error al listar',data.error)
-          return
-        }
-        this.tiposEventos = data
-      } catch (e) {
-        console.warn(e);
+      isLoading:false,
+      perPage: 5,
+      total:null,
+      currentPage: 1,
+      options: [{
+        value: 5,
+        label: '5'
+      }, {
+        value: 10,
+        label: '10'
+      }, {
+        value: 15,
+        label: '15'
       }
-    },
-    async cambiarEstado(dato){
-      try {
-        const {data} = await axios.put(`${this.ruta}/${dato.id}/cambiar-estado`)
-        if (data.error) {
-          this.$Helper.notificacion('warning','Error al cambiar estado',data.error)
-          return
-        }
-        this.$Helper.notificacion('success','Estado Actualizado',data.mensaje)
-        this.listar_pantallas()
-      } catch (e) {
-        console.warn(e);
-      }
-    },
-    async eliminandoImpresora(){
-      try {
-        const {data} = await axios.delete(`${this.ruta}/${this.eliminarPant.id}/eliminar-pantalla`)
-        if (data.error) {
-          this.$Helper.notificacion('warning','Error al eliminar pantalla',data.error)
-          return
-        }
-        this.$Helper.notificacion('success','Eliminado Correctamente',data.mensaje)
-
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        this.listar_pantallas()
-        this.$refs.modalEliminar.toggle()
-      }
-    },
-
-    async listar_pantallas(){
-      try {
-        const {data} = await axios(`${this.ruta}/listar-pantallas`)
-        if (data.error) {
-          this.$Helper.notificacion('warning','Error al listar',data.error)
-          return
-        }
-        this.pantallas = data
-      } catch (e){
-        console.warn(e);
-      }
-    },
-    async listarEncargados() {
-      try {
-        const {data} = await axios(`/api/select/listar-encargados`)
-        if (data.error) {
-          this.$Helper.notificacion('warning','Error listar encargados',data.error)
-          return
-        }
-        this.encargados = data
-      } catch (e) {
-        console.warn(e);
-      }
-    },
-    async listarProveedores() {
-      try {
-        const {data} = await axios(`/api/select/listar-proveedores`)
-        if (data.error) {
-          this.$Helper.notificacion('warning','Error listar proveedores',data.error)
-          return
-        }
-        this.proveedores = data
-      } catch (e) {
-        console.warn(e);
-      }
-    },
-    modalCrearEvento(dato){
-      this.$refs.modalRegistrarEvento.toggle(dato)
-    },
-    modalEliminar(dato){
-      this.eliminarPant = dato
-      this.$refs.modalEliminar.toggle()
-    },
-    modalRegistrarPantalla(){
-      this.$refs.modalRegistrarPantalla.toggle()
-    },
-    modalEditar(dato){
-      this.$refs.modalEditarPantalla.toggle(dato)
-    }
+    ],
   }
+},
+mounted(){
+  this.isLoading = true;
+  Promise.all([
+    this.listar_pantallas(),
+    this.listarEncargados(),
+    this.listarProveedores(),
+    this.eventosTipos(),
+  ]).then(res=>{
+    this.isLoading = false
+  })
+},
+computed:{
+  listadoPantallas(){
+    return this.pantallas.filter(data => !this.search || data.placa.toLowerCase().includes(this.search.toLowerCase()))
+  }
+},
+methods: {
+  descargaPdf(){
+    try {
+      window.open(`${this.ruta}/descarga-pdf-pantallas`)
+    } catch (e) {
+      console.warn(e);
+    }
+  },
+  cantidadFilas(filas){
+    this.perPage = filas
+    this.currentPage = 1
+    this.listar_impresoras()
+  },
+  cambioPagina(page){
+    this.currentPage = page
+    this.listar_impresoras()
+  },
+  async eventosTipos(){
+    try {
+      const {data} = await axios(`/api/select/listar-tipos-eventos`)
+      if (data.error) {
+        this.$Helper.notificacion('warning','Error al listar',data.error)
+        return
+      }
+      this.tiposEventos = data
+    } catch (e) {
+      console.warn(e);
+    }
+  },
+  async cambiarEstado(dato){
+    try {
+      const {data} = await axios.put(`${this.ruta}/${dato.id}/cambiar-estado`)
+      if (data.error) {
+        this.$Helper.notificacion('warning','Error al cambiar estado',data.error)
+        return
+      }
+      this.$Helper.notificacion('success','Estado Actualizado',data.mensaje)
+      this.listar_pantallas()
+    } catch (e) {
+      console.warn(e);
+    }
+  },
+  async eliminandoImpresora(){
+    try {
+      const {data} = await axios.delete(`${this.ruta}/${this.eliminarPant.id}/eliminar-pantalla`)
+      if (data.error) {
+        this.$Helper.notificacion('warning','Error al eliminar pantalla',data.error)
+        return
+      }
+      this.$Helper.notificacion('success','Eliminado Correctamente',data.mensaje)
+
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      this.listar_pantallas()
+      this.$refs.modalEliminar.toggle()
+    }
+  },
+
+  async listar_pantallas(){
+    try {
+      const {data} = await axios(`${this.ruta}/listar-pantallas`)
+      if (data.error) {
+        this.$Helper.notificacion('warning','Error al listar',data.error)
+        return
+      }
+      this.pantallas = data
+    } catch (e){
+      console.warn(e);
+    }
+  },
+  async listarEncargados() {
+    try {
+      const {data} = await axios(`/api/select/listar-encargados`)
+      if (data.error) {
+        this.$Helper.notificacion('warning','Error listar encargados',data.error)
+        return
+      }
+      this.encargados = data
+    } catch (e) {
+      console.warn(e);
+    }
+  },
+  async listarProveedores() {
+    try {
+      const {data} = await axios(`/api/select/listar-proveedores`)
+      if (data.error) {
+        this.$Helper.notificacion('warning','Error listar proveedores',data.error)
+        return
+      }
+      this.proveedores = data
+    } catch (e) {
+      console.warn(e);
+    }
+  },
+  modalCrearEvento(dato){
+    this.$refs.modalRegistrarEvento.toggle(dato)
+  },
+  modalEliminar(dato){
+    this.eliminarPant = dato
+    this.$refs.modalEliminar.toggle()
+  },
+  modalRegistrarPantalla(){
+    this.$refs.modalRegistrarPantalla.toggle()
+  },
+  modalEditar(dato){
+    this.$refs.modalEditarPantalla.toggle(dato)
+  }
+}
 }
 </script>
 <style lang="scss" scoped>
 .lista-pantallas{
+  .icono-pdf{
+    border: 1px solid #710606e6;
+    border-radius: 2px;
+    padding: 3px;
+    font-size: 16px;
+    color: white;
+    background-color: #710606e6;
+    transition-duration: .85s;
+    &:hover{
+      color: #710606e6;
+      background-color: white;
+      transition-duration: .4s;
+      cursor: pointer;
+    }
+  }
+  .el-input{
+    width: 315px !important;
+  }
+  .el-select{
+    width: 68px !important;
+  }
   .table{
     tbody{
       tr{
