@@ -90,9 +90,9 @@
 </div>
 
 <modal-eliminar ref="modalEliminar"
-titulo="eliminar impresora"
+titulo="eliminar pantalla"
 :cuerpo="`¿Seguro desea eliminar pantalla con la placa ${eliminarPant.placa}?`"
-@eliminar="eliminandoImpresora"
+@eliminar="eliminandoPantalla"
 />
 
 <modal-crear ref="modalRegistrarPantalla" :ruta="ruta"
@@ -168,11 +168,11 @@ methods: {
   cantidadFilas(filas){
     this.perPage = filas
     this.currentPage = 1
-    this.listar_impresoras()
+    this.listar_pantallas()
   },
   cambioPagina(page){
     this.currentPage = page
-    this.listar_impresoras()
+    this.listar_pantallas()
   },
   async eventosTipos(){
     try {
@@ -199,7 +199,7 @@ methods: {
       console.warn(e);
     }
   },
-  async eliminandoImpresora(){
+  async eliminandoPantalla(){
     try {
       const {data} = await axios.delete(`${this.ruta}/${this.eliminarPant.id}/eliminar-pantalla`)
       if (data.error) {
@@ -218,12 +218,21 @@ methods: {
 
   async listar_pantallas(){
     try {
-      const {data} = await axios(`${this.ruta}/listar-pantallas`)
+      let params = {
+        page: this.currentPage,
+        perPage: this.perPage
+      }
+      const {data} = await axios(`${this.ruta}/listar-pantallas`,{params})
       if (data.error) {
         this.$Helper.notificacion('warning','Error al listar',data.error)
         return
       }
-      this.pantallas = data
+
+      this.pantallas = data.pantallas.data
+      this.perPage = data.paginate.perPage
+      this.currentPage = data.paginate.currentPage
+      this.total = data.paginate.total
+
     } catch (e){
       console.warn(e);
     }

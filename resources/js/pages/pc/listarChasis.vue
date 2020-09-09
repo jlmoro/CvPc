@@ -64,7 +64,7 @@
           </tbody>
         </table>
 
-        <div class="overflow-auto">
+        <div class="overflow-auto" v-if="dataChasis.length">
           <b-pagination pills align="center"
           v-model="currentPage"
           :total-rows="total"

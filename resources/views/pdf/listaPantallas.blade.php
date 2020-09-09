@@ -39,7 +39,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach ($pantalla as $key => $pan)
+          @foreach ($pantallas as $key => $pan)
           <tr>
             <th scope="row">{{++$key}}</th>
             <td>{{$pan->marca}}</td>
