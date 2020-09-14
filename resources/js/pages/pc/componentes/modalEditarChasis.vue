@@ -1,27 +1,27 @@
 <template>
-  <section class="crear-pc">
-    <modal ref="ModalRegistrarPc">
+  <section class="editar-pc">
+    <modal ref="ModalEditarPc">
       <div slot="header" class="row">
         <div class="col-12">
-          <h5>Registrar Chasis</h5>
+          <h5>Editar Chasis</h5>
         </div>
       </div>
       <div slot="body" class="row w-100">
         <div class="col-12">
           <div class="row w-100">
             <div class="col-md-6">
-              <label for="chasisMarcaCrear" class="letra-capital">marca</label>
-              <input v-model="form.marca" id="chasisMarcaCrear" type="text" class="input-general">
+              <label for="marcaChasis" class="letra-capital">marca</label>
+              <input v-model="form.marca" id="marcaChasis" type="text" class="input-general">
             </div>
             <div class="col-md-6">
-              <label for="chasisP" class="letra-capital">placa</label>
-              <input v-model="form.placa" id="chasisP" type="text" class="input-general">
+              <label for="placaChasis" class="letra-capital">placa</label>
+              <input v-model="form.placa" id="placaChasis" type="text" class="input-general">
             </div>
           </div>
           <div class="row w-100 mt-3">
             <div class="col-md-7">
-              <label for="chasisSerial" class="letra-capital">serial</label>
-              <input v-model="form.serial" id="chasisS" type="text" class="input-general" style="width: inherit !important;">
+              <label for="serialChasis" class="letra-capital">serial</label>
+              <input v-model="form.serial" id="serialChasis" type="text" class="input-general" style="width: inherit !important;">
             </div>
             <div class="col-md-5 mt-4 pt-2">
               <el-switch
@@ -46,8 +46,8 @@
           </div>
           <div class="row w-100 mt-3">
             <div class="col-md-12">
-              <label for="chasisO" class="letra-capital">observaciones</label>
-              <textarea v-model="form.observaciones" id="chasisO" name="name" rows="5" cols="80" class="txt-area"></textarea>
+              <label for="observacionesChasis" class="letra-capital">observaciones</label>
+              <textarea v-model="form.observaciones" id="observacionesChasis" name="name" rows="5" cols="80" class="txt-area"></textarea>
             </div>
           </div>
         </div>
@@ -85,15 +85,15 @@ export default {
     async guardarPc(){
       try {
         this.form.estado = (this.form.estado === true)?1:0
-        const {data} = await axios.post(`${this.ruta}/registrar-pc`,this.form)
+        const {data} = await axios.put(`${this.ruta}/editar-pc`,this.form)
         if (data.error) {
           this.$Helper.notificacion('warning','Error registrando chasis',data.error)
           return
         }
         this.form = ''
-        this.$emit('pc:creado')
-        this.$Helper.notificacion('success','Chasis Registrado',data.mensaje)
-        this.$refs.ModalRegistrarPc.toggle()
+        this.$emit('pc:editado')
+        this.$Helper.notificacion('success','Chasis Actualizado',data.mensaje)
+        this.$refs.ModalEditarPc.toggle()
 
       } catch (e) {
         console.warn(e);
@@ -105,8 +105,11 @@ export default {
     agregaProveedor(data){
       this.form.proveedor = data
     },
-    toggle(){
-      this.$refs.ModalRegistrarPc.toggle()
+    toggle(dato){
+      this.form = _.cloneDeep(dato)
+      this.form.estado = (dato.estado === 1)?true:false
+      console.log(this.form);
+      this.$refs.ModalEditarPc.toggle()
     }
   }
 }

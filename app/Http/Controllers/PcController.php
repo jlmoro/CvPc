@@ -20,6 +20,31 @@ use App\Models\{
 
 class PcController extends Controller
 {
+  public function editar_pc(Request $request)
+  {
+    try {
+
+      return DB::transaction(function() use($request){
+
+        $chasis = Pc::find($request->id);
+
+        $request['id_encargado'] = $request->id_encargado;
+        $request['id_proveedor'] = $request->id_proveedor;
+
+        $chasis->fill($request->all());
+        $chasis->update();
+
+        return[
+          'mensaje'=>config('domains.mensajes.actualizado')
+        ];
+
+      },3);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al editar pc");
+    }
+
+  }
   /**
    * Registro de equipo con el chasís asignado
    */

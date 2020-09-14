@@ -10,6 +10,8 @@ class Pc extends Model
     protected $primaryKey = 'id';
     protected $guarded = [
       'encargado',
-      'proveedor'
+      'proveedor',
+      'nombre_ecnargado',
+      'nombre_proveedor'
     ];
 }

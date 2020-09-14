@@ -9,8 +9,13 @@
           <div class="col-md-6">
             <el-input v-model="search" placeholder="Buscar..." clearable></el-input>
           </div>
-          <div class="col-md-2">
-            <i v-if="dataChasis.length > 0" class="mdi mdi-adobe-acrobat icono-pdf" @click="descargaPdf"></i>
+          <div class="col-md-2 text-center">
+            <vs-tooltip top>
+              <i v-if="dataChasis.length > 0" class="mdi mdi-adobe-acrobat icono-pdf" @click="descargaPdf"></i>
+              <template #tooltip>
+                Generar PDF
+              </template>
+            </vs-tooltip>
           </div>
           <div class="col-md-4 text-right">
             <span>Filas: </span>
@@ -38,7 +43,7 @@
             <th>Proveedor</th>
             <th>Fecha Registro</th>
             <th>Estado</th>
-            <th colspan="4">Acciones</th>
+            <th colspan="3">Acciones</th>
           </thead>
           <tbody class="text-center f-12">
             <!-- <tr v-for="(data,c) in dataChasis" :key="c"> -->
@@ -55,10 +60,18 @@
                 <button v-else type="button" class="btn-estado-inact" @click="cambiarEstado(data)">Inactivo</button>
               </td>
               <td>
-                <i class="mdi mdi-information-outline f-16 mr-3"></i>
-                <i class="mdi mdi-pencil acciones btn-editar"></i>
-                <i class="mdi mdi-delete acciones btn-delete"></i>
-                <i class="mdi mdi-calendar btn-evento ml-2"></i>
+                <vs-tooltip bottom>
+                  <i class="mdi mdi-information-outline f-16 mr-3 obs"></i>
+                  <template #tooltip>
+                    <span>{{data.observaciones}}</span>
+                  </template>
+                </vs-tooltip>
+              </td>
+              <td>
+                <i class="mdi mdi-pencil acciones btn-editar" @click="editarChasis(data)"></i>
+              </td>
+              <td>
+                <i class="mdi mdi-delete acciones btn-delete" @click="eliminarChasis(data)"></i>
               </td>
             </tr>
           </tbody>
@@ -82,6 +95,18 @@
     :proveedores="proveedores"
     @pc:creado="listaChasis"/>
 
+    <modal-editar ref="modalEditarChasis" :ruta="ruta"
+    :encargados="encargados"
+    :proveedores="proveedores"
+    @pc:editado="listaChasis"
+    />
+
+    <modal-eliminar ref="modalEliminarChasis"
+    titulo="eliminar chasis"
+    :cuerpo="`¿Seguro desea eliminar chasis con la placa ${eliminaChasis.placa}?`"
+    @eliminar="eliminandoChasis"
+    />
+
   </section>
 </template>
 
@@ -89,6 +114,7 @@
 export default {
   components:{
     ModalCrear:()=> import('./componentes/modalRegistrarChasis'),
+    ModalEditar:()=> import('./componentes/modalEditarChasis'),
   },
   data(){
     return{
@@ -98,6 +124,7 @@ export default {
       encargados:[],
       proveedores:[],
       dataChasis:[],
+      eliminaChasis:{},
       perPage: 5,
       total:null,
       currentPage: 1,
@@ -136,6 +163,29 @@ export default {
     })
   },
   methods: {
+    async eliminandoChasis(){
+      try {
+
+        const {data} = await axios.delete(`${this.ruta}/${this.eliminaChasis.id}/eliminar-pc`)
+        if (data.error) {
+           this.$Helper.notificacion('warning','No es posible Eliminar',data.error);
+           return
+        }
+        this.$Helper.notificacion('success','Chasis Eliminado',data.mensaje);
+        this.$refs.modalEliminarChasis.toggle()
+        this.listaChasis()
+
+      } catch (e) {
+        console.warn(e);
+      }
+    },
+    eliminarChasis(dato){
+      this.eliminaChasis = dato
+      this.$refs.modalEliminarChasis.toggle()
+    },
+    editarChasis(dato){
+      this.$refs.modalEditarChasis.toggle(dato)
+    },
     async descargaPdf(){
 
       try {
@@ -222,6 +272,11 @@ export default {
 
 <style lang="scss" scoped>
 .listar-chasis{
+  .obs{
+    &:hover{
+      cursor: pointer;
+    }
+  }
   .icono-excel{
     // border: 1px solid #710606e6;
     border-radius: 2px;

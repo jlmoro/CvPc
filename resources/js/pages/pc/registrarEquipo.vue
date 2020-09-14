@@ -78,9 +78,14 @@
             <b-card bg-variant="light">
               <b-form-group label-cols-lg="3" label="Memoria RAM" label-size="lg" label-class="font-weight-bold pt-0" class="mb-0" >
 
-                <div class="row mb-2">
-                  <div class="col-sm-12 text-right mb-2">
-                    <i class="mdi mdi-plus mas-ram" @click="agregarRam"></i>
+                <div class="row mb-2 justify-content-end">
+                  <div class="col-sm-1 mb-2">
+                    <vs-tooltip>
+                      <i class="mdi mdi-plus mas-ram" @click="agregarRam"></i>
+                      <template #tooltip>
+                        Añadir RAM
+                      </template>
+                    </vs-tooltip>
                   </div>
                 </div>
 
@@ -125,7 +130,12 @@
 
                   </div>
                   <div class="col-md-1">
-                    <i class="mdi mdi-delete menos-ram" @click="menosRam(r)"></i>
+                    <vs-tooltip right>
+                      <i class="mdi mdi-delete menos-ram" @click="menosRam(r)"></i>
+                      <template #tooltip>
+                        Quitar RAM
+                      </template>
+                    </vs-tooltip>
                   </div>
 
                 </div>
@@ -140,9 +150,14 @@
           <div v-show="active == 4">
             <b-card bg-variant="light">
               <b-form-group label-cols-lg="3" label="HDD/SSD" label-size="lg" label-class="font-weight-bold pt-0" class="mb-0" >
-                <div class="row mb-2">
-                  <div class="col-sm-12 text-right mb-2">
-                    <i class="mdi mdi-plus mas-ram" @click="agregarDisco"></i>
+                <div class="row mb-2 justify-content-end">
+                  <div class="col-sm-1 mb-2">
+                    <vs-tooltip>
+                      <i class="mdi mdi-plus mas-ram" @click="agregarDisco"></i>
+                      <template #tooltip>
+                        Añadir Disco
+                      </template>
+                    </vs-tooltip>
                   </div>
                 </div>
                 <div class="row" v-for="(disco,d) in form.disco" :key="d">
@@ -217,7 +232,12 @@
 
                   </div>
                   <div class="col-md-1">
-                    <i class="mdi mdi-delete menos-ram" @click="menosDisco(d)"></i>
+                    <vs-tooltip right>
+                      <i class="mdi mdi-delete menos-ram" @click="menosDisco(d)"></i>
+                      <template #tooltip>
+                        Quitar Disco
+                      </template>
+                    </vs-tooltip>
                   </div>
 
                 </div>
@@ -300,7 +320,7 @@
                   </el-select>
                 </b-form-group>
 
-                <b-form-group label-cols-sm="3" label="Chasís:" label-align-sm="right" label-for="nested-street" >
+                <b-form-group label-cols-sm="3" label="Equipo:" label-align-sm="right" label-for="nested-street" >
                   <el-switch
                     class="mt-2"
                     style="display: block"
