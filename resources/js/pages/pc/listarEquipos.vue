@@ -113,9 +113,14 @@
             </b-list-group>
 
             <b-card-footer>
-              <div class="row">
-                <div class="col-md-12 text-center">
-                  <i class="mdi mdi-plus detalles-equipo" @click="abrirModalDetalles(data)"></i>
+              <div class="row justify-content-center">
+                <div class="col-md-1 text-center">
+                  <vs-tooltip left>
+                    <i class="mdi mdi-plus detalles-equipo" @click="abrirModalDetalles(data)"></i>
+                    <template #tooltip>
+                      Mas Detalles
+                    </template>
+                  </vs-tooltip>
                 </div>
               </div>
             </b-card-footer>

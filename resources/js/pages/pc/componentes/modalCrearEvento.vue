@@ -3,7 +3,7 @@
     <modal-b ref="modalPcCrearEvento">
       <div slot="header" class="row">
         <div class="col-12">
-          <h5>Registrar Evento Torre</h5>
+          <h5>Registrar Evento Equipo</h5>
         </div>
       </div>
       <div slot="body" class="">
