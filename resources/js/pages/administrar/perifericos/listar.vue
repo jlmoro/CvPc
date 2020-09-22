@@ -26,7 +26,7 @@
 
     <modal-eliminar ref="modalEliminarPeriferico"
     titulo="eliminar periferico"
-    :cuerpo="` ¿Desea eliminar el tipo de evento '${this.eliminarPeri.nombre}' ?`"
+    :cuerpo="` ¿Desea eliminar el periferico '${this.eliminarPeri.nombre}' ?`"
     @eliminar="eliminarPeriferico"
     />
 

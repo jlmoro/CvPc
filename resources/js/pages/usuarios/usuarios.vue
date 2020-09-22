@@ -26,7 +26,7 @@
                 <div class="col-md pl-0 pr-0">
                   <div class="card-acciones">
                     <span class="mdi mdi-pencil editar-user" @click="editarUsuarios(data)"></span>
-                    <span v-show="data.id !== user.id" class="mdi mdi-delete eliminar-user" @click="modalEliminar(data)"></span>
+                    <span v-if="data.id !== user.id" class="mdi mdi-delete eliminar-user" @click="modalEliminar(data)"></span>
                   </div>
                 </div>
               </div>
@@ -58,7 +58,7 @@
     </div>
 
     <modal-crear ref="modalCrearProveedor" :ruta="ruta" @usuario:creado="listar_usuarios" :areas="areas"/>
-    <modal-editar ref="modalEditarProveedor" :ruta="ruta" :areas="areas"/>
+    <modal-editar ref="modalEditarProveedor" :ruta="ruta" :areas="areas" @usuario:editado="listar_usuarios"/>
     <modal-detalle ref="modalVerDetalles"/>
 
     <modal-eliminar ref="ModalEliminar"

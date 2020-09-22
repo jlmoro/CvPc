@@ -39,6 +39,39 @@ class UsuariosController extends Controller
     }
 
   }
+  public function editar_usuario(Request $request)
+  {
+    try {
+
+      return DB::transaction(function() use($request){
+
+        $user = User::find($request->id);
+        // dd($user);
+
+        $foto = $this->guardar_imagen($request->foto,'usuarios');
+        if($foto['estado'] == true){
+          $request['foto'] = $foto['ruta'];
+        }else {
+          return 'Error al guardar foto usuario';
+        }
+        if ($request->password == null) {
+          $request['password'] = $user->password;
+        }else {
+          $request['password'] = bcrypt($request->password);
+        }
+
+        $user->fill($request->all());
+        $user->update();
+
+        return[
+          'mensaje'=>config('domains.mensajes.actualizado')
+        ];
+      },5);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"Error al editar usuario");
+    }
+  }
   public function crear_usuario(Request $request)
   {
     try {

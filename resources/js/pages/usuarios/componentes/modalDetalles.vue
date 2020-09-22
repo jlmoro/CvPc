@@ -48,8 +48,8 @@
               <tr>
                 <td class="text-right">Estado:</td>
                 <td>
-                  <span v-show="detalles.estado == 1">Activo</span>
-                  <span v-show="detalles.estado !== 1">Inactivo</span>
+                  <span v-if="detalles.estado == 1">Activo</span>
+                  <span v-else>Inactivo</span>
                 </td>
               </tr>
             </table>
@@ -78,7 +78,7 @@ export default {
 
     toggle(dato){
       this.detalles = _.cloneDeep(dato);
-      console.log(this.detalles);
+      // console.log(this.detalles);
       this.$refs.modalDetalles.toggle()
     }
   }

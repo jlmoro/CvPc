@@ -7,7 +7,6 @@
 /public/dist
 /public/build
 /public/mix-manifest.json
-/modelo_bd
 .env
 .phpunit.result.cache
 Homestead.json
