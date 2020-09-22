@@ -9,18 +9,30 @@
       <div class="row" slot="body">
         <div class="col-md-12">
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
               <label for="">Tipo Evento:</label>
-              <el-select v-model="form.tipo_evento" filterable placeholder="Seleccione Tipo Evento" clearable >
-                <el-option
-                v-for="(item,e) in tiposEventos"
-                :key="e"
-                :label="item.nombre"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </div>
+              <el-select v-model="form.tipo_evento" filterable placeholder="Seleccione Tipo Evento" clearable
+              @change="listar_detalles_evento($event)">
+              <el-option
+              v-for="(item,e) in tiposEventos"
+              :key="e"
+              :label="item.nombre"
+              :value="item.id">
+            </el-option>
+          </el-select>
         </div>
+        <div class="col-md-6">
+          <label for="">Descripción Evento:</label>
+          <el-select v-model="form.descripcion_evento" filterable placeholder="Descripción Evento" clearable >
+            <el-option
+            v-for="(item,e) in detalle_evento"
+            :key="e"
+            :label="item.nombre"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </div>
+    </div>
         <div class="row mt-4">
           <div class="col-md-12">
             <label for="">Solución Posible</label>
@@ -48,7 +60,11 @@ export default {
   },
   data(){
     return{
-      form:{}
+      form:{
+        tipo_evento:null,
+        // descripcion_evento:null
+      },
+      detalle_evento:[]
     }
   },
   methods: {
@@ -67,10 +83,23 @@ export default {
         console.warn(e);
       }
     },
+    async listar_detalles_evento(event){
+      try {
+        // this.form.descripcion_evento = ''
+        const {data} = await axios(`/api/select/${event}/listar-descripcion-eventos`)
+        if (data.error) {
+          this.$Helper.notificacion('warning','No es posible listar detalle eventos',data.error)
+          return
+        }
+        this.detalle_evento = data;
+      } catch (e) {
+        console.warn(e);
+      }
+    },
     toggle(dato){
       this.form = _.cloneDeep(dato);
-      let id_tipo_evento = _.find(this.tiposEventos, function(o) { return o.id === dato.id_evento_tipo; });
-      this.form.tipo_evento = id_tipo_evento.id
+      // let id_tipo_evento = _.find(this.tiposEventos, function(o) { return o.id === dato.id_evento_tipo; });
+      // this.form.tipo_evento = id_tipo_evento.id
       this.$refs.modalRegistrarSolucion.toggle()
     }
   }
