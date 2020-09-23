@@ -6,11 +6,13 @@ import 'bootstrap'
 import './element'
 import './croppa'
 // import './calendar'
-import Global from '~/mixin/Global'
 import lodash from 'lodash'
 import flatpickr from 'flatpickr';
 
+import VueSweetalert2 from 'vue-sweetalert2';
+Vue.use(VueSweetalert2);
 
+import Global from '~/mixin/Global'
 Vue.mixin(Global)
 
 import BootstrapVue from 'bootstrap-vue'

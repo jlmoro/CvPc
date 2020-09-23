@@ -13,7 +13,7 @@ mix
 
 if (mix.inProduction()) {
     mix
-    // .extract() 
+    // .extract()
     // .version() // Use `laravel-mix-versionhash` for the generating correct Laravel Mix manifest file.
     .versionHash()
 } else {
@@ -29,6 +29,7 @@ mix.webpackConfig({
             // moment: 'moment',
             // DataTable: 'DataTable',
             axios: 'axios',
+            Swal:'Swal',
             '_': 'lodash',
             // echarts: 'echarts'
         })

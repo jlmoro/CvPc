@@ -102,6 +102,7 @@ export default {
           return
         }
         this.$Helper.notificacion('success','Pantalla Registrada',data.mensaje)
+        this.form = ''
         this.$emit('impresora:creada')
         this.$refs.ModalRegistrarPantalla.toggle()
 

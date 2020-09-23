@@ -165,7 +165,7 @@ export default {
       }else {
         this.encargado.foto = this.encargado.foto
       }
-      console.log(this.encargado)
+      // console.log(this.encargado)
       this.$refs.modalEncargado.toggle()
     }
   }

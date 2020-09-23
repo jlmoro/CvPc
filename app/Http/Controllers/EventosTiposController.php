@@ -63,11 +63,22 @@ class EventosTiposController extends Controller
   {
     try {
       return DB::transaction(function() use($id_tipo_evento){
-        $eventoTipo = EventosTipos::find($id_tipo_evento);
-        $eventoTipo->delete();
-        return[
-          'mensaje'=>config('domains.mensajes.eliminado')
-        ];
+
+        $eDescrip = EventosTiposDescripcion::select('id')
+        ->where('id_evento_tipo',$id_tipo_evento)
+        ->count();
+
+        if ($eDescrip) {
+          return[
+            'mensaje_error'=>"No es posible eliminar el tipo de evento, porque posee una o mas descripciones."
+          ];
+        }else{
+          $eventoTipo = EventosTipos::find($id_tipo_evento);
+          $eventoTipo->delete();
+          return[
+            'mensaje'=>config('domains.mensajes.eliminado')
+          ];
+        }
       },3);
 
     } catch (\Exception $e) {

@@ -10,18 +10,17 @@
       <div class="row w-100 mb-5 mt-2">
         <div class="col-12 text-center">
           <croppa
-          :initial-image="form.logo"
-          slot="initial"
-          placeholder="Seleccione una imagen"
-          crossOrigin="anonymous"
-          :placeholder-font-size="14"
-          :width="200"
-          :height="191"
-          :show-remove-button="true"
-          :prevent-white-space="true"
-          ref="CroppaProveedor"
-          >
-        </croppa>
+            placeholder="Seleccione una imagen"
+            :placeholder-font-size="14"
+            :width="171"
+            :height="173"
+            :show-remove-button="true"
+            :prevent-white-space="true"
+            ref="CroppaProveedor"
+            initial-size="natural"
+            initial-position="100% 20%"
+            <img crossOrigin="anonymous" :src="`/storage/${form.logo}`" slot="initial"
+          />
       </div>
     </div>
     <div class="row w-100 mb-1">
@@ -81,14 +80,11 @@ export default {
     toggle(dato){
       // console.log(dato,"editando proveedorrrrrrrrrrr");
       this.form = _.cloneDeep(dato);
-      this.form.logo = `/storage/${this.form.logo}`
-      console.log(this.form.logo,"logooooooooo");
-      let image = this.$refs.CroppaProveedor.initialImage
-      image = `storage/${this.form.logo}`
-      // if (this.form.logo !== null) {
-      // }else {
-      //   image = `img/user_default.jpg`
-      // }
+      if (this.form.logo == null) {
+        this.form.logo = `/img/user_default.jpg`
+      }else {
+        this.form.logo = this.form.logo
+      }
       this.$refs.modalProveedor.toggle()
       // console.log(`${this.$refs.CroppaProveedor.initialImage}/storage/${this.form.logo}`);
     }

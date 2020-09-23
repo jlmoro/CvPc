@@ -120,6 +120,17 @@ export default {
           this.$Helper.notificacion('warning','Error al eliminar',data.error)
           return
         }
+        if (data.mensaje_error) {
+          //mostrar mensaje
+          this.$refs.modalEliminarTipoE.toggle()
+          this.$swal({
+            title: 'Atención',
+            text: data.mensaje_error,
+            icon: 'info',
+            confirmButtonText: 'Aceptar'
+          })
+          return
+        }
         this.$refs.modalEliminarTipoE.toggle()
         this.$Helper.notificacion('success','Eliminado',data.mensaje)
         this.listarEventosTipos()

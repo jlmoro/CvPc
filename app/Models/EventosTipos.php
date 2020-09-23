@@ -8,5 +8,5 @@ class EventosTipos extends Model
 {
     protected $table = 'eventos_tipos';
     protected $primaryKey = 'id';
-    protected $guarded = [];
+    protected $guarded = ['descripcion'];
 }

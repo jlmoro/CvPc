@@ -98,6 +98,7 @@ export default {
           return
         }
         this.$Helper.notificacion('success','Impresora Registrada',data.mensaje)
+        this.form = ''
         this.$emit('impresora:creada')
         this.$refs.ModalCrearImpresora.toggle()
 

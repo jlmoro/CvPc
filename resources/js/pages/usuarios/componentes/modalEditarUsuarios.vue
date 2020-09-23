@@ -9,18 +9,19 @@
     <div  slot="body" class="">
       <div class="row w-100 mb-3 mt-2">
         <div class="col-12 text-center">
-          <!-- v-model="form.foto" -->
-          <croppa
+
+        <croppa
           placeholder="Seleccione una imagen"
-          :accept="'image/png'"
-          :placeholder-font-size="12"
-          :width="140"
-          :height="146"
+          :placeholder-font-size="14"
+          :width="171"
+          :height="173"
           :show-remove-button="true"
           :prevent-white-space="true"
           ref="CroppaUsuarios"
-          >
-        </croppa>
+          initial-size="natural"
+          initial-position="100% 20%"
+          <img crossOrigin="anonymous" class="imagen-principal" :src="`/storage/${form.foto}`" slot="initial"
+        />
 
       </div>
     </div>
@@ -177,6 +178,11 @@ export default {
     },
     toggle(dato){
       this.form = _.cloneDeep(dato)
+      if (this.form.foto == null) {
+        this.form.foto = `/img/user_default.jpg`
+      }else {
+        this.form.foto = this.form.foto
+      }
       this.$refs.modalUsuario.toggle()
     }
   }
@@ -184,7 +190,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.imagen-principal{
+  width: 173px;
+  height: 171px;
+}
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
