@@ -30,7 +30,7 @@
         "bootstrap-vue": "^2.15.0",
         "element-ui": "^2.13.0",
         "flatpickr": "^4.6.3",
-        "jquery": "^3.4.1",
+        "jquery": "^3.5.0",
         "js-cookie": "^2.2.0",
         "moment": "^2.26.0",
         "popper.js": "^1.15.0",
