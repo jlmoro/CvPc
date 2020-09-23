@@ -19,8 +19,8 @@
               ref="CroppaEncargado"
               initial-size="natural"
               initial-position="100% 20%"
-              <img crossOrigin="anonymous" :src="`/storage/${encargado.foto}`" slot="initial"
             />
+            <!-- <img crossOrigin="anonymous" :src="`/storage/${encargado.foto}`" slot="initial" -->
         </div>
       </div>
       <div class="row w-100">
@@ -65,7 +65,7 @@
       <div class="col-6">
         <label for="area">Área</label>
         <!-- <select-areas /> -->
-        <el-select v-model="encargado.area" filterable placeholder="Seleccione área" @change="listar_roles">
+        <el-select v-model="encargado.area" filterable placeholder="Seleccione área" @change="listar_roles($event)">
           <el-option
           v-for="(item,a) in areas"
           :key="a"
@@ -89,7 +89,7 @@
 </div>
 </div>
 <div class="" slot="footer">
-  <button type="button" class="btn-actualizar" @click="crear_encargado">Actualizar</button>
+  <button type="button" class="btn-actualizar" @click="editar_encargado">Actualizar</button>
   <button type="button" class="btn-cancelar" data-dismiss="modal">Cancelar</button>
 </div>
 </modal>
@@ -109,7 +109,9 @@ export default {
   },
   data(){
     return{
-      encargado:{},
+      encargado:{
+        rol:null
+      },
       roles:[],
       fechaNac:{
         altInput: true,
@@ -127,25 +129,25 @@ export default {
     }
   },
   methods:{
-    async crear_encargado(){
+    async editar_encargado(){
       try {
         this.encargado.foto = this.$refs.CroppaEncargado.img.src
         // const {data} = await axios.post(`${this.ruta}/crear-encargado`)
-        const {data} = await axios.post(`${this.ruta}/crear-encargado`,this.encargado)
+        const {data} = await axios.put(`${this.ruta}/editar-encargado`,this.encargado)
         if (data.error) {
           this.$Helper.notificacion('warning','Atención',data.error)
           return
         }
-        this.$emit('encargado:creado')
-        this.form = ''
-        this.$Helper.notificacion('success','Encargado Guardado',data.mensaje)
+        this.$emit('encargado:actualizado')
+        this.encargado = ''
+        this.$Helper.notificacion('success','Encargado Actualizado',data.mensaje)
         this.$refs.modalEncargado.toggle()
       } catch (e) {
         console.warn(e)
       }
     },
     async listar_roles(id_area){
-      this.form.rol = ''
+      // this.encargado.rol = ''
       try {
         const {data} = await axios(`/api/select/${id_area}/listar-roles`)
         if (data.error) {
@@ -160,12 +162,11 @@ export default {
     },
     toggle(datos){
       this.encargado = _.cloneDeep(datos);
-      if (this.encargado.foto == null) {
-        this.encargado.foto = `/img/user_default.jpg`
-      }else {
-        this.encargado.foto = this.encargado.foto
-      }
-      // console.log(this.encargado)
+      // if (this.encargado.foto == null) {
+      //   this.encargado.foto = `/img/user_default.jpg`
+      // }else {
+      //   this.encargado.foto = this.encargado.foto
+      // }
       this.$refs.modalEncargado.toggle()
     }
   }

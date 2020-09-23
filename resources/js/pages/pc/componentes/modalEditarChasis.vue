@@ -108,7 +108,6 @@ export default {
     toggle(dato){
       this.form = _.cloneDeep(dato)
       this.form.estado = (dato.estado === 1)?true:false
-      console.log(this.form);
       this.$refs.ModalEditarPc.toggle()
     }
   }

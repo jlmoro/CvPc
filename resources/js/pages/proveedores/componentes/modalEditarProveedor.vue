@@ -19,8 +19,8 @@
             ref="CroppaProveedor"
             initial-size="natural"
             initial-position="100% 20%"
-            <img crossOrigin="anonymous" :src="`/storage/${form.logo}`" slot="initial"
           />
+          <!-- <img crossOrigin="anonymous" :src="`/storage/${form.logo}`" slot="initial" -->
       </div>
     </div>
     <div class="row w-100 mb-1">
@@ -68,25 +68,27 @@ export default {
       try {
 
         this.form.logo = this.$refs.CroppaProveedor.img.src
-        const {data} = await axios.post(`${this.ruta}/crear-proveedor`,this.form)
+        const {data} = await axios.put(`${this.ruta}/editar-proveedor`,this.form)
+        if (data.error) {
+          this.$Helper.notificacion('warning','No es posible actualizar',data.error)
+          return
+        }
         this.form = {}
-        this.$emit('proveedor:creado')
-        this.$Helper.notificacion('success','Guardado',data.mensaje)
+        this.$emit('proveedor:actualizado')
+        this.$Helper.notificacion('success','Actualizado',data.mensaje)
         this.$refs.modalProveedor.toggle()
       } catch (e) {
         console.warn(e);
       }
     },
     toggle(dato){
-      // console.log(dato,"editando proveedorrrrrrrrrrr");
       this.form = _.cloneDeep(dato);
-      if (this.form.logo == null) {
-        this.form.logo = `/img/user_default.jpg`
-      }else {
-        this.form.logo = this.form.logo
-      }
+      // if (this.form.logo == null) {
+      //   this.form.logo = `/img/user_default.jpg`
+      // }else {
+      //   this.form.logo = this.form.logo
+      // }
       this.$refs.modalProveedor.toggle()
-      // console.log(`${this.$refs.CroppaProveedor.initialImage}/storage/${this.form.logo}`);
     }
   }
 }

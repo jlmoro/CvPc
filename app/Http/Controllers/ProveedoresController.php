@@ -29,6 +29,33 @@ class ProveedoresController extends Controller
     }
 
   }
+  public function editar_proveedor(Request $request)
+  {
+    try {
+      return DB::transaction(function() use($request){
+
+        $logo = $this->guardar_imagen($request->logo,'proveedores');
+        if($logo['estado'] == true){
+          $request['logo'] = $logo['ruta'];
+        }else {
+          return 'Error al guardar imagen';
+        }
+
+        $prov = Proveedores::find($request->id);
+        $prov->fill($request->all());
+
+        $prov->update();
+
+        return[
+          'mensaje'=>config('domains.mensajes.actualizado')
+        ];
+
+      },5);
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"error al actualizar proveedor");
+    }
+
+  }
   public function crear_proveedor(Request $request)
   {
     try {

@@ -18,11 +18,41 @@ class EncargadosController extends Controller
         return[
           'mensaje'=>config('domains.mensajes.eliminado')
         ];
-        
+
       },5);
 
     } catch (\Exception $e) {
       return $this->captura_error($e,"Error al eliminar encargado");
+    }
+
+  }
+  public function editar_encargado(Request $request)
+  {
+    try {
+      return DB::transaction(function() use($request){
+        $foto = $this->guardar_imagen($request->foto,'encargados');
+        if($foto['estado'] == true){
+          $request['foto'] = $foto['ruta'];
+        }else {
+          return ['error'=>'Error al guardar la imagen'];
+        }
+
+        $enc = Encargados::find($request->id);
+
+        // $request['id_rol'] = $request->rol;
+        // dd($request->all());
+
+        $enc->fill($request->all());
+        $enc->update();
+
+        return[
+          'mensaje'=>config('domains.mensajes.actualizado')
+        ];
+
+      },3);
+
+    } catch (\Exception $e) {
+      return $this->captura_error($e,"Error al crear encargado");
     }
 
   }

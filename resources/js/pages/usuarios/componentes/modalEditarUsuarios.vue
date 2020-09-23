@@ -20,8 +20,8 @@
           ref="CroppaUsuarios"
           initial-size="natural"
           initial-position="100% 20%"
-          <img crossOrigin="anonymous" class="imagen-principal" :src="`/storage/${form.foto}`" slot="initial"
         />
+        <!-- <img crossOrigin="anonymous" class="imagen-principal" :src="`/storage/${form.foto}`" slot="initial" -->
 
       </div>
     </div>
@@ -178,11 +178,11 @@ export default {
     },
     toggle(dato){
       this.form = _.cloneDeep(dato)
-      if (this.form.foto == null) {
-        this.form.foto = `/img/user_default.jpg`
-      }else {
-        this.form.foto = this.form.foto
-      }
+      // if (this.form.foto == null) {
+      //   this.form.foto = `/img/user_default.jpg`
+      // }else {
+      //   this.form.foto = this.form.foto
+      // }
       this.$refs.modalUsuario.toggle()
     }
   }

@@ -7,11 +7,10 @@
         </div>
       </div>
       <div slot="body" class="">
-        <span v-if="verAyuda.solucion_ayuda !== null">{{verAyuda.solucion_ayuda}}</span>
-        <span else> No se ha registrado comentario de ayuda</span>
+        <span v-if="verAyuda.solucion_ayuda">{{verAyuda.solucion_ayuda}}</span>
+        <span v-else> No se ha registrado comentario de ayuda</span>
       </div>
       <div slot="footer" class="">
-        <!-- <button type="button" class="btn-crear" @click="registrarEvento">Registrar</button> -->
         <button type="button" class="btn-crear" data-dismiss="modal">Aceptar</button>
       </div>
     </modal-b>
