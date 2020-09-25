@@ -58,8 +58,10 @@
               <td><span class="letra-capital">{{data.nombre_encargado}}</span></td>
               <td><span class="letra-capital">{{data.proveedor}}</span></td>
               <td>{{data.created_at | formato_fecha('D-MMM-YYYY')}}</td>
-              <td v-if="data.estado === 1"><button type="button" class="estado act" @click="cambiarEstado(data)">Activa</button></td>
-              <td v-else><button type="button" class="estado inact" @click="cambiarEstado(data)">Inactiva</button></td>
+              <td>
+                <button v-if="data.estado === 1" type="button" class="estado act" @click="cambiarEstado(data)">Activa</button>
+                <button v-else type="button" class="estado inact" @click="cambiarEstado(data)">Inactiva</button>
+              </td>
               <td>
                 <el-popover placement="bottom" title="Observaciones" width="250" trigger="hover"
                 :content="data.observaciones">
